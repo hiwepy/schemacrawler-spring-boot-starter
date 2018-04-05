@@ -1,0 +1,10 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Thu Jan 18 09:00:15 GMT+08:00 2018
+http\://121.43.110.87\:8081/nexus/content/groups/public/.error=Could not transfer artifact com.oracle\:ojdbc6\:jar\:sources\:11.2.0.4 from/to nexus-develop (http\://121.43.110.87\:8081/nexus/content/groups/public/)\: Network is unreachable\: connect
+http\://127.0.0.1\:8081/repository/maven-public/.lastUpdated=1516237215455
+http\://maven.aliyun.com/nexus/content/groups/public/.error=Could not transfer artifact com.oracle\:ojdbc6\:jar\:sources\:11.2.0.4 from/to nexus-aliyun (http\://maven.aliyun.com/nexus/content/groups/public)\: maven.aliyun.com
+http\://127.0.0.1\:8081/repository/maven-public/.error=
+@default-nexus-aliyun-http\://maven.aliyun.com/nexus/content/groups/public/.lastUpdated=1491019332470
+http\://10.71.19.153\:8081/nexus/content/groups/public/.error=
+http\://10.71.19.153\:8081/nexus/content/groups/public/.lastUpdated=1486704823916
+@default-nexus-develop-http\://121.43.110.87\:8081/nexus/content/groups/public/.lastUpdated=1494480403527

@@ -1,0 +1,15 @@
+spring:
+  schemacrawler:
+    enabled: true
+    crawler-options:
+    - type: oracle
+      url: jdbc:oracle:thin:@10.71.19.135:1521:orcl
+      username: zftal_api
+      password: zftal_api
+      options: 
+        table-name-pattern: ddcx
+        routine-types: function,function
+        table-types: TABLE,VIEW
+      rules:
+        column-inclusion-rule:
+          type: regular-expression

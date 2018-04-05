@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.0.0.RELEASE</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+
+	<groupId>com.github.vindell</groupId>
+	<artifactId>spring-boot-starter-schemacrawler</artifactId>
+	<description>Spring Boot Starter For Schemacrawler</description>
+	<version>1.0.0</version>
+	<name>${project.groupId}:${project.artifactId}</name>
+	<url>https://github.com/vindell/${project.artifactId}</url>
+	<packaging>jar</packaging>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>scm:git:https:github.com/vindell/${project.artifactId}.git</connection>
+		<developerConnection>scm:git:https:github.com/vindell/${project.artifactId}.git</developerConnection>
+		<url>https:github.com/vindell/${project.artifactId}</url>
+		<tag>${project.artifactId}</tag>
+	</scm>
+
+	<developers>
+		<developer>
+			<name>vindell</name>
+			<email>hnxyhcwdl1003@163.com</email>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>+8</timezone>
+		</developer>
+	</developers>
+	
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<name>Maven Snapshots Repository</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+		    <id>ossrh</id>
+			<name>Maven Central Staging Repository</name>
+		    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		  </repository>
+	</distributionManagement>
+	
+	<build>
+		<pluginManagement>
+			<plugins>
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven-compiler-plugin.version}</version>
+					<configuration>
+						<defaultLibBundleDir>lib</defaultLibBundleDir>
+						<source>${java.version}</source>
+						<target>${java.version}</target>
+						<encoding>${project.build.sourceEncoding}</encoding>
+						<maxmem>512M</maxmem>
+					</configuration>
+				</plugin>
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-enforcer-plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-enforcer-plugin</artifactId>
+					<version>${maven-enforcer-plugin.version}</version>
+					<executions>
+						<execution>
+							<id>default-cli</id>
+							<goals>
+								<goal>enforce</goal>
+							</goals>
+							<phase>validate</phase>
+							<configuration>
+								<rules>
+									<requireMavenVersion>
+										<message>
+	                                        <![CDATA[You are running an older version of Maven. This application requires at least Maven ${maven.version}.]]>
+										</message>
+										<version>[${maven.version}.0,)</version>
+									</requireMavenVersion>
+									<requireJavaVersion>
+										<message>
+	                                        <![CDATA[You are running an older version of Java. This application requires at least JDK ${java.version}.]]>
+										</message>
+										<version>[${java.version}.0,)</version>
+									</requireJavaVersion>
+								</rules>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-gpg-plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>${maven-gpg-plugin.version}</version>
+					<executions>
+						<execution>
+							<id>sign-artifacts</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>sign</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-resources-plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>${maven-resources-plugin.version}</version>
+					<configuration>
+						<encoding>${project.build.sourceEncoding}</encoding>
+					</configuration>
+				</plugin>
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-release-plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>${maven-release-plugin.version}</version>
+					<configuration>
+						<tagNameFormat>v@{project.version}</tagNameFormat>
+						<autoVersionSubmodules>true</autoVersionSubmodules>
+						<useReleaseProfile>false</useReleaseProfile>
+						<releaseProfiles>release</releaseProfiles>
+						<goals>deploy</goals>
+					</configuration>
+				</plugin>
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-source-plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>${maven-source-plugin.version}</version>
+					<configuration>
+						<testFailureIgnore>true</testFailureIgnore>
+						<attach>true</attach>
+						<encoding>${project.build.sourceEncoding}</encoding>
+					</configuration>
+					<executions>
+						<execution>
+							<id>attach-sources</id>
+							<goals>
+								<goal>jar-no-fork</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${maven-surefire-plugin.version}</version>
+					<configuration>
+						<!-- 跳过单元测试 -->
+						<skip>true</skip>
+						<skipTests>true</skipTests>
+						<!-- forkMode 可设置值有 “never”， “once”， “always” 和 “pertest”。 pretest： 
+							每一个测试创建一个新进程，为每个测试创建新的JVM是单独测试的最彻底方式，但也是最慢的，不适合hudson上持续回归。 once：在一个进程中进行所有测试。once为默认设置，在Hudson上持续回归时建议使用默认设置。 
+							always：在一个进程中并行的运行脚本，Junit4.7以上版本才可以使用，surefire的版本要在2.6以上提供这个功能，其中 threadCount：执行时，指定可分配的线程数量。只和参数parallel配合使用有效。默认：5。 -->
+						<forkMode>once</forkMode>
+						<argLine>-Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m -Dfile.encoding=UTF-8</argLine>
+						<additionalClasspathElements>
+							<additionalClasspathElement>${basedir}/target/test-classes</additionalClasspathElement>
+						</additionalClasspathElements>
+						<includes>
+							<include>**/*Test.java</include>
+						</includes>
+						<excludes>
+							<exclude>**/TestBean.java</exclude>
+						</excludes>
+					</configuration>
+				</plugin>
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>${maven-jar-plugin.version}</version>
+					<configuration>
+						<encoding>${project.build.sourceEncoding}</encoding>
+						<skipIfEmpty>true</skipIfEmpty>
+						<archive>
+							<manifest>
+								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+								<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+							</manifest>
+						</archive>
+					</configuration>
+				</plugin>
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-javadoc-plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>${maven-javadoc-plugin.version}</version>
+					<configuration>
+						<aggregate>true</aggregate>
+						<argLine>-Dfile.encoding=UTF-8</argLine>
+						<charset>${project.build.sourceEncoding}</charset>
+						<encoding>${project.build.sourceEncoding}</encoding>
+						<docencoding>${project.build.sourceEncoding}</docencoding>
+					</configuration>
+					<executions>
+						<execution>
+							<id>attach-javadocs</id>
+							<phase>package</phase>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.sonatype.plugins</groupId>
+					<artifactId>nexus-staging-maven-plugin</artifactId>
+					<version>${maven-nexus-staging-plugin.version}</version>
+					<extensions>true</extensions>
+					<configuration>
+						<serverId>ossrh</serverId>
+						<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+						<autoReleaseAfterClose>false</autoReleaseAfterClose>
+						<!-- <sslAllowAll>true</sslAllowAll> -->
+						<stagingProgressPauseDurationSeconds>60</stagingProgressPauseDurationSeconds>
+						<stagingProgressTimeoutMinutes>20</stagingProgressTimeoutMinutes>
+						<detectBuildFailures>true</detectBuildFailures>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<!--环境检查插件：代码编译前的环境检查 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+			</plugin>
+			<!-- 编译插件：编译主代码至主输出目录 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<!-- 资源插件：复制主资源文件至主输出目录 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+			</plugin>
+			<!-- 单元测试插件 ：执行测试用例 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+			<!-- jar包生成插件 ：创建项目jar包 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+			</plugin>
+			<!-- 源码插件:发布时自动将源码同时发布 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+			</plugin>
+			<!-- 安装插件：将项目输出构件安装到本地仓库 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+			</plugin>
+			<!-- 发布插件 ：将项目输出构件部署到远程仓库 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>disable-javadoc-doclint</id>
+				<activation>
+					<jdk>[1.8,)</jdk>
+				</activation>
+			<properties>
+				<additionalparam>-Xdoclint:none</additionalparam>
+			</properties>
+		</profile>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<!--环境检查插件：代码编译前的环境检查 -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-enforcer-plugin</artifactId>
+					</plugin>
+					<!-- 编译插件：编译主代码至主输出目录 -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+					</plugin>
+					<!-- 资源插件：复制主资源文件至主输出目录 -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-resources-plugin</artifactId>
+					</plugin>
+					<!-- 单元测试插件 ：执行测试用例 -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+					</plugin>
+					<!-- jar包生成插件 ：创建项目jar包 -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-jar-plugin</artifactId>
+					</plugin>
+					<!-- 源码插件:发布时自动将源码同时发布 -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+					</plugin>
+					<!-- javadoc -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+					</plugin>
+					<!-- 安装插件：将项目输出构件安装到本地仓库 -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-install-plugin</artifactId>
+					</plugin>
+					<!-- 签名插件：对构建的jar、javadoc、source使用gpg来签名 -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+					</plugin>
+					<!-- 发布插件 ：将项目输出构件部署到远程仓库 -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-deploy-plugin</artifactId>
+					</plugin>
+					<!-- 版本自动升级插件 ：重置版本号 -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-release-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<commons-io.version>2.6</commons-io.version>
+		<maven.version>3.0</maven.version>
+       	<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+        <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
+        <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+        <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
+        <maven-surefire-plugin.vertsion>2.21.0</maven-surefire-plugin.vertsion>
+		<maven-nexus-staging-plugin.version>1.6.8</maven-nexus-staging-plugin.version>
+		<oracle-10g-driver.version>10.2.0.5</oracle-10g-driver.version>
+		<oracle-11g-driver.version>11.2.0.4</oracle-11g-driver.version>
+		<oracle-12c-driver.version>12.1.0.2</oracle-12c-driver.version>
+		<schemacrawler.version>14.20.03</schemacrawler.version>
+		<schemacrawler-db2.version>14.09.03</schemacrawler-db2.version>
+		<schemacrawler-generic.version>11.02.01</schemacrawler-generic.version>
+		<schemacrawler-lint.version>14.09.03</schemacrawler-lint.version>
+		<schemacrawler-h2.version>14.09.03</schemacrawler-h2.version>
+		<schemacrawler-hsqldb.version>${schemacrawler.version}</schemacrawler-hsqldb.version>
+		<schemacrawler-mariadb.version>14.08.06</schemacrawler-mariadb.version>
+		<schemacrawler-mysql.version>${schemacrawler.version}</schemacrawler-mysql.version>
+		<schemacrawler-offline.version>${schemacrawler.version}</schemacrawler-offline.version>
+		<schemacrawler-oracle.version>14.17.05</schemacrawler-oracle.version>  <!-- Note: 14.17.05 For Oracle 10g/11g -->
+		<schemacrawler-sybaseiq.version>14.16.04.01-java7</schemacrawler-sybaseiq.version>
+		<schemacrawler-sqlserver.version>${schemacrawler.version}</schemacrawler-sqlserver.version>
+		<schemacrawler-sqlite.version>${schemacrawler.version}</schemacrawler-sqlite.version>
+	</properties>
+
+	<dependencies>
+		
+		<!-- Java Servlet API -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+
+		<!-- For Spring Boot Test-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- Core starter, including auto-configuration support, logging and YAML -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure</artifactId>
+		</dependency>
+		<!-- @ConfigurationProperties annotation processing (metadata for IDEs) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/us.fatehi/schemacrawler -->
+		<!-- SchemaCrawler提供一组用于增强标准JDBC Metadata的API.SchemaCrawler还包含一个命令行工具能够将数据库结构和数据以一种易读的形式输出. -->
+		<dependency>
+		    <groupId>us.fatehi</groupId>
+		    <artifactId>schemacrawler</artifactId>
+		    <version>${schemacrawler.version}</version>
+		</dependency>
+		<!-- SchemaCrawler For IBM DB2 ：https://mvnrepository.com/artifact/us.fatehi/schemacrawler-db2 -->
+		<dependency>
+		    <groupId>us.fatehi</groupId>
+		    <artifactId>schemacrawler-db2</artifactId>
+		    <version>${schemacrawler-db2.version}</version>
+		    <optional>true</optional>
+		</dependency>
+		<!-- SchemaCrawler For Generic Database : https://mvnrepository.com/artifact/us.fatehi/schemacrawler-generic -->
+		<dependency>
+		    <groupId>us.fatehi</groupId>
+		    <artifactId>schemacrawler-generic</artifactId>
+		    <version>${schemacrawler-generic.version}</version>
+		    <optional>true</optional>
+		</dependency>
+		<!-- SchemaCrawler Lint: https://mvnrepository.com/artifact/us.fatehi/schemacrawler-lint -->
+		<dependency>
+		    <groupId>us.fatehi</groupId>
+		    <artifactId>schemacrawler-lint</artifactId>
+		    <version>${schemacrawler-lint.version}</version>
+		    <optional>true</optional>
+		</dependency>
+		<!-- SchemaCrawler For MariaDB : https://mvnrepository.com/artifact/us.fatehi/schemacrawler-mariadb -->
+		<dependency>
+		    <groupId>us.fatehi</groupId>
+		    <artifactId>schemacrawler-mariadb</artifactId>
+		    <version>${schemacrawler-mariadb.version}</version>
+		    <optional>true</optional>
+		</dependency>
+		<!-- JDBC Driver For MariaDB -->
+			<dependency>
+	      	<groupId>org.mariadb.jdbc</groupId>
+	      	<artifactId>mariadb-java-client</artifactId>
+	      	<scope>test</scope>
+	    </dependency>
+	    
+		<!-- SchemaCrawler For MySQL : https://mvnrepository.com/artifact/us.fatehi/schemacrawler-mysql -->
+		<dependency>
+		    <groupId>us.fatehi</groupId>
+		    <artifactId>schemacrawler-mysql</artifactId>
+		    <version>${schemacrawler-mysql.version}</version>
+		    <optional>true</optional>
+		</dependency>
+		<!-- SchemaCrawler For H2 Database Engine : https://mvnrepository.com/artifact/us.fatehi/schemacrawler-h2 -->
+		<dependency>
+		    <groupId>us.fatehi</groupId>
+		    <artifactId>schemacrawler-h2</artifactId>
+		    <version>${schemacrawler-h2.version}</version>
+		    <optional>true</optional>
+		</dependency>
+		<!-- SchemaCrawler For HyperSQL ：https://mvnrepository.com/artifact/us.fatehi/schemacrawler-hsqldb -->
+		<dependency>
+		    <groupId>us.fatehi</groupId>
+		    <artifactId>schemacrawler-hsqldb</artifactId>
+		    <version>${schemacrawler-hsqldb.version}</version>
+		    <optional>true</optional>
+		</dependency>
+		<!-- SchemaCrawler For Offline Snapshots ：https://mvnrepository.com/artifact/us.fatehi/schemacrawler-offline -->
+		<dependency>
+		    <groupId>us.fatehi</groupId>
+		    <artifactId>schemacrawler-offline</artifactId>
+		    <version>${schemacrawler-offline.version}</version>
+		    <optional>true</optional>
+		</dependency>
+		<!-- SchemaCrawler For Oracle ：https://mvnrepository.com/artifact/us.fatehi/schemacrawler-oracle -->
+		<dependency>
+		    <groupId>us.fatehi</groupId>
+		    <artifactId>schemacrawler-oracle</artifactId>
+		    <version>${schemacrawler-oracle.version}</version>
+		    <optional>true</optional>
+		</dependency>
+		<!-- JDBC Driver For Oracle -->
+		<!-- 
+			Oracle JDBC Driver. 
+			ojdbc14	: Classes for use with JDK 1.4 and 1.5.
+			ojdbc5	: Classes for use with JDK 1.5.
+			ojdbc6	: Classes for use with JDK 1.6.
+			ojdbc7	: Certified with JDK7 and JDK 8; 
+			It contains the JDBC driver classes except classes for NLS support in Oracle Object and Collection types.
+			特别注意：
+			1、因为Oracle数据库版本或JDK版本不同，此处需要根据实际情况调整不同的数据库驱动
+			2、Oracle 12C JDBC 连接要求:
+				(1)、需要jre 1.7 及以上版本
+				(2)、ojdbc jar包需要更换版本为ojdbc7 
+				(3)、连接字符串示例
+				原来写法
+				jdbc:oracle:thin:@127.0.0.1:1521:pdb1
+				需要变更为
+				jdbc:oracle:thin:@127.0.0.1:1521/pdb1
+		-->
+		<!-- <dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc14</artifactId>
+			<version>${oracle-10g-driver.version}</version>
+			<scope>test</scope>
+		</dependency> -->
+		<!-- <dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>${oracle-11g-driver.version}</version>
+			<scope>test</scope>
+		</dependency> -->
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc7</artifactId>
+			<version>${oracle-12c-driver.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- SchemaCrawler For PostgreSQL ：https://mvnrepository.com/artifact/us.fatehi/schemacrawler-postgresql -->
+		<dependency>
+		    <groupId>us.fatehi</groupId>
+		    <artifactId>schemacrawler-postgresql</artifactId>
+		    <version>${schemacrawler.version}</version>
+		    <optional>true</optional>
+		</dependency>
+		<!-- SchemaCrawler For Sybase IQ ：https://mvnrepository.com/artifact/us.fatehi/schemacrawler-sybaseiq -->
+		<dependency>
+		    <groupId>us.fatehi</groupId>
+		    <artifactId>schemacrawler-sybaseiq</artifactId>
+		    <version>${schemacrawler-sybaseiq.version}</version>
+		    <optional>true</optional>
+		</dependency>
+		<!-- SchemaCrawler For Microsoft SQL Server ：https://mvnrepository.com/artifact/us.fatehi/schemacrawler-sqlserver -->
+		<dependency>
+		    <groupId>us.fatehi</groupId>
+		    <artifactId>schemacrawler-sqlserver</artifactId>
+		    <version>${schemacrawler-sqlserver.version}</version>
+		    <optional>true</optional>
+		</dependency>
+		<!-- SchemaCrawler For SQLite ：https://mvnrepository.com/artifact/us.fatehi/schemacrawler-sqlite -->
+		<dependency>
+		    <groupId>us.fatehi</groupId>
+		    <artifactId>schemacrawler-sqlite</artifactId>
+		    <version>${schemacrawler-sqlite.version}</version>
+		    <optional>true</optional>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/us.fatehi/schemacrawler-testdb -->
+		<dependency>
+		    <groupId>us.fatehi</groupId>
+		    <artifactId>schemacrawler-testdb</artifactId>
+		    <version>${schemacrawler.version}</version>
+		    <scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+		<dependency>
+		    <groupId>com.google.code.gson</groupId>
+		    <artifactId>gson</artifactId>
+		    <scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>${commons-io.version}</version>
+		     <scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+		    <scope>test</scope>
+		</dependency>
+	</dependencies>
+	
+</project>
