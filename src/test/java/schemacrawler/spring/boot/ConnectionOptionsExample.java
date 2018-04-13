@@ -27,8 +27,8 @@ public final class ConnectionOptionsExample {
 	public static void main(final String[] args) throws Exception {
 
 		// Create a database connection
-		final DataSource dataSource = new DatabaseConnectionOptions("jdbc:oracle:thin:@10.71.19.135:1521:orcl");
-		final Connection connection = dataSource.getConnection("ZFTAL_BOOT_SAMPLE_3", "zfsoft123");
+		final DataSource dataSource = new DatabaseConnectionOptions("jdbc:oracle:thin:@127.0.0.1:1521:orcl");
+		final Connection connection = dataSource.getConnection("username", "password");
 
 		// Create the options
 		final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
@@ -42,7 +42,7 @@ public final class ConnectionOptionsExample {
 		options.setSchemaInfoLevel(level);
 		options.setColumnInclusionRule(new IncludeAll());
 		options.setRoutineInclusionRule(new ExcludeAll());
-		options.setSchemaInclusionRule(new RegularExpressionInclusionRule("ZFTAL_BOOT_SAMPLE_3"));
+		options.setSchemaInclusionRule(new RegularExpressionInclusionRule("tablebname"));
 
 		// Get the schema definition
 		final Catalog catalog = SchemaCrawlerUtility.getCatalog(connection, options);

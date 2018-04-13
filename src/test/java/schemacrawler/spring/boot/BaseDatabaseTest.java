@@ -35,7 +35,7 @@ public abstract class BaseDatabaseTest {
 		options.setSchemaInfoLevel(level);
 		options.setColumnInclusionRule(new IncludeAll());
 		options.setRoutineInclusionRule(new ExcludeAll());
-		options.setSchemaInclusionRule(new RegularExpressionInclusionRule("ZFTAL_BOOT_SAMPLE_3"));
+		options.setSchemaInclusionRule(new RegularExpressionInclusionRule("tablename"));
 		options.setTableInclusionRule(new RegularExpressionExclusionRule(".*\\..{0,1}schema_version.*") );
 		
 		
@@ -49,8 +49,8 @@ public abstract class BaseDatabaseTest {
 
 	public Connection getConnection() throws SchemaCrawlerException, SQLException {
 		// Create a database connection
-		final DataSource dataSource = new DatabaseConnectionOptions("jdbc:oracle:thin:@10.71.19.135:1521:orcl");
-		final Connection connection = dataSource.getConnection("ZFTAL_BOOT_SAMPLE_3", "zfsoft123");
+		final DataSource dataSource = new DatabaseConnectionOptions("jdbc:oracle:thin:@127.0.0.1:1521:orcl");
+		final Connection connection = dataSource.getConnection("username", "password");
 		return connection;
 	}
 
