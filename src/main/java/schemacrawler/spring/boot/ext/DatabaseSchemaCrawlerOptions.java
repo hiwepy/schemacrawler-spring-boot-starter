@@ -5,6 +5,7 @@ import java.util.Map;
 
 import schemacrawler.schemacrawler.ConnectionOptions;
 import schemacrawler.schemacrawler.DatabaseConnectionOptions;
+import schemacrawler.schemacrawler.IncludeAll;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.schemacrawler.SingleUseUserCredentials;
@@ -30,7 +31,7 @@ public class DatabaseSchemaCrawlerOptions {
 	 */
 	private String password;
 	/** 数据库Schema获取操作配置 */
-	private SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.tablecolumns();
+	private SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.tablecolumns(new IncludeAll());
 	/** 数据库Schema获取操作配置，扩展InclusionRule不方便设置问题 */
 	private SchemaCrawlerInclusionRules rules = new SchemaCrawlerInclusionRules();
 

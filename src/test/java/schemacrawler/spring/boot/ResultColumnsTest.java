@@ -38,11 +38,11 @@ import java.util.logging.Level;
 import org.junit.Rule;
 import org.junit.Test;
 
-import schemacrawler.crawl.SchemaCrawler;
 import schemacrawler.schema.ResultsColumn;
 import schemacrawler.schema.ResultsColumns;
 import schemacrawler.spring.boot.utility.TestName;
 import schemacrawler.spring.boot.utility.TestWriter;
+import schemacrawler.utility.SchemaCrawlerUtility;
 import sf.util.SchemaCrawlerLogger;
 
 public class ResultColumnsTest extends BaseDatabaseTest {
@@ -51,7 +51,7 @@ public class ResultColumnsTest extends BaseDatabaseTest {
 
 	@Rule
 	public TestName testName = new TestName();
-
+ 
 	@Test
 	public void columns() throws Exception {
 
@@ -70,8 +70,8 @@ public class ResultColumnsTest extends BaseDatabaseTest {
 			try (final Connection connection = getConnection();
 					final Statement statement = connection.createStatement();
 					final ResultSet resultSet = statement.executeQuery(sql);) {
-
-				final ResultsColumns resultColumns = SchemaCrawler.getResultsColumns(resultSet);
+				
+				final ResultsColumns resultColumns = SchemaCrawlerUtility.getResultsColumns(resultSet);
 
 				assertNotNull("Could not obtain result columns", resultColumns);
 				final ResultsColumn[] columns = resultColumns.getColumns().toArray(new ResultsColumn[0]);

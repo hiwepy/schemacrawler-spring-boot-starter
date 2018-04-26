@@ -375,16 +375,20 @@
 		<oracle-10g-driver.version>10.2.0.5</oracle-10g-driver.version>
 		<oracle-11g-driver.version>11.2.0.4</oracle-11g-driver.version>
 		<oracle-12c-driver.version>12.1.0.2</oracle-12c-driver.version>
-		<schemacrawler.version>14.20.03</schemacrawler.version>
-		<schemacrawler-db2.version>14.09.03</schemacrawler-db2.version>
+		<schemacrawler.version>14.20.05</schemacrawler.version>
+		<schemacrawler-db2.version>${schemacrawler.version}</schemacrawler-db2.version>
+		<schemacrawler-derby.version>14.03.03</schemacrawler-derby.version>
+		<schemacrawler-distrib.version>14.20.04</schemacrawler-distrib.version>
 		<schemacrawler-generic.version>11.02.01</schemacrawler-generic.version>
-		<schemacrawler-lint.version>14.09.03</schemacrawler-lint.version>
+		<schemacrawler-lint.version>${schemacrawler.version}</schemacrawler-lint.version>
 		<schemacrawler-h2.version>14.09.03</schemacrawler-h2.version>
+		<schemacrawler-hive.version>1.0.0.RELEASE</schemacrawler-hive.version>
 		<schemacrawler-hsqldb.version>${schemacrawler.version}</schemacrawler-hsqldb.version>
 		<schemacrawler-mariadb.version>14.08.06</schemacrawler-mariadb.version>
 		<schemacrawler-mysql.version>${schemacrawler.version}</schemacrawler-mysql.version>
 		<schemacrawler-offline.version>${schemacrawler.version}</schemacrawler-offline.version>
 		<schemacrawler-oracle.version>14.17.05</schemacrawler-oracle.version>  <!-- Note: 14.17.05 For Oracle 10g/11g -->
+		<schemacrawler-postgresql.version>${schemacrawler.version}</schemacrawler-postgresql.version>
 		<schemacrawler-sybaseiq.version>14.16.04.01-java7</schemacrawler-sybaseiq.version>
 		<schemacrawler-sqlserver.version>${schemacrawler.version}</schemacrawler-sqlserver.version>
 		<schemacrawler-sqlite.version>${schemacrawler.version}</schemacrawler-sqlite.version>
@@ -565,6 +569,12 @@
 		    <artifactId>schemacrawler-sybaseiq</artifactId>
 		    <version>${schemacrawler-sybaseiq.version}</version>
 		    <optional>true</optional>
+		    <exclusions>
+		    	<exclusion>
+		    		<groupId>us.fatehi</groupId>
+		    		<artifactId>schemacrawler-tools</artifactId>
+		    	</exclusion>
+		    </exclusions>
 		</dependency>
 		<!-- SchemaCrawler For Microsoft SQL Server ：https://mvnrepository.com/artifact/us.fatehi/schemacrawler-sqlserver -->
 		<dependency>
