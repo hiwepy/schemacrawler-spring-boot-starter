@@ -79,7 +79,7 @@ public class ResultColumnsTest extends BaseDatabaseTest {
 					LOGGER.log(Level.FINE, column.toString());
 					out.println("column: " + column.getFullName());
 					out.println("  database type: " + column.getColumnDataType().getDatabaseSpecificTypeName());
-					out.println("  type: " + column.getColumnDataType().getJavaSqlType().getJavaSqlTypeName());
+					out.println("  type: " + column.getColumnDataType().getJavaSqlType().getName());
 				}
 			}
 

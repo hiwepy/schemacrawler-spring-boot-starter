@@ -44,8 +44,8 @@ public class SerializationTest extends BaseDatabaseTest {
 
 	@Test
 	public void catalogSerialization() throws Exception {
-		final SchemaCrawlerOptions schemaCrawlerOptions = getOptions();
-		schemaCrawlerOptions.setSchemaInfoLevel(SchemaInfoLevelBuilder.maximum());
+		
+		final SchemaCrawlerOptions schemaCrawlerOptions = getOptions().withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
 
 		final Catalog catalog = getCatalog(schemaCrawlerOptions);
 		assertNotNull("Could not obtain catalog", catalog);

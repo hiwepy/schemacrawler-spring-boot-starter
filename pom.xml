@@ -6,14 +6,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.0.RELEASE</version>
+		<version>2.0.4.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<groupId>com.github.vindell</groupId>
 	<artifactId>spring-boot-starter-schemacrawler</artifactId>
 	<description>Spring Boot Starter For Schemacrawler</description>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<url>https://github.com/vindell/${project.artifactId}</url>
 	<packaging>jar</packaging>
@@ -375,23 +375,27 @@
 		<oracle-10g-driver.version>10.2.0.5</oracle-10g-driver.version>
 		<oracle-11g-driver.version>11.2.0.4</oracle-11g-driver.version>
 		<oracle-12c-driver.version>12.1.0.2</oracle-12c-driver.version>
-		<schemacrawler.version>14.20.05</schemacrawler.version>
+		<schemacrawler.version>15.01.03</schemacrawler.version>
+		<schemacrawler-commandline.version>${schemacrawler.version}</schemacrawler-commandline.version>
 		<schemacrawler-db2.version>${schemacrawler.version}</schemacrawler-db2.version>
 		<schemacrawler-derby.version>14.03.03</schemacrawler-derby.version>
-		<schemacrawler-distrib.version>14.20.04</schemacrawler-distrib.version>
+		<schemacrawler-distrib.version>${schemacrawler.version}</schemacrawler-distrib.version>
 		<schemacrawler-generic.version>11.02.01</schemacrawler-generic.version>
 		<schemacrawler-lint.version>${schemacrawler.version}</schemacrawler-lint.version>
 		<schemacrawler-h2.version>14.09.03</schemacrawler-h2.version>
 		<schemacrawler-hive.version>1.0.0.RELEASE</schemacrawler-hive.version>
 		<schemacrawler-hsqldb.version>${schemacrawler.version}</schemacrawler-hsqldb.version>
+		<schemacrawler-integrations.version>${schemacrawler.version}</schemacrawler-integrations.version> 
 		<schemacrawler-mariadb.version>14.08.06</schemacrawler-mariadb.version>
 		<schemacrawler-mysql.version>${schemacrawler.version}</schemacrawler-mysql.version>
 		<schemacrawler-offline.version>${schemacrawler.version}</schemacrawler-offline.version>
-		<schemacrawler-oracle.version>14.17.05</schemacrawler-oracle.version>  <!-- Note: 14.17.05 For Oracle 10g/11g -->
+		<schemacrawler-oracle.version>${schemacrawler.version}</schemacrawler-oracle.version>  <!-- Note: 14.17.05 For Oracle 10g/11g -->
 		<schemacrawler-postgresql.version>${schemacrawler.version}</schemacrawler-postgresql.version>
+		<schemacrawler-sapiq.version>${schemacrawler.version}</schemacrawler-sapiq.version>
 		<schemacrawler-sybaseiq.version>14.16.04.01-java7</schemacrawler-sybaseiq.version>
 		<schemacrawler-sqlserver.version>${schemacrawler.version}</schemacrawler-sqlserver.version>
 		<schemacrawler-sqlite.version>${schemacrawler.version}</schemacrawler-sqlite.version>
+		<schemacrawler-timesten.version>${schemacrawler.version}</schemacrawler-timesten.version>
 	</properties>
 
 	<dependencies>
@@ -449,11 +453,25 @@
 		    <artifactId>schemacrawler</artifactId>
 		    <version>${schemacrawler.version}</version>
 		</dependency>
+		<!-- SchemaCrawler Commandline ：https://mvnrepository.com/artifact/us.fatehi/schemacrawler-commandline -->
+		<dependency>
+		    <groupId>us.fatehi</groupId>
+		    <artifactId>schemacrawler-commandline</artifactId>
+		    <version>${schemacrawler-commandline.version}</version>
+		    <optional>true</optional>
+		</dependency>
 		<!-- SchemaCrawler For IBM DB2 ：https://mvnrepository.com/artifact/us.fatehi/schemacrawler-db2 -->
 		<dependency>
 		    <groupId>us.fatehi</groupId>
 		    <artifactId>schemacrawler-db2</artifactId>
 		    <version>${schemacrawler-db2.version}</version>
+		    <optional>true</optional>
+		</dependency>
+		<!-- SchemaCrawler Distribution ：https://mvnrepository.com/artifact/us.fatehi/schemacrawler-distrib -->
+		<dependency>
+		    <groupId>us.fatehi</groupId>
+		    <artifactId>schemacrawler-distrib</artifactId>
+		    <version>${schemacrawler-distrib.version}</version>
 		    <optional>true</optional>
 		</dependency>
 		<!-- SchemaCrawler For Generic Database : https://mvnrepository.com/artifact/us.fatehi/schemacrawler-generic -->
@@ -503,6 +521,13 @@
 		    <groupId>us.fatehi</groupId>
 		    <artifactId>schemacrawler-hsqldb</artifactId>
 		    <version>${schemacrawler-hsqldb.version}</version>
+		    <optional>true</optional>
+		</dependency>
+		<!-- SchemaCrawler Integrations ： https://mvnrepository.com/artifact/us.fatehi/schemacrawler-integrations -->
+		<dependency>
+		    <groupId>us.fatehi</groupId>
+		    <artifactId>schemacrawler-integrations</artifactId>
+		    <version>${schemacrawler-integrations.version}</version>
 		    <optional>true</optional>
 		</dependency>
 		<!-- SchemaCrawler For Offline Snapshots ：https://mvnrepository.com/artifact/us.fatehi/schemacrawler-offline -->
@@ -560,7 +585,14 @@
 		<dependency>
 		    <groupId>us.fatehi</groupId>
 		    <artifactId>schemacrawler-postgresql</artifactId>
-		    <version>${schemacrawler.version}</version>
+		    <version>${schemacrawler-postgresql.version}</version>
+		    <optional>true</optional>
+		</dependency>
+		<!-- SchemaCrawler For SAP IQ ：https://mvnrepository.com/artifact/us.fatehi/schemacrawler-sapiq -->
+		<dependency>
+		    <groupId>us.fatehi</groupId>
+		    <artifactId>schemacrawler-sapiq</artifactId>
+		    <version>${schemacrawler-sapiq.version}</version>
 		    <optional>true</optional>
 		</dependency>
 		<!-- SchemaCrawler For Sybase IQ ：https://mvnrepository.com/artifact/us.fatehi/schemacrawler-sybaseiq -->
@@ -596,6 +628,13 @@
 		    <artifactId>schemacrawler-testdb</artifactId>
 		    <version>${schemacrawler.version}</version>
 		    <scope>test</scope>
+		</dependency>
+		<!-- SchemaCrawler For Oracle TimesTen ：https://mvnrepository.com/artifact/us.fatehi/schemacrawler-timesten -->
+		<dependency>
+		    <groupId>us.fatehi</groupId>
+		    <artifactId>schemacrawler-timesten</artifactId>
+		    <version>${schemacrawler-timesten.version}</version>
+		    <optional>true</optional>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 		<dependency>

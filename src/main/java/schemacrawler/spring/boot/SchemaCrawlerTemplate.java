@@ -29,14 +29,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import schemacrawler.crawl.SchemaCrawler;
 import schemacrawler.schema.Catalog;
 import schemacrawler.schema.RoutineType;
-import schemacrawler.schemacrawler.DatabaseSpecificOverrideOptions;
-import schemacrawler.schemacrawler.DatabaseSpecificOverrideOptionsBuilder;
 import schemacrawler.schemacrawler.IncludeAll;
 import schemacrawler.schemacrawler.InclusionRule;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.schemacrawler.SchemaCrawlerSQLException;
 import schemacrawler.schemacrawler.SchemaInfoLevel;
+import schemacrawler.schemacrawler.SchemaRetrievalOptions;
+import schemacrawler.schemacrawler.SchemaRetrievalOptionsBuilder;
 import schemacrawler.spring.boot.ext.ConnectionProvider;
 import schemacrawler.spring.boot.ext.DatabaseSchemaCrawlerOptions;
 import schemacrawler.spring.boot.ext.DatabaseType;
@@ -64,7 +64,7 @@ public class SchemaCrawlerTemplate {
 				return crawlerOptions.getOptions();
 			}
 		}
-		return SchemaCrawlerOptionBuilder.standard();
+		return SchemaCrawlerOptionBuilder.standard().toOptions();
 	}
 
 	/**
@@ -160,15 +160,24 @@ public class SchemaCrawlerTemplate {
 	 * Starts the schema crawler and lets it crawl the given JDBC connection.
 	 *
 	 * @param connection The JDBC connection
-	 * @param databaseSpecificOverrideOptions The {@link DatabaseSpecificOverrideOptions} OverrideOptions.
-	 * @param dbType The {@link DatabaseType} Database type.
+	 * @param schemaRetrievalOptions Database-specific schema retrieval overrides
+     * @param schemaCrawlerOptions SchemaCrawler options
 	 * @return The populated {@link Catalog} object containing the metadata for the extractor
 	 * @throws SchemaCrawlerException Gets thrown when the database could not be crawled successfully
+	 * @throws SchemaCrawlerSQLException Gets thrown when the database could not be crawled successfully
 	 */
-	public Catalog crawl(final Connection connection, final DatabaseSpecificOverrideOptions databaseSpecificOverrideOptions, DatabaseType dbType) throws SchemaCrawlerException {
+	public Catalog crawl(final Connection connection,
+            final SchemaRetrievalOptions schemaRetrievalOptions,
+            final SchemaCrawlerOptions schemaCrawlerOptions) throws SchemaCrawlerException, SchemaCrawlerSQLException {
 		try {
-			final SchemaCrawler schemaCrawler = new SchemaCrawler(connection, databaseSpecificOverrideOptions);
-			final Catalog catalog = schemaCrawler.crawl(getCrawlerOptions(dbType));
+			
+			DatabaseUtility.checkConnection(connection);
+		    if (LOGGER.isDebugEnabled()) {
+		    	LOGGER.debug(ObjectToString.toString(schemaCrawlerOptions));
+		    }
+		    
+			final SchemaCrawler schemaCrawler = new SchemaCrawler(connection, schemaRetrievalOptions, schemaCrawlerOptions);
+			final Catalog catalog = schemaCrawler.crawl();
 			return catalog;
 	    } catch (SchemaCrawlerException e) {
 	        LOGGER.error("Schema crawling failed with exception", e);
@@ -187,37 +196,7 @@ public class SchemaCrawlerTemplate {
 	 * @throws SchemaCrawlerSQLException Gets thrown when the database could not be crawled successfully
 	 */
 	public Catalog crawl(final Connection connection, final SchemaCrawlerOptions schemaCrawlerOptions) throws SchemaCrawlerException, SchemaCrawlerSQLException {
-		return crawl(connection, new DatabaseSpecificOverrideOptionsBuilder().toOptions(), schemaCrawlerOptions);
-	}
-	
-	/**
-	 *
-	 * Starts the schema crawler and lets it crawl the given JDBC connection.
-	 *
-	 * @param connection The JDBC connection
-	 * @param databaseSpecificOverrideOptions The {@link DatabaseSpecificOverrideOptions} OverrideOptions.
-	 * @param schemaCrawlerOptions The {@link SchemaCrawlerOptions} Options.
-	 * @return The populated {@link Catalog} object containing the metadata for the extractor
-	 * @throws SchemaCrawlerException Gets thrown when the database could not be crawled successfully
-	 * @throws SchemaCrawlerSQLException Gets thrown when the database could not be crawled successfully
-	 */
-	public Catalog crawl(final Connection connection, final DatabaseSpecificOverrideOptions databaseSpecificOverrideOptions,
-			final SchemaCrawlerOptions schemaCrawlerOptions) throws SchemaCrawlerException, SchemaCrawlerSQLException {
-		try {
-			
-			DatabaseUtility.checkConnection(connection);
-		    if (LOGGER.isDebugEnabled()) {
-		    	LOGGER.debug(ObjectToString.toString(schemaCrawlerOptions));
-		    }
-
-		    final SchemaCrawler schemaCrawler = new SchemaCrawler(connection, databaseSpecificOverrideOptions);
-		    final Catalog catalog = schemaCrawler.crawl(schemaCrawlerOptions);
-
-		    return catalog;
-	    } catch (SchemaCrawlerException e) {
-	        LOGGER.error("Schema crawling failed with exception", e);
-	        throw e;
-	    }
+		return crawl(connection, SchemaRetrievalOptionsBuilder.newSchemaRetrievalOptions(), schemaCrawlerOptions);
 	}
 	
 	/**
@@ -231,7 +210,7 @@ public class SchemaCrawlerTemplate {
 	 */
 	public Catalog crawl(final Connection connection, final SchemaInfoLevel schemaInfoLevel) throws SchemaCrawlerException {
 	    try {
-	    	final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.custom(schemaInfoLevel);
+	    	final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.custom(schemaInfoLevel).toOptions();
 	        return SchemaCrawlerUtility.getCatalog(connection, options);
 	    } catch (SchemaCrawlerException e) {
 	        LOGGER.error("Schema crawling failed with exception", e);
@@ -252,10 +231,11 @@ public class SchemaCrawlerTemplate {
 	 */
 	public Catalog crawl(final Connection connection, final InclusionRule schemaRule, final InclusionRule tableRule) throws SchemaCrawlerException {
 	    
-		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.standard();
-	    options.setRoutineTypes(Arrays.asList(RoutineType.procedure, RoutineType.unknown)); // RoutineType.function not supported by h2
-	    options.setSchemaInclusionRule(schemaRule == null ? new IncludeAll() : schemaRule);
-	    options.setTableInclusionRule(tableRule == null ? new IncludeAll() : tableRule);
+		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.standard()
+				.routineTypes(Arrays.asList(RoutineType.procedure, RoutineType.unknown)) // RoutineType.function not supported by h2
+				.includeSchemas(schemaRule == null ? new IncludeAll() : schemaRule)
+				.includeTables(tableRule == null ? new IncludeAll() : tableRule)
+				.toOptions();
 
 	    try {
 	        return SchemaCrawlerUtility.getCatalog(connection, options);
@@ -278,7 +258,7 @@ public class SchemaCrawlerTemplate {
 	 */
 	public Catalog crawl(final ConnectionProvider connectionProvider, final SchemaInfoLevel schemaInfoLevel) throws SchemaCrawlerException, SQLException {
 	    try {
-	    	final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.custom(schemaInfoLevel);
+	    	final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.custom(schemaInfoLevel).toOptions();
 	        return SchemaCrawlerUtility.getCatalog(connectionProvider.getConnection(), options);
 	    } catch (SchemaCrawlerException e) {
 	        LOGGER.error("Schema crawling failed with exception", e);
@@ -300,10 +280,11 @@ public class SchemaCrawlerTemplate {
 	 */
 	public Catalog crawl(final ConnectionProvider connectionProvider, final InclusionRule schemaRule, final InclusionRule tableRule) throws SchemaCrawlerException, SQLException {
 		
-		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.standard();
-	    options.setRoutineTypes(Arrays.asList(RoutineType.procedure, RoutineType.unknown)); // RoutineType.function not supported by h2
-	    options.setSchemaInclusionRule(schemaRule == null ? new IncludeAll() : schemaRule);
-	    options.setTableInclusionRule(tableRule == null ? new IncludeAll() : tableRule);
+		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.standard()
+				.routineTypes(Arrays.asList(RoutineType.procedure, RoutineType.unknown)) // RoutineType.function not supported by h2
+				.includeSchemas(schemaRule == null ? new IncludeAll() : schemaRule)
+				.includeTables(tableRule == null ? new IncludeAll() : tableRule)
+				.toOptions();
 
 	    try {
 	        return SchemaCrawlerUtility.getCatalog(connectionProvider.getConnection(), options);

@@ -2,12 +2,10 @@ package schemacrawler.spring.boot;
 
 import java.sql.Connection;
 import java.util.Arrays;
-import java.util.Properties;
 
 import javax.sql.DataSource;
 
 import oracle.jdbc.OracleConnection;
-import schemacrawler.crawl.MetadataRetrievalStrategy;
 import schemacrawler.schema.Catalog;
 import schemacrawler.schema.Column;
 import schemacrawler.schema.Schema;
@@ -18,10 +16,9 @@ import schemacrawler.schemacrawler.ExcludeAll;
 import schemacrawler.schemacrawler.IncludeAll;
 import schemacrawler.schemacrawler.RegularExpressionInclusionRule;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
+import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaInfoLevel;
 import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
-import schemacrawler.spring.boot.ext.DatabaseType;
-import schemacrawler.tools.databaseconnector.DatabaseConnectorRegistry;
 import schemacrawler.utility.SchemaCrawlerUtility;
 
 public final class ConnectionOptionsExample {
@@ -29,24 +26,25 @@ public final class ConnectionOptionsExample {
 	public static void main(final String[] args) throws Exception {
 
 		// Create a database connection
-		final DataSource dataSource = new DatabaseConnectionOptions("jdbc:oracle:thin:@10.71.19.133:1521:orcl");
-		final Connection connection = dataSource.getConnection("ZFSOFT_DXC", "ZFSOFT_DXC");
+		final DataSource dataSource = new DatabaseConnectionOptions("jdbc:oracle:thin:@127.0.0.1:1521:orcl");
+		final Connection connection = dataSource.getConnection("username", "password");
 
-		// Create the options
-		final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
 		// Set what details are required in the schema - this affects the
 		// time taken to crawl the schema
 
-		SchemaInfoLevel level = SchemaInfoLevelBuilder.detailed();
-		level.setRetrieveAdditionalColumnAttributes(true);
-		level.setRetrieveAdditionalTableAttributes(true);
-		
+		SchemaInfoLevel schemaInfoLevel = SchemaInfoLevelBuilder.detailed()
+			.setRetrieveAdditionalColumnAttributes(true)
+			.setRetrieveAdditionalTableAttributes(true).toOptions();
+
+		// Create the options
+		final SchemaCrawlerOptions options = SchemaCrawlerOptionsBuilder.builder()
 		// level.setRetrieveTableColumns(false);
-		options.setTableTypes(Arrays.asList("TABLE","VIEW"));
-		options.setSchemaInfoLevel(level);
-		options.setColumnInclusionRule(new IncludeAll());
-		options.setRoutineInclusionRule(new ExcludeAll());
-		options.setSchemaInclusionRule(new RegularExpressionInclusionRule("ZFSOFT_DXC"));
+		.includeSchemas(new RegularExpressionInclusionRule("schemaName"))
+		.tableTypes(Arrays.asList("TABLE","VIEW"))
+		.includeRoutines(new ExcludeAll())
+		.includeColumns(new IncludeAll())
+		.withSchemaInfoLevel(schemaInfoLevel)
+		.toOptions();
 
 		// https://blog.csdn.net/hao7030187/article/details/56480735
 		//设置可以读取REMARKS

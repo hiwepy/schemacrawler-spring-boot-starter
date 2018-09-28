@@ -31,7 +31,7 @@ public class DatabaseSchemaCrawlerOptions {
 	 */
 	private String password;
 	/** 数据库Schema获取操作配置 */
-	private SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.tablecolumns(new IncludeAll());
+	private SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.tablecolumns(new IncludeAll()).toOptions();
 	/** 数据库Schema获取操作配置，扩展InclusionRule不方便设置问题 */
 	private SchemaCrawlerInclusionRules rules = new SchemaCrawlerInclusionRules();
 

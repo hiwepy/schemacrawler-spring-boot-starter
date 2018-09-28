@@ -28,19 +28,19 @@ http://www.gnu.org/licenses/
 
 package schemacrawler.spring.boot.utility;
 
-import schemacrawler.tools.executable.Executable;
+import schemacrawler.tools.executable.SchemaCrawlerExecutable;
 import schemacrawler.tools.options.OutputOptions;
+import schemacrawler.tools.options.OutputOptionsBuilder;
 
 public abstract class BaseExecutableTest {
 
-	protected void executeExecutable(final Executable executable, final String outputFormatValue,
+	protected void executeExecutable(final SchemaCrawlerExecutable executable, final String outputFormatValue,
 			final String referenceFileName) throws Exception {
 		try (final TestWriter out = new TestWriter(outputFormatValue);) {
-			final OutputOptions outputOptions = new OutputOptions(outputFormatValue, out);
-
+			final OutputOptions outputOptions = OutputOptionsBuilder.newOutputOptions(outputFormatValue, out);
+			// executable.setConnection(connection);
 			executable.setOutputOptions(outputOptions);
-			// executable.execute(getConnection());
-
+			executable.execute();
 			out.assertEquals(referenceFileName);
 		}
 	}

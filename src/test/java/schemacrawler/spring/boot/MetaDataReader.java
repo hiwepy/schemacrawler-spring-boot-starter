@@ -13,6 +13,7 @@ import schemacrawler.schema.Table;
 import schemacrawler.schemacrawler.InclusionRule;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
+import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
 import schemacrawler.utility.SchemaCrawlerUtility;
 
@@ -20,14 +21,14 @@ public class MetaDataReader {
 	
 	static void extractTables(Connection conn, final String schemaName) throws SchemaCrawlerException, SQLException {
 
-        final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
-        options.setSchemaInfoLevel(SchemaInfoLevelBuilder.standard());
         System.out.println("my catalog =" + conn.getCatalog());
-        options.setSchemaInclusionRule(new InclusionRule() {
+        
+        final SchemaCrawlerOptions options = SchemaCrawlerOptionsBuilder.builder().includeSchemas(new InclusionRule() {
             @Override public boolean test(String anObject) {
                 return schemaName.equals(anObject);
             }
-        });
+        }).withSchemaInfoLevel(SchemaInfoLevelBuilder.standard()).toOptions();
+        
 
         final Catalog catalog = SchemaCrawlerUtility.getCatalog(conn, options);
         System.out.println("schem ! ");

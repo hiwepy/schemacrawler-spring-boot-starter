@@ -57,8 +57,7 @@ public class TableCountsTest extends BaseDatabaseTest {
 
 				final TestWriter out = new TestWriter("text");) {
 
-			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions();
-			schemaCrawlerOptions.setSchemaInfoLevel(SchemaInfoLevelBuilder.maximum());
+			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions().withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
 
 			final Catalog baseCatalog = getCatalog(schemaCrawlerOptions);
 			final CatalogWithCounts catalog = new CatalogWithCounts(baseCatalog, getConnection(), schemaCrawlerOptions);

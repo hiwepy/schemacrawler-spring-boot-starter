@@ -42,6 +42,7 @@ import schemacrawler.schema.Schema;
 import schemacrawler.schema.Table;
 import schemacrawler.schemacrawler.RegularExpressionExclusionRule;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
+import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
 import schemacrawler.spring.boot.utility.TestName;
 import schemacrawler.spring.boot.utility.TestWriter;
 import schemacrawler.utility.NamedObjectSort;
@@ -57,9 +58,10 @@ public class ExcludeTest extends BaseDatabaseTest {
 	@Test
 	public void excludeColumns() throws Exception {
 		try (final TestWriter out = new TestWriter("text");) {
-			final SchemaCrawlerOptions schemaCrawlerOptions = new SchemaCrawlerOptions();
-			schemaCrawlerOptions.setSchemaInclusionRule(new RegularExpressionExclusionRule(".*\\.FOR_LINT"));
-			schemaCrawlerOptions.setColumnInclusionRule(new RegularExpressionExclusionRule(".*\\..*\\.ID"));
+			final SchemaCrawlerOptions schemaCrawlerOptions = SchemaCrawlerOptionsBuilder.builder()
+					.includeSchemas(new RegularExpressionExclusionRule(".*\\.FOR_LINT"))
+					.includeColumns(new RegularExpressionExclusionRule(".*\\..*\\.ID"))
+					.toOptions();
 
 			final Catalog catalog = getCatalog(schemaCrawlerOptions);
 			final Schema[] schemas = catalog.getSchemas().toArray(new Schema[0]);
@@ -76,7 +78,7 @@ public class ExcludeTest extends BaseDatabaseTest {
 						LOGGER.log(Level.FINE, column.toString());
 						out.println("    column: " + column.getFullName());
 						out.println("      database type: " + column.getColumnDataType().getDatabaseSpecificTypeName());
-						out.println("      type: " + column.getColumnDataType().getJavaSqlType().getJavaSqlTypeName());
+						out.println("      type: " + column.getColumnDataType().getJavaSqlType().getName());
 					}
 				}
 			}

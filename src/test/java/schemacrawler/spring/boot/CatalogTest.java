@@ -10,6 +10,7 @@ import schemacrawler.schema.Table;
 import schemacrawler.schemacrawler.IncludeAll;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
+import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
 import schemacrawler.utility.SchemaCrawlerUtility;
 
@@ -17,10 +18,11 @@ public class CatalogTest {
 	
 	public Catalog getCatalog(final Connection connection) throws SQLException, SchemaCrawlerException {
 	
-		final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
-		options.setSchemaInfoLevel(SchemaInfoLevelBuilder.standard());
-		options.setTableInclusionRule(new IncludeAll());
-		options.setTableNamePattern("*");
+		final SchemaCrawlerOptions options = SchemaCrawlerOptionsBuilder.builder()
+				.includeTables(new IncludeAll())
+				.tableNamePattern("*")
+				.withSchemaInfoLevel(SchemaInfoLevelBuilder.standard())
+				.toOptions();
 
 		final Catalog catalog = SchemaCrawlerUtility.getCatalog(connection, options);
 

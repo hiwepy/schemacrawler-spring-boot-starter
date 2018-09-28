@@ -57,11 +57,11 @@ public class SchemaCrawlerSystemTest extends AbstractSchemaCrawlerSystemTest {
 		for (int i = 0; i < dataSources.length; i++) {
 			final String dataSource = dataSources[i];
 
-			final SchemaCrawlerOptions schemaCrawlerOptions = createOptions(dataSource, ".*");
-			final SchemaInfoLevel infoLevel = SchemaInfoLevelBuilder.minimum();
-			infoLevel.setRetrieveTables(false);
-			infoLevel.setRetrieveRoutines(false);
-			schemaCrawlerOptions.setSchemaInfoLevel(infoLevel);
+			
+			final SchemaInfoLevel infoLevel = SchemaInfoLevelBuilder.minimum()
+					.setRetrieveTables(false)
+					.setRetrieveRoutines(false).toOptions();
+			final SchemaCrawlerOptions schemaCrawlerOptions = createOptions(dataSource, ".*").withSchemaInfoLevel(infoLevel).toOptions();
 
 			final Catalog catalog = retrieveDatabase(dataSource, schemaCrawlerOptions);
 			final Schema[] schemas = (Schema[]) catalog.getSchemas().toArray();
@@ -153,7 +153,7 @@ public class SchemaCrawlerSystemTest extends AbstractSchemaCrawlerSystemTest {
 	}
 
 	private Catalog retrieveDatabase(final String dataSourceName, final String schemaInclusion) throws Exception {
-		final SchemaCrawlerOptions schemaCrawlerOptions = createOptions(dataSourceName, schemaInclusion);
+		final SchemaCrawlerOptions schemaCrawlerOptions = createOptions(dataSourceName, schemaInclusion).toOptions();
 		final Catalog catalog = retrieveDatabase(dataSourceName, schemaCrawlerOptions);
 		return catalog;
 	}

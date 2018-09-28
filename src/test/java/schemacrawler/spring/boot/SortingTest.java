@@ -90,8 +90,7 @@ public class SortingTest extends BaseDatabaseTest {
 	@SuppressWarnings("boxing")
 	private void checkColumnSort(final String tableName, final String[] expectedValues,
 			final boolean sortAlphabetically) throws Exception {
-		final SchemaCrawlerOptions schemaCrawlerOptions = new SchemaCrawlerOptions();
-		schemaCrawlerOptions.setSchemaInfoLevel(SchemaInfoLevelBuilder.maximum());
+		final SchemaCrawlerOptions schemaCrawlerOptions = getOptions().withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
 		final Catalog catalog = getCatalog(schemaCrawlerOptions);
 		final Schema schema = new SchemaReference("PUBLIC", "BOOKS");
 		assertNotNull("Schema not found", schema);
@@ -113,8 +112,7 @@ public class SortingTest extends BaseDatabaseTest {
 	@SuppressWarnings("boxing")
 	private void checkFkSort(final String tableName, final String[] expectedValues, final boolean sortAlphabetically)
 			throws Exception {
-		final SchemaCrawlerOptions schemaCrawlerOptions = new SchemaCrawlerOptions();
-		schemaCrawlerOptions.setSchemaInfoLevel(SchemaInfoLevelBuilder.maximum());
+		final SchemaCrawlerOptions schemaCrawlerOptions = getOptions().withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
 		final Catalog catalog = getCatalog(schemaCrawlerOptions);
 		final Schema schema = new SchemaReference("PUBLIC", "BOOKS");
 		assertNotNull("Schema not found", schema);
@@ -138,8 +136,7 @@ public class SortingTest extends BaseDatabaseTest {
 
 	private void checkIndexSort(final String tableName, final String[] expectedValues, final boolean sortAlphabetically)
 			throws Exception {
-		final SchemaCrawlerOptions schemaCrawlerOptions = new SchemaCrawlerOptions();
-		schemaCrawlerOptions.setSchemaInfoLevel(SchemaInfoLevelBuilder.maximum());
+		final SchemaCrawlerOptions schemaCrawlerOptions = getOptions().withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
 		final Catalog catalog = getCatalog(schemaCrawlerOptions);
 		final Schema schema = new SchemaReference("PUBLIC", "BOOKS");
 		final Table[] tables = catalog.getTables(schema).toArray(new Table[0]);

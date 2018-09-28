@@ -2,7 +2,6 @@ package schemacrawler.spring.boot;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Arrays;
 
 import javax.sql.DataSource;
 
@@ -12,34 +11,30 @@ import schemacrawler.schemacrawler.ExcludeAll;
 import schemacrawler.schemacrawler.IncludeAll;
 import schemacrawler.schemacrawler.RegularExpressionExclusionRule;
 import schemacrawler.schemacrawler.RegularExpressionInclusionRule;
-import schemacrawler.schemacrawler.RegularExpressionRule;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
+import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaInfoLevel;
-import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
+import schemacrawler.tools.options.InfoLevel;
 import schemacrawler.utility.SchemaCrawlerUtility;
 
 public abstract class BaseDatabaseTest {
 
 
-	public SchemaCrawlerOptions getOptions() throws SchemaCrawlerException, SQLException {
-		// Create the options
-		final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
+	public static SchemaCrawlerOptionsBuilder getOptions() throws SchemaCrawlerException, SQLException {
+		
 		// Set what details are required in the schema - this affects the
 		// time taken to crawl the schema
 
-		SchemaInfoLevel level = SchemaInfoLevelBuilder.detailed();
+		SchemaInfoLevel schemaInfoLevel = InfoLevel.detailed.buildSchemaInfoLevel();
 
-		// level.setRetrieveTableColumns(false);
-
-		options.setSchemaInfoLevel(level);
-		options.setColumnInclusionRule(new IncludeAll());
-		options.setRoutineInclusionRule(new ExcludeAll());
-		options.setSchemaInclusionRule(new RegularExpressionInclusionRule("tablename"));
-		options.setTableInclusionRule(new RegularExpressionExclusionRule(".*\\..{0,1}schema_version.*") );
-		
-		
-		return options;
+		// Create the options
+		return SchemaCrawlerOptionsBuilder.builder()
+				.includeColumns(new IncludeAll())
+				.includeRoutines(new ExcludeAll())
+				.includeSchemas(new RegularExpressionInclusionRule("tablename"))
+				.includeTables(new RegularExpressionExclusionRule(".*\\..{0,1}schema_version.*"))
+				.withSchemaInfoLevel(schemaInfoLevel);
 	}
 	
 	public Catalog getCatalog(SchemaCrawlerOptions options) throws SchemaCrawlerException, SQLException {

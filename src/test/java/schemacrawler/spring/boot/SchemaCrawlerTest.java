@@ -95,8 +95,7 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 				+ " constraint fk_users_id1 foreign key(id1) references users(id),"
 				+ " constraint fk_users_id2 foreign key(id2) references users(id)" + ")");
 
-		final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
-		options.setSchemaInfoLevel(SchemaInfoLevelBuilder.standard());
+		final SchemaCrawlerOptions options = getOptions().withSchemaInfoLevel(SchemaInfoLevelBuilder.standard()).toOptions();
 
 		final Catalog catalog = SchemaCrawlerUtility.getCatalog(connection, options);
 
@@ -117,8 +116,7 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	public void columns() throws Exception {
 		try (final TestWriter out = new TestWriter("text");) {
 
-			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions();
-			schemaCrawlerOptions.setSchemaInfoLevel(SchemaInfoLevelBuilder.maximum());
+			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions().withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
 
 			final Catalog catalog = getCatalog(schemaCrawlerOptions);
 			final Schema[] schemas = catalog.getSchemas().toArray(new Schema[0]);
@@ -151,8 +149,8 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	public void counts() throws Exception {
 		try (final TestWriter out = new TestWriter("text");) {
 
-			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions();
-			schemaCrawlerOptions.setSchemaInfoLevel(SchemaInfoLevelBuilder.maximum());
+			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions().withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
+
 
 			final Catalog catalog = getCatalog(schemaCrawlerOptions);
 			final Schema[] schemas = catalog.getSchemas().toArray(new Schema[0]);
@@ -182,8 +180,7 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 		try (
 				
 			final TestWriter out = new TestWriter("text");) {
-			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions();
-			schemaCrawlerOptions.setSchemaInfoLevel(SchemaInfoLevelBuilder.standard());
+			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions().withSchemaInfoLevel(SchemaInfoLevelBuilder.standard()).toOptions();
 
 			final Catalog catalog = getCatalog(schemaCrawlerOptions);
 			final Table[] tables = catalog.getTables().toArray(new Table[0]);
@@ -203,8 +200,8 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	@Test
 	public void relatedTablesWithTableRestriction() throws Exception {
 		try (final TestWriter out = new TestWriter("text");) {
-			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions();
-			schemaCrawlerOptions.setSchemaInfoLevel(SchemaInfoLevelBuilder.standard());
+			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions().withSchemaInfoLevel(SchemaInfoLevelBuilder.standard()).toOptions();
+
 
 			final Catalog catalog = getCatalog(schemaCrawlerOptions);
 			final Table[] tables = catalog.getTables().toArray(new Table[0]);
@@ -224,10 +221,11 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	@Test
 	public void routineDefinitions() throws Exception {
 
-		final SchemaCrawlerOptions schemaCrawlerOptions = getOptions();
-		schemaCrawlerOptions.setSchemaInfoLevel(SchemaInfoLevelBuilder.maximum());
-		schemaCrawlerOptions.setRoutineInclusionRule(new IncludeAll());
-		schemaCrawlerOptions.setRoutineColumnInclusionRule(new IncludeAll());
+		final SchemaCrawlerOptions schemaCrawlerOptions = getOptions()
+				.withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum())
+				.includeRoutines(new IncludeAll())
+				.includeRoutineColumns(new IncludeAll())
+				.toOptions();
 
 		final Catalog catalog = getCatalog(schemaCrawlerOptions);
 		final Schema schema = new SchemaReference("PUBLIC", "BOOKS");
@@ -241,10 +239,11 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	@Test
 	public void schemaEquals() throws Exception {
 
-		final SchemaCrawlerOptions schemaCrawlerOptions = getOptions();
-		schemaCrawlerOptions.setSchemaInfoLevel(SchemaInfoLevelBuilder.detailed());
-		schemaCrawlerOptions.setRoutineInclusionRule(new IncludeAll());
-		schemaCrawlerOptions.setRoutineColumnInclusionRule(new IncludeAll());
+		final SchemaCrawlerOptions schemaCrawlerOptions = getOptions()
+				.withSchemaInfoLevel(SchemaInfoLevelBuilder.detailed())
+				.includeRoutines(new IncludeAll())
+				.includeRoutineColumns(new IncludeAll())
+				.toOptions();
 
 		final Catalog catalog = getCatalog(schemaCrawlerOptions);
 		final Schema schema1 = new SchemaReference("PUBLIC", "BOOKS");
@@ -269,12 +268,12 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 		try (final TestWriter out = new TestWriter("text");) {
 
 
-			final SchemaInfoLevel minimum = SchemaInfoLevelBuilder.minimum();
-			minimum.setRetrieveSequenceInformation(true);
+			final SchemaInfoLevel minimum = SchemaInfoLevelBuilder.minimum().setRetrieveSequenceInformation(true).toOptions();
 
-			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions();
-			schemaCrawlerOptions.setSchemaInfoLevel(minimum);
-			schemaCrawlerOptions.setSequenceInclusionRule(new IncludeAll());
+			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions()
+					.withSchemaInfoLevel(minimum)
+					.includeSequences(new IncludeAll())
+					.toOptions();
 
 			final Catalog catalog = getCatalog(schemaCrawlerOptions);
 			final Schema schema = catalog.lookupSchema("PUBLIC.BOOKS").get();
@@ -299,12 +298,11 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 		try (final TestWriter out = new TestWriter("text");) {
 
 
-			final SchemaInfoLevel minimum = SchemaInfoLevelBuilder.minimum();
-			minimum.setRetrieveSynonymInformation(true);
+			final SchemaInfoLevel minimum = SchemaInfoLevelBuilder.minimum().setRetrieveSynonymInformation(true).toOptions();
 
-			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions();
-			schemaCrawlerOptions.setSchemaInfoLevel(minimum);
-			schemaCrawlerOptions.setSynonymInclusionRule(new IncludeAll());
+			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions().withSchemaInfoLevel(minimum)
+					.includeSynonyms(new IncludeAll())
+					.toOptions();
 
 			final Catalog catalog = getCatalog(schemaCrawlerOptions);
 			final Schema schema = catalog.lookupSchema("PUBLIC.BOOKS").get();
@@ -325,8 +323,7 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	public void tableConstraints() throws Exception {
 		try (final TestWriter out = new TestWriter("text");) {
 
-			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions();
-			schemaCrawlerOptions.setSchemaInfoLevel(SchemaInfoLevelBuilder.maximum());
+			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions().withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
 
 			final Catalog catalog = getCatalog(schemaCrawlerOptions);
 			final Schema[] schemas = catalog.getSchemas().toArray(new Schema[0]);
@@ -359,10 +356,10 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	public void tables() throws Exception {
 		try (final TestWriter out = new TestWriter("text");) {
 
-
-			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions();
-			schemaCrawlerOptions.setSchemaInfoLevel(SchemaInfoLevelBuilder.maximum());
-			schemaCrawlerOptions.setSchemaInclusionRule(new RegularExpressionExclusionRule(".*\\.FOR_LINT"));
+			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions()
+					.withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum())
+					.includeSchemas(new RegularExpressionExclusionRule(".*\\.FOR_LINT"))
+					.toOptions();
 
 			final Catalog catalog = getCatalog(schemaCrawlerOptions);
 			final Schema[] schemas = catalog.getSchemas().toArray(new Schema[0]);
@@ -390,7 +387,7 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 				"PUBLISHERS", "BOOKAUTHORS", "ΒΙΒΛΊΑ", "AUTHORSLIST" };
 		final Random rnd = new Random();
 
-		final SchemaCrawlerOptions schemaCrawlerOptions = getOptions();
+		final SchemaCrawlerOptions schemaCrawlerOptions = getOptions().toOptions();
 
 		final Catalog catalog = getCatalog(schemaCrawlerOptions);
 		final Schema[] schemas = catalog.getSchemas().toArray(new Schema[0]);
@@ -430,8 +427,7 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	@Test
 	public void triggers() throws Exception {
 
-		final SchemaCrawlerOptions schemaCrawlerOptions = getOptions();
-		schemaCrawlerOptions.setSchemaInfoLevel(SchemaInfoLevelBuilder.maximum());
+		final SchemaCrawlerOptions schemaCrawlerOptions = getOptions().withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
 
 		final Catalog catalog = getCatalog(schemaCrawlerOptions);
 		final Schema schema = new SchemaReference("PUBLIC", "BOOKS");
@@ -452,9 +448,9 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	@Test
 	public void viewDefinitions() throws Exception {
 
-		final SchemaCrawlerOptionsBuilder schemaCrawlerOptionsBuilder = new SchemaCrawlerOptionsBuilder();
-		schemaCrawlerOptionsBuilder.tableTypes("VIEW");
-		schemaCrawlerOptionsBuilder.withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum());
+		final SchemaCrawlerOptionsBuilder schemaCrawlerOptionsBuilder = SchemaCrawlerOptionsBuilder.builder()
+				.tableTypes("VIEW")
+				.withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum());
 
 		final Catalog catalog = getCatalog(schemaCrawlerOptionsBuilder.toOptions());
 		final Schema schema = new SchemaReference("PUBLIC", "BOOKS");
@@ -484,7 +480,7 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 		final String literalSuffixText = (isBlank(literalSuffix) ? "no literal suffix"
 				: "literal suffix " + literalSuffix);
 
-		final String javaSqlType = "java.sql.Types: " + columnDataType.getJavaSqlType().getJavaSqlTypeName();
+		final String javaSqlType = "java.sql.Types: " + columnDataType.getJavaSqlType().getName();
 
 		final String precision = "precision " + columnDataType.getPrecision();
 		final String minimumScale = "minimum scale " + columnDataType.getMinimumScale();

@@ -17,7 +17,7 @@ import org.springframework.util.ObjectUtils;
 
 import schemacrawler.crawl.SchemaCrawler;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
-import schemacrawler.schemacrawler.SchemaCrawlerOptions;
+import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
 import schemacrawler.spring.boot.ext.ConnectionProvider;
 import schemacrawler.spring.boot.ext.DatabaseSchemaCrawlerOptions;
 import schemacrawler.spring.boot.ext.SchemaCrawlerConnectionProvider;
@@ -42,56 +42,39 @@ public class SchemaCrawlerAutoConfiguration implements ApplicationContextAware {
 		Iterator<DatabaseSchemaCrawlerOptions> ite = properties.getCrawlerOptions().iterator();
 		while (ite.hasNext()) {
 			DatabaseSchemaCrawlerOptions crawlerOptions = ite.next();
-			SchemaCrawlerOptions options = crawlerOptions.getOptions();
 			// 获取自定义的规则
 			SchemaCrawlerInclusionRules rules = crawlerOptions.getRules();
 			if (!ObjectUtils.isEmpty(rules)) {
 
-				/*
-				 * InclusionRule schemaInclusionRule; InclusionRule synonymInclusionRule;
-				 * InclusionRule sequenceInclusionRule;
-				 */
-				if (!ObjectUtils.isEmpty(rules.getSchemaInclusionRule())) {
-					options.setSchemaInclusionRule(rules.getSchemaInclusionRule().inclusionRule());
-				}
-				if (!ObjectUtils.isEmpty(rules.getSequenceInclusionRule())) {
-					options.setSequenceInclusionRule(rules.getSequenceInclusionRule().inclusionRule());
-				}
-				if (!ObjectUtils.isEmpty(rules.getSynonymInclusionRule())) {
-					options.setSynonymInclusionRule(rules.getSynonymInclusionRule().inclusionRule());
-				}
-				/*
-				 * InclusionRule tableInclusionRule; InclusionRule columnInclusionRule;
-				 */
-				if (!ObjectUtils.isEmpty(rules.getTableInclusionRule())) {
-					options.setTableInclusionRule(rules.getTableInclusionRule().inclusionRule());
-				}
-				if (!ObjectUtils.isEmpty(rules.getColumnInclusionRule())) {
-					options.setColumnInclusionRule(rules.getColumnInclusionRule().inclusionRule());
-				}
-				/*
-				 * InclusionRule routineInclusionRule; InclusionRule routineColumnInclusionRule;
-				 */
-				if (!ObjectUtils.isEmpty(rules.getRoutineColumnInclusionRule())) {
-					options.setRoutineColumnInclusionRule(rules.getRoutineColumnInclusionRule().inclusionRule());
-				}
-				if (!ObjectUtils.isEmpty(rules.getRoutineInclusionRule())) {
-					options.setRoutineInclusionRule(rules.getRoutineInclusionRule().inclusionRule());
-				}
-				/*
-				 * InclusionRule grepColumnInclusionRule; InclusionRule
-				 * grepRoutineColumnInclusionRule; InclusionRule grepDefinitionInclusionRule;
-				 */
-				if (!ObjectUtils.isEmpty(rules.getGrepColumnInclusionRule())) {
-					options.setGrepColumnInclusionRule(rules.getGrepColumnInclusionRule().inclusionRule());
-				}
-				if (!ObjectUtils.isEmpty(rules.getGrepDefinitionInclusionRule())) {
-					options.setGrepDefinitionInclusionRule(rules.getGrepDefinitionInclusionRule().inclusionRule());
-				}
-				if (!ObjectUtils.isEmpty(rules.getGrepRoutineColumnInclusionRule())) {
-					options.setGrepRoutineColumnInclusionRule(rules.getGrepRoutineColumnInclusionRule().inclusionRule());
-				}
+				SchemaCrawlerOptionsBuilder optionsBuilder = SchemaCrawlerOptionsBuilder.builder()
+						.fromOptions(crawlerOptions.getOptions())
+						/*
+						 * InclusionRule schemaInclusionRule; InclusionRule synonymInclusionRule;
+						 * InclusionRule sequenceInclusionRule;
+						 */
+						.includeSchemas(rules.getSchemaInclusionRule().inclusionRule())
+						.includeSequences(rules.getSequenceInclusionRule().inclusionRule())
+						.includeSynonyms(rules.getSynonymInclusionRule().inclusionRule())
+						/*
+						 * InclusionRule tableInclusionRule; InclusionRule columnInclusionRule;
+						 */
+						.includeTables(rules.getTableInclusionRule().inclusionRule())
+						.includeColumns(rules.getColumnInclusionRule().inclusionRule())
+						/*
+						 * InclusionRule routineInclusionRule; InclusionRule routineColumnInclusionRule;
+						 */
+						.includeRoutineColumns(rules.getRoutineColumnInclusionRule().inclusionRule())
+						.includeRoutines(rules.getRoutineInclusionRule().inclusionRule())
+						/*
+						 * InclusionRule grepColumnInclusionRule; InclusionRule
+						 * grepRoutineColumnInclusionRule; InclusionRule grepDefinitionInclusionRule;
+						 */
+						.includeGreppedColumns(rules.getGrepColumnInclusionRule().inclusionRule())
+						.includeGreppedDefinitions(rules.getGrepDefinitionInclusionRule().inclusionRule())
+						.includeGreppedRoutineColumns(rules.getGrepRoutineColumnInclusionRule().inclusionRule());
 
+				// reset options
+				crawlerOptions.setOptions(optionsBuilder.toOptions());
 			}
 		}
 	   

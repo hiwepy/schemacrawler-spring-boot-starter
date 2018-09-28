@@ -5,62 +5,43 @@ import java.util.List;
 
 import schemacrawler.schemacrawler.IncludeAll;
 import schemacrawler.schemacrawler.InclusionRule;
-import schemacrawler.schemacrawler.SchemaCrawlerOptions;
+import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaInfoLevel;
 import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
+import schemacrawler.tools.options.InfoLevel;
 /**
  * SchemaCrawler utility methods.
  * @author vindell
  */
 public final class SchemaCrawlerOptionBuilder {
 
-	public static SchemaCrawlerOptions custom(SchemaInfoLevel schemaInfoLevel) {
-		
-		final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
+	public static SchemaCrawlerOptionsBuilder custom(SchemaInfoLevel schemaInfoLevel) {
 		// Set what details are required in the schema - this affects the time taken to crawl the schema
-		options.setSchemaInfoLevel(schemaInfoLevel);
-		
-		return options;
+		return SchemaCrawlerOptionsBuilder.builder().withSchemaInfoLevel(schemaInfoLevel);
 	}
 
-	public static SchemaCrawlerOptions detailed() {
-		
-		final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
+	public static SchemaCrawlerOptionsBuilder detailed() {
 		// Set what details are required in the schema - this affects the time taken to crawl the schema
-		SchemaInfoLevel schemaInfoLevel = SchemaInfoLevelBuilder.detailed();
-		options.setSchemaInfoLevel(schemaInfoLevel);
-		
-		return options;
+		SchemaInfoLevel schemaInfoLevel = InfoLevel.detailed.buildSchemaInfoLevel();
+		return SchemaCrawlerOptionsBuilder.builder().withSchemaInfoLevel(schemaInfoLevel);
 	}
 
-	public static SchemaCrawlerOptions maximum() {
-		
-		final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
+	public static SchemaCrawlerOptionsBuilder maximum() {
 		// Set what details are required in the schema - this affects the time taken to crawl the schema
-		SchemaInfoLevel schemaInfoLevel = SchemaInfoLevelBuilder.maximum();
-		options.setSchemaInfoLevel(schemaInfoLevel);
-		
-		return options;
+		SchemaInfoLevel schemaInfoLevel = InfoLevel.maximum.buildSchemaInfoLevel();
+		return SchemaCrawlerOptionsBuilder.builder().withSchemaInfoLevel(schemaInfoLevel);
 	}
 
-	public static SchemaCrawlerOptions minimum() {
-		
-		final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
+	public static SchemaCrawlerOptionsBuilder minimum() {
 		// Set what details are required in the schema - this affects the time taken to crawl the schema
-		SchemaInfoLevel schemaInfoLevel = SchemaInfoLevelBuilder.minimum();
-		options.setSchemaInfoLevel(schemaInfoLevel);
-		
-		return options;
+		SchemaInfoLevel schemaInfoLevel = InfoLevel.minimum.buildSchemaInfoLevel();
+		return SchemaCrawlerOptionsBuilder.builder().withSchemaInfoLevel(schemaInfoLevel);
 	}
 	
-	public static SchemaCrawlerOptions standard() {
-		
-		final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
+	public static SchemaCrawlerOptionsBuilder standard() {
 		// Set what details are required in the schema - this affects the time taken to crawl the schema
-		SchemaInfoLevel schemaInfoLevel = SchemaInfoLevelBuilder.standard();
-		options.setSchemaInfoLevel(schemaInfoLevel);
-		
-		return options;
+		SchemaInfoLevel schemaInfoLevel = InfoLevel.standard.buildSchemaInfoLevel();
+		return SchemaCrawlerOptionsBuilder.builder().withSchemaInfoLevel(schemaInfoLevel);
 	}
 	
 	/**
@@ -71,32 +52,29 @@ public final class SchemaCrawlerOptionBuilder {
 	 * @param tableTypes Collection of table types. Can be null if all supported table types are requested.
 	 * @return
 	 */
-	public static SchemaCrawlerOptions tablecolumns(InclusionRule schemaInclusionRule, String ... tableTypes ) {
+	public static SchemaCrawlerOptionsBuilder tablecolumns(InclusionRule schemaInclusionRule, String ... tableTypes ) {
 		
-		final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
 		
 		// Set what details are required in the schema - this affects the time taken to crawl the schema
-		SchemaInfoLevel schemaInfoLevel = SchemaInfoLevelBuilder.minimum();
-		schemaInfoLevel.setRetrieveAdditionalColumnAttributes(true);
-		schemaInfoLevel.setRetrieveAdditionalTableAttributes(true);
-		schemaInfoLevel.setRetrieveColumnDataTypes(true);
-		schemaInfoLevel.setRetrieveIndexes(false);
-		schemaInfoLevel.setRetrieveRoutineColumns(true);
-		schemaInfoLevel.setRetrieveTableColumns(true);
-		schemaInfoLevel.setRetrieveUserDefinedColumnDataTypes(true);
-		schemaInfoLevel.setRetrieveViewInformation(true);
-		
-		options.setColumnInclusionRule(new IncludeAll());
-		options.setRoutineInclusionRule(new IncludeAll());
-		options.setSchemaInclusionRule(schemaInclusionRule);
-		options.setSchemaInfoLevel(schemaInfoLevel);
+		SchemaInfoLevelBuilder schemaInfoLevelBuilder = SchemaInfoLevelBuilder.minimum()
+				.setRetrieveAdditionalColumnAttributes(true)
+				.setRetrieveAdditionalTableAttributes(true)
+				.setRetrieveColumnDataTypes(true)
+				.setRetrieveIndexes(false)
+				.setRetrieveRoutineColumns(true)
+				.setRetrieveTableColumns(true)
+				.setRetrieveUserDefinedColumnDataTypes(true)
+				.setRetrieveViewInformation(true);
 		
 		List<String> tableTypeList = (tableTypes == null || tableTypes.length == 0) ? Arrays.asList("BASE TABLE", "TABLE", "VIEW") : Arrays.asList(tableTypes);
 		
-		options.setTableTypes(tableTypeList);
-		options.setTableInclusionRule(new IncludeAll());
-		
-		return options;
+		return SchemaCrawlerOptionsBuilder.builder()
+				.tableTypes(tableTypeList)
+				.includeTables(new IncludeAll())
+				.includeAllRoutines()
+				.includeColumns(new IncludeAll())
+				.includeSchemas(schemaInclusionRule)
+				.withSchemaInfoLevel(schemaInfoLevelBuilder);
 	}
 
 	private SchemaCrawlerOptionBuilder() {
