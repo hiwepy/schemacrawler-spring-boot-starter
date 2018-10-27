@@ -12,100 +12,144 @@ import java.util.NoSuchElementException;
 public enum DatabaseType {
 
 	/**
-	 * Microsoft Azure Cloud ：jdbc:sqlserver://%s:%d;databaseName=%s
+	 * Microsoft Azure Cloud #
+	 * jdbc:sqlserver://[host-name]:[port];databaseName=[database-name]
 	 */
-	AZURE("Azure", "Microsoft Azure Cloud", "com.microsoft.sqlserver.jdbc.SQLServerDriver", "jdbc:sqlserver://%s:%d;databaseName=%s", 1433, true),
+	AZURE("azure", "Microsoft Azure Cloud", "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+			"jdbc:sqlserver://[host-name]:[port];databaseName=[database-name]",
+			"jdbc:sqlserver://%s:%d;databaseName=%s", 1433, true),
 	/**
-	 * DB2数据库驱动和链接：jdbc:db2://%s:%d/%s
+	 * DB2 # jdbc:db2://[host-name]:[port]/[database-name]
 	 */
-	DB2("DB2", "IBM DB2", "com.ibm.db2.jcc.DB2Driver", "jdbc:db2://%s:%d/%s", 50000, true),
+	DB2("db2", "IBM DB2", "com.ibm.db2.jcc.DB2Driver", 
+			"jdbc:db2://[host-name]:[port]/[database-name]", "jdbc:db2://%s:%d/%s", 50000, true),
 	/**
-	 * 网络模式Derby数据库驱动和链接
+	 * Derby Embedded # jdbc:derby:[database-name];create=true
 	 */
-	DERBY_EMBEDDED("Derby-Embedded", "Derby Embedded", "org.apache.derby.jdbc.EmbeddedDriver", "jdbc:derby:%s;create=true", 1527, false),
+	DERBY_EMBEDDED("derby-embedded", "Derby Embedded", "org.apache.derby.jdbc.EmbeddedDriver",
+			"jdbc:derby:[database-name];create=true", "jdbc:derby:%s;create=true", 1527, false),
 	/**
-	 * 网络模式Derby数据库驱动和链接
+	 * Derby Network # jdbc:derby://[host-name]:[port]/[database-name]
 	 */
-	DERBY_REMOTE("Derby-Remote", "Derby Remote", "org.apache.derby.jdbc.ClientDriver", "jdbc:derby://%s:%d/%s", 1527, true),
-	/**
+	DERBY_REMOTE("derby-network", "Derby Network", "org.apache.derby.jdbc.ClientDriver",
+			"jdbc:derby://[host-name]:[port]/[database-name]", "jdbc:derby://%s:%d/%s", 1527, true),
+
+	/*
 	 * HyperSQL ： http://hsqldb.org/doc/2.0/guide/index.html
+	 * http://hsqldb.org/doc/2.0/guide/running-chapt.html#rgc_connecting_db
 	 */
+
 	/**
-	 * Apache Hive ： jdbc:hive2://%s:%d/%s
+	 * HyperSQL HSQL Server # jdbc:hsqldb:hsql://[host-name]/[database-name]
 	 */
-	HSQLDB_HSQL("hsqldb-hsql", "HyperSQL HSQL Server", "org.hsqldb.jdbc.JDBCDriver", "jdbc:hsqldb:hsql://%s/%s", 9001, true),
+	HSQLDB_HSQL("hsqldb-hsql", "HyperSQL HSQL Server", "org.hsqldb.jdbc.JDBCDriver",
+			"jdbc:hsqldb:hsql://[host-name]/[database-name]", "jdbc:hsqldb:hsql://%s/%s", 9001, true),
 	/**
-	 * HyperSQL HSQL Server ： jdbc:hsqldb:hsqls://%s/%s
+	 * HyperSQL HSQL Server（SSL） # jdbc:hsqldb:hsqls://[host-name]/[database-name]
 	 */
-	HSQLDB_HSQLS("hsqldb-hsqls", "HyperSQL HSQL Server", "org.hsqldb.jdbc.JDBCDriver", "jdbc:hsqldb:hsqls://%s/%s", 554, true),
+	HSQLDB_HSQLS("hsqldb-hsqls", "HyperSQL HSQL Server（SSL）", "org.hsqldb.jdbc.JDBCDriver",
+			"jdbc:hsqldb:hsqls://[host-name]/[database-name]", "jdbc:hsqldb:hsqls://%s/%s", 554, true),
 	/**
-	 * HyperSQL HTTP Server（http） ： jdbc:hsqldb:http://%s/%s
+	 * HyperSQL HTTP Server # jdbc:hsqldb:http://[host-name]:[port]/[database-name]
 	 */
-	HSQLDB_HTTP("hsqldb-http", "HyperSQL HTTP Server（http）", "org.hsqldb.jdbc.JDBCDriver", "jdbc:hsqldb:http://%s/%s",	80, true),
+	HSQLDB_HTTP("hsqldb-http", "HyperSQL HTTP Server", "org.hsqldb.jdbc.JDBCDriver",
+			"jdbc:hsqldb:http://[host-name]:[port]/[database-name]", "jdbc:hsqldb:http://%s:%d/%s", 80, true),
 	/**
-	 * HyperSQL HTTP Server（https） ： jdbc:hsqldb:https://%s/%s
+	 * HyperSQL HTTP Server（SSL） #
+	 * jdbc:hsqldb:https://[host-name]:[port]/[database-name]
 	 */
-	HSQLDB_HTTPS("hsqldb-https", "HyperSQL HTTP Server（https）", "org.hsqldb.jdbc.JDBCDriver", "jdbc:hsqldb:https://%s/%s", 443, true),
+	HSQLDB_HTTPS("hsqldb-https", "HyperSQL HTTP Server（SSL）", "org.hsqldb.jdbc.JDBCDriver",
+			"jdbc:hsqldb:https://[host-name]:[port]/[database-name]", "jdbc:hsqldb:https://%s:%d/%s", 443, true),
 	/**
-	 * HyperSQL BER ： jdbc:hsqldb:file:%s/%s;ifexists=true
+	 * HyperSQL BER # jdbc:hsqldb:file:[file-path]/[database-name];ifexists=true
 	 */
-	HSQLDB_BER("hsqldb-file", "HyperSQL BER", "org.hsqldb.jdbc.JDBCDriver", "jdbc:hsqldb:file:%s/%s;ifexists=true",	9101, true),
+	HSQLDB_BER("hsqldb-file", "HyperSQL BER", "org.hsqldb.jdbc.JDBCDriver",
+			"jdbc:hsqldb:file:[file-path]/[database-name];ifexists=true", "jdbc:hsqldb:file:%s/%s;ifexists=true", 9101, true),
 	/**
-	 * Apache Hive ： jdbc:hive2://%s:%d/%s
+	 * Apache Hive # jdbc:hive2://[host-name]:[port]/[database-name]
 	 */
-	HIVE("hive", "Apache Hive", "org.apache.hive.jdbc.HiveDriver", "jdbc:hive2://%s:%d/%s", 10000, false),
+	HIVE("hive", "Apache Hive", "org.apache.hive.jdbc.HiveDriver", 
+			"jdbc:hive2://[host-name]:[port]/[database-name]", "jdbc:hive2://%s:%d/%s", 10000, false),
 	/**
-	 * Mariadb ：jdbc:mariadb://%s:%d/%s
+	 * Mariadb # jdbc:mariadb://[host-name]:[port]/[database-name]
 	 */
-	MARIADB("Mariadb", "Mariadb", "org.mariadb.jdbc.Driver", "jdbc:mariadb://%s:%d/%s", 3306, true),
+	MARIADB("mariadb", "Mariadb", "org.mariadb.jdbc.Driver", 
+			"jdbc:mariadb://[host-name]:[port]/[database-name]", "jdbc:mariadb://%s:%d/%s", 3306, true),
 	/**
-	 * Microsoft SQL Server
+	 * Microsoft SQL Server #
+	 * jdbc:sqlserver://[host-name]:[port];databaseName=[database-name]
 	 */
-	MSSQL("MsSQL", "Microsoft SQL Server", "com.microsoft.sqlserver.jdbc.SQLServerDriver", "jdbc:sqlserver://%s:%d;databaseName=%s", 1433, true),
+	MSSQL("sqlserver", "Microsoft SQL Server", "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+			"jdbc:sqlserver://[host-name]:[port];databaseName=[database-name]",
+			"jdbc:sqlserver://%s:%d;databaseName=%s", 1433, true),
 	/**
-	 * MySQL数据库驱动和链接
+	 * MySQL #
+	 * jdbc:mysql://[host-name]:[port]/[database-name]?rewriteBatchedStatements=true&useUnicode=true&characterEncoding=UTF-8
 	 */
-	MYSQL("MySQL", "MySQL", "com.mysql.cj.jdbc.Driver", "jdbc:mysql://%s:%d/%s?rewriteBatchedStatements=true&useUnicode=true&characterEncoding=UTF-8", 3306, true),
+	MYSQL("mysql", "MySQL", "com.mysql.cj.jdbc.Driver",
+			"jdbc:mysql://[host-name]:[port]/[database-name]?rewriteBatchedStatements=true&useUnicode=true&characterEncoding=UTF-8",
+			"jdbc:mysql://%s:%d/%s?rewriteBatchedStatements=true&useUnicode=true&characterEncoding=UTF-8", 3306, true),
 	/**
-	 * Oracle 10g、11g : jdbc:oracle:thin:@%s:%d:%s
+	 * Oracle 10g、11g # jdbc:oracle:thin:@[host-name]:[port]:[database-name]
 	 */
-	ORACLE("Oracle", "Oracle 10g、11g", "oracle.jdbc.OracleDriver", "jdbc:oracle:thin:@%s:%d:%s", 1521, true),
+	ORACLE("oracle", "Oracle 10g、11g", "oracle.jdbc.OracleDriver",
+			"jdbc:oracle:thin:@[host-name]:[port]:[database-name]", "jdbc:oracle:thin:@%s:%d:%s", 1521, true),
 	/**
-	 * Oracle 12c : jdbc:oracle:thin:@%s:%d/%s
+	 * Oracle 12c # jdbc:oracle:thin:@[host-name]:[port]/[database-name]
 	 */
-	ORACLE12C("Oracle12c", "Oracle 12c", "oracle.jdbc.OracleDriver", "jdbc:oracle:thin:@%s:%d/%s", 1521, true),
+	ORACLE12C("oracle-12c", "Oracle 12c", "oracle.jdbc.OracleDriver",
+			"jdbc:oracle:thin:@[host-name]:[port]/[database-name]", "jdbc:oracle:thin:@%s:%d/%s", 1521, true),
 	/**
-	 * PostgreSQL：jdbc:postgresql://%s:%d/%s
+	 * Oracle Timesten Client # jdbc:timesten:client:DSN=[dsn-name];[dsn-attributes]
 	 */
-	POSTGRESQL("PostgreSQL", "PostgreSQL", "org.postgresql.Driver", "jdbc:postgresql://%s:%d/%s", 5432, true),
+	ORACLE_TIMESTEN_CLIENT("oracle-timesten", "Oracle Timesten Client", "com.timesten.jdbc.TimesTenClientDriver",
+			"jdbc:timesten:client:DSN=[dsn-name];[dsn-attributes]", "jdbc:timesten:client:DSN=%s;%s", 1521, true),
 	/**
-	 * Amazon Redshift ： jdbc:redshift://%s:%d/%s
+	 * Oracle Timesten Direct # jdbc:timesten:direct:DSN=[dsn-name];[dsn-attributes]
 	 */
-	REDSHIFT("Redshift", "Amazon Redshift", "com.amazon.redshift.jdbc41.Driver", "jdbc:redshift://%s:%d/%s", 5439, true),
+	ORACLE_TIMESTEN_DIRECT("oracle-timesten", "Oracle Timesten Direct", "com.timesten.jdbc.TimesTenDriver",
+			"jdbc:timesten:direct:DSN=[dsn-name];[dsn-attributes]", "jdbc:timesten:direct:DSN=%s;%s", 1521, true),
 	/**
-	 * Teradata : jdbc:teradata://%s/DBS_PORT=%d,DATABASE=%s
+	 * PostgreSQL # jdbc:postgresql://[host-name]:[port]/[database-name]
 	 */
-	TERADATA("Teradata", "Teradata", "com.teradata.jdbc.TeraDriver", "jdbc:teradata://%s/DBS_PORT=%d,DATABASE=%s", 8002, true),
+	POSTGRESQL("postgreSQL", "PostgreSQL", "org.postgresql.Driver",
+			"jdbc:postgresql://[host-name]:[port]/[database-name]", "jdbc:postgresql://%s:%d/%s", 5432, true),
 	/**
-	 * IBM Netezza ： jdbc:netezza://%s:%d:%s
+	 * Amazon Redshift ： jdbc:redshift://[host-name]:[port]/[database-name]
 	 */
-	NETEZZA("Netezza", "IBM Netezza", "org.netezza.Driver", "jdbc:netezza://%s:%d:%s", 5480, true),
+	REDSHIFT("redshift", "Amazon Redshift", "com.amazon.redshift.jdbc41.Driver",
+			"jdbc:redshift://[host-name]:[port]/[database-name]", "jdbc:redshift://%s:%d/%s", 5439, true),
 	/**
-	 * HPE Vertica : jdbc:vertica://%s:%d/%s
+	 * Teradata # jdbc:teradata://[host-name]/DBS_PORT=[port],DATABASE=[database-name]
 	 */
-	VERTICA("Netezza", "HPE Vertica", "com.vertica.jdbc.Driver", "jdbc:vertica://%s:%d/%s", 5433, true);
+	TERADATA("teradata", "Teradata", "com.teradata.jdbc.TeraDriver",
+			"jdbc:teradata://[host-name]/DBS_PORT=[port],DATABASE=[database-name]",
+			"jdbc:teradata://%s/DBS_PORT=%d,DATABASE=%s", 8002, true),
+	/**
+	 * IBM Netezza # jdbc:netezza://[host-name]:[port]:[database-name]
+	 */
+	NETEZZA("netezza", "IBM Netezza", "org.netezza.Driver", 
+			"jdbc:netezza://[host-name]:[port]:[database-name]", "jdbc:netezza://%s:%d:%s", 5480, true),
+	/**
+	 * HPE Vertica # jdbc:vertica://[host-name]:[port]/[database-name]
+	 */
+	VERTICA("vertica", "HPE Vertica", "com.vertica.jdbc.Driver", 
+			"jdbc:vertica://[host-name]:[port]/[database-name]", "jdbc:vertica://%s:%d/%s", 5433, true);
 
 	private String key;
 	private String vendor;
 	private String driver;
+	private String placeholder;
 	private String url;
 	private int port;
 	private boolean standlone;
 
-	private DatabaseType(String key, String vendor, String driver, String url, int port, boolean standlone) {
+	private DatabaseType(String key, String vendor, String driver, String placeholder, String url, int port,
+			boolean standlone) {
 		this.key = key;
 		this.vendor = vendor;
 		this.driver = driver;
+		this.placeholder = placeholder;
 		this.url = url;
 		this.port = port;
 		this.standlone = standlone;
@@ -130,6 +174,10 @@ public enum DatabaseType {
 	public boolean isStandlone() {
 		return standlone;
 	}
+	
+	public String getPlaceholder() {
+		return placeholder;
+	}
 
 	public boolean equals(DatabaseType dbtype) {
 		return this.compareTo(dbtype) == 0;
@@ -138,7 +186,7 @@ public enum DatabaseType {
 	public boolean equals(String dbtype) {
 		return this.compareTo(DatabaseType.valueOfIgnoreCase(dbtype)) == 0;
 	}
-	
+
 	public static DatabaseType valueOfIgnoreCase(String dbtype) {
 		for (DatabaseType dbtypeEnum : DatabaseType.values()) {
 			if (dbtypeEnum.getKey().equals(dbtype)) {
@@ -147,7 +195,7 @@ public enum DatabaseType {
 		}
 		throw new NoSuchElementException("Cannot found DatabaseType with dbtype '" + dbtype + "'.");
 	}
-	
+
 	public String getDriverURL(String ip, int port, String dbname) {
 		return String.format(url, ip, port, dbname);
 	}
@@ -158,11 +206,9 @@ public enum DatabaseType {
 		driverMap.put("vendor", this.getVendor());
 		driverMap.put("driver", this.getDriverClass());
 		driverMap.put("port", String.valueOf(this.getDefaultPort()));
-		driverMap.put("url", url);
+		driverMap.put("placeholder", this.getPlaceholder());
 		return driverMap;
 	}
-
-	
 
 	public static List<Map<String, String>> driverList() {
 		List<Map<String, String>> driverList = new LinkedList<Map<String, String>>();
