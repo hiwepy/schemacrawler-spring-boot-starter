@@ -50,7 +50,7 @@ public final class SchemaCrawlerOptionBuilder {
 	 * @author 		： <a href="https://github.com/vindell">vindell</a>
 	 * @param schemaInclusionRule Schema inclusion rule
 	 * @param tableTypes Collection of table types. Can be null if all supported table types are requested.
-	 * @return
+	 * @return {@link SchemaCrawlerOptionsBuilder} instance
 	 */
 	public static SchemaCrawlerOptionsBuilder tablecolumns(InclusionRule schemaInclusionRule, String ... tableTypes ) {
 		

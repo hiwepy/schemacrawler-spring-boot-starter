@@ -84,7 +84,7 @@ public enum DatabaseType {
 			"jdbc:sqlserver://%s:%d;databaseName=%s", 1433, true),
 	/**
 	 * MySQL #
-	 * jdbc:mysql://[host-name]:[port]/[database-name]?rewriteBatchedStatements=true&useUnicode=true&characterEncoding=UTF-8
+	 * jdbc:mysql://[host-name]:[port]/[database-name]?rewriteBatchedStatements=true&amp;useUnicode=true&amp;characterEncoding=UTF-8
 	 */
 	MYSQL("mysql", "MySQL", "com.mysql.cj.jdbc.Driver",
 			"jdbc:mysql://[host-name]:[port]/[database-name]?rewriteBatchedStatements=true&useUnicode=true&characterEncoding=UTF-8",
@@ -220,9 +220,6 @@ public enum DatabaseType {
 		return driverList;
 	}
 
-	/**
-	 * 驱动是否存在
-	 */
 	public boolean hasDriver() {
 		try {
 			Class.forName(getDriverClass());
