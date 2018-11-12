@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 /**
- * 数据库 - 驱动和连接示例
+ * 关系型数据库 - 驱动和连接示例
  */
 public enum DatabaseType {
 
@@ -64,12 +64,13 @@ public enum DatabaseType {
 	 * HyperSQL BER # jdbc:hsqldb:file:[file-path]/[database-name];ifexists=true
 	 */
 	HSQLDB_BER("hsqldb-file", "HyperSQL BER", "org.hsqldb.jdbc.JDBCDriver",
-			"jdbc:hsqldb:file:[file-path]/[database-name];ifexists=true", "jdbc:hsqldb:file:%s/%s;ifexists=true", 9101, true),
+			"jdbc:hsqldb:file:[file-path]/[database-name];ifexists=true", "jdbc:hsqldb:file:%s/%s;ifexists=true", 
+			9101, false),
 	/**
 	 * Apache Hive # jdbc:hive2://[host-name]:[port]/[database-name]
 	 */
 	HIVE("hive", "Apache Hive", "org.apache.hive.jdbc.HiveDriver", 
-			"jdbc:hive2://[host-name]:[port]/[database-name]", "jdbc:hive2://%s:%d/%s", 10000, false),
+			"jdbc:hive2://[host-name]:[port]/[database-name]", "jdbc:hive2://%s:%d/%s", 10000, true),
 	/**
 	 * Mariadb # jdbc:mariadb://[host-name]:[port]/[database-name]
 	 */
@@ -99,16 +100,6 @@ public enum DatabaseType {
 	 */
 	ORACLE12C("oracle-12c", "Oracle 12c", "oracle.jdbc.OracleDriver",
 			"jdbc:oracle:thin:@[host-name]:[port]/[database-name]", "jdbc:oracle:thin:@%s:%d/%s", 1521, true),
-	/**
-	 * Oracle Timesten Client # jdbc:timesten:client:DSN=[dsn-name];[dsn-attributes]
-	 */
-	ORACLE_TIMESTEN_CLIENT("oracle-timesten", "Oracle Timesten Client", "com.timesten.jdbc.TimesTenClientDriver",
-			"jdbc:timesten:client:DSN=[dsn-name];[dsn-attributes]", "jdbc:timesten:client:DSN=%s;%s", 1521, true),
-	/**
-	 * Oracle Timesten Direct # jdbc:timesten:direct:DSN=[dsn-name];[dsn-attributes]
-	 */
-	ORACLE_TIMESTEN_DIRECT("oracle-timesten", "Oracle Timesten Direct", "com.timesten.jdbc.TimesTenDriver",
-			"jdbc:timesten:direct:DSN=[dsn-name];[dsn-attributes]", "jdbc:timesten:direct:DSN=%s;%s", 1521, true),
 	/**
 	 * PostgreSQL # jdbc:postgresql://[host-name]:[port]/[database-name]
 	 */
@@ -211,9 +202,17 @@ public enum DatabaseType {
 	}
 
 	public static List<Map<String, String>> driverList() {
+		return driverList(false);
+	}
+	
+	public static List<Map<String, String>> driverList(boolean standloneOnly) {
 		List<Map<String, String>> driverList = new LinkedList<Map<String, String>>();
 		for (DatabaseType driverEnum : DatabaseType.values()) {
-			if (driverEnum.isStandlone()) {
+			if(standloneOnly) {
+				if (driverEnum.isStandlone()) {
+					driverList.add(driverEnum.toMap());
+				}
+			} else {
 				driverList.add(driverEnum.toMap());
 			}
 		}

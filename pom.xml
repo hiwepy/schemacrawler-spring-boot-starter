@@ -6,14 +6,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.5.RELEASE</version>
+		<version>2.1.0.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<groupId>com.github.vindell</groupId>
 	<artifactId>spring-boot-starter-schemacrawler</artifactId>
 	<description>Spring Boot Starter For Schemacrawler</description>
-	<version>1.0.2.RELEASE</version>
+	<version>1.0.3.RELEASE</version>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<url>https://github.com/vindell/${project.artifactId}</url>
 	<packaging>jar</packaging>
@@ -375,7 +375,7 @@
 		<oracle-10g-driver.version>10.2.0.5</oracle-10g-driver.version>
 		<oracle-11g-driver.version>11.2.0.4</oracle-11g-driver.version>
 		<oracle-12c-driver.version>12.1.0.2</oracle-12c-driver.version>
-		<schemacrawler.version>15.01.05</schemacrawler.version>
+		<schemacrawler.version>15.01.06</schemacrawler.version>
 		<schemacrawler-commandline.version>${schemacrawler.version}</schemacrawler-commandline.version>
 		<schemacrawler-db2.version>${schemacrawler.version}</schemacrawler-db2.version>
 		<schemacrawler-derby.version>14.03.03</schemacrawler-derby.version>
