@@ -207,13 +207,13 @@ public enum DatabaseType {
 	
 	public static List<Map<String, String>> driverList(boolean standloneOnly) {
 		List<Map<String, String>> driverList = new LinkedList<Map<String, String>>();
-		for (DatabaseType driverEnum : DatabaseType.values()) {
+		for (DatabaseType dbType : DatabaseType.values()) {
 			if(standloneOnly) {
-				if (driverEnum.isStandlone()) {
-					driverList.add(driverEnum.toMap());
+				if (dbType.isStandlone()) {
+					driverList.add(dbType.toMap());
 				}
 			} else {
-				driverList.add(driverEnum.toMap());
+				driverList.add(dbType.toMap());
 			}
 		}
 		return driverList;
