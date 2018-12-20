@@ -7,46 +7,42 @@ import javax.sql.DataSource;
 
 import schemacrawler.schema.Catalog;
 import schemacrawler.schemacrawler.DatabaseConnectionOptions;
-import schemacrawler.schemacrawler.ExcludeAll;
 import schemacrawler.schemacrawler.IncludeAll;
-import schemacrawler.schemacrawler.RegularExpressionExclusionRule;
-import schemacrawler.schemacrawler.RegularExpressionInclusionRule;
+import schemacrawler.schemacrawler.InclusionRule;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
-import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
-import schemacrawler.schemacrawler.SchemaInfoLevel;
-import schemacrawler.tools.options.InfoLevel;
+import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
 import schemacrawler.utility.SchemaCrawlerUtility;
 
 public abstract class BaseDatabaseTest {
 
+	protected DataSource dataSource;
 
-	public static SchemaCrawlerOptionsBuilder getOptions() throws SchemaCrawlerException, SQLException {
-		
-		// Set what details are required in the schema - this affects the
-		// time taken to crawl the schema
-
-		SchemaInfoLevel schemaInfoLevel = InfoLevel.detailed.buildSchemaInfoLevel();
-
-		// Create the options
-		return SchemaCrawlerOptionsBuilder.builder()
-				.includeColumns(new IncludeAll())
-				.includeRoutines(new ExcludeAll())
-				.includeSchemas(new RegularExpressionInclusionRule("tablename"))
-				.includeTables(new RegularExpressionExclusionRule(".*\\..{0,1}schema_version.*"))
-				.withSchemaInfoLevel(schemaInfoLevel);
-	}
-	
-	public Catalog getCatalog(SchemaCrawlerOptions options) throws SchemaCrawlerException, SQLException {
-		// Get the schema definition
-		return SchemaCrawlerUtility.getCatalog(getConnection(), options);
+	protected void setUp(String connectionUrl) throws Exception {
+		// Create a DataSource
+		dataSource = new DatabaseConnectionOptions(connectionUrl);
 	}
 
-	public Connection getConnection() throws SchemaCrawlerException, SQLException {
+	protected Connection getConnection(String username, String password) throws SchemaCrawlerException, SQLException {
 		// Create a database connection
-		final DataSource dataSource = new DatabaseConnectionOptions("jdbc:oracle:thin:@127.0.0.1:1521:orcl");
-		final Connection connection = dataSource.getConnection("username", "password");
+		final Connection connection = dataSource.getConnection(username, password);
 		return connection;
+	}
+
+	protected Catalog getCatalog(String username, String password, InclusionRule schemaInclusionRule) throws Exception {
+
+		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.tablecolumns(new IncludeAll(), "TABLE", "VIEW")
+				.toOptions();
+
+		// Get the schema definition
+		final Catalog catalog = SchemaCrawlerUtility.getCatalog(getConnection(username, password), options);
+		return catalog;
+	}
+
+	protected Catalog getCatalog(String username, String password, SchemaCrawlerOptions options)
+			throws SchemaCrawlerException, SQLException {
+		// Get the schema definition
+		return SchemaCrawlerUtility.getCatalog(getConnection(username, password), options);
 	}
 
 }

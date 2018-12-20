@@ -32,16 +32,20 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 import schemacrawler.schema.Catalog;
 import schemacrawler.schema.Schema;
 import schemacrawler.schema.Table;
+import schemacrawler.schemacrawler.IncludeAll;
+import schemacrawler.schemacrawler.InclusionRule;
+import schemacrawler.schemacrawler.RegularExpressionInclusionRule;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
-import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
 import schemacrawler.spring.boot.utility.TestName;
 import schemacrawler.spring.boot.utility.TestWriter;
+import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
 import schemacrawler.tools.analysis.counts.CatalogWithCounts;
 import schemacrawler.tools.analysis.counts.CountsUtility;
 import schemacrawler.utility.NamedObjectSort;
@@ -51,16 +55,25 @@ public class TableCountsTest extends BaseDatabaseTest {
 	@Rule
 	public TestName testName = new TestName();
 
+	@Before
+	public void setUp() throws Exception {
+		// Create a database connection
+		super.setUp("jdbc:sqlserver://192.168.0.118:1433;DatabaseName=91118net;integratedSecurity=false");
+	}
+
 	@Test
 	public void tableCounts() throws Exception {
-		try (
+		try (final TestWriter out = new TestWriter("text");) {
 
-				final TestWriter out = new TestWriter("text");) {
+			final InclusionRule schemaInclusionRule = new RegularExpressionInclusionRule("91118net");
+			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
+					.tablecolumns(new IncludeAll(), "TABLE", "VIEW").toOptions();
+			final Catalog baseCatalog = super.getCatalog("sa", "sa", options);
 
-			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions().withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
+			final SchemaCrawlerOptions schemaCrawlerOptions = SchemaCrawlerOptionBuilder.maximum().toOptions();
 
-			final Catalog baseCatalog = getCatalog(schemaCrawlerOptions);
-			final CatalogWithCounts catalog = new CatalogWithCounts(baseCatalog, getConnection(), schemaCrawlerOptions);
+			final CatalogWithCounts catalog = new CatalogWithCounts(baseCatalog, super.getConnection("sa", "sa"),
+					schemaCrawlerOptions);
 			final Schema[] schemas = catalog.getSchemas().toArray(new Schema[0]);
 			assertEquals("Schema count does not match", 5, schemas.length);
 			for (final Schema schema : schemas) {

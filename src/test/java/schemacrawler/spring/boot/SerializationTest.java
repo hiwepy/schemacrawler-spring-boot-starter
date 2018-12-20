@@ -33,21 +33,27 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.commons.lang3.SerializationUtils;
+import org.junit.Before;
 import org.junit.Test;
 
 import schemacrawler.schema.Catalog;
 import schemacrawler.schema.Schema;
-import schemacrawler.schemacrawler.SchemaCrawlerOptions;
-import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
+import schemacrawler.schemacrawler.InclusionRule;
+import schemacrawler.schemacrawler.RegularExpressionInclusionRule;
 
 public class SerializationTest extends BaseDatabaseTest {
 
+	@Before 
+	public void setUp() throws Exception { 
+		// Create a database connection
+		super.setUp("jdbc:sqlserver://192.168.0.118:1433;DatabaseName=91118net;integratedSecurity=false");
+	}
+	
 	@Test
 	public void catalogSerialization() throws Exception {
 		
-		final SchemaCrawlerOptions schemaCrawlerOptions = getOptions().withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
-
-		final Catalog catalog = getCatalog(schemaCrawlerOptions);
+		final InclusionRule schemaInclusionRule = new RegularExpressionInclusionRule("91118net");
+		final Catalog catalog = super.getCatalog("sa", "sa", schemaInclusionRule );
 		assertNotNull("Could not obtain catalog", catalog);
 		assertTrue("Could not find any schemas", catalog.getSchemas().size() > 0);
 

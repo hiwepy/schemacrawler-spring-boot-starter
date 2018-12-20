@@ -34,19 +34,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static sf.util.Utility.isBlank;
 
-import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.Random;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -67,38 +62,34 @@ import schemacrawler.schema.TableRelationshipType;
 import schemacrawler.schema.Trigger;
 import schemacrawler.schema.View;
 import schemacrawler.schemacrawler.IncludeAll;
+import schemacrawler.schemacrawler.InclusionRule;
 import schemacrawler.schemacrawler.RegularExpressionExclusionRule;
-import schemacrawler.schemacrawler.SchemaCrawlerException;
+import schemacrawler.schemacrawler.RegularExpressionInclusionRule;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaInfoLevel;
 import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
 import schemacrawler.spring.boot.utility.TestName;
 import schemacrawler.spring.boot.utility.TestWriter;
+import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
 import schemacrawler.utility.NamedObjectSort;
-import schemacrawler.utility.SchemaCrawlerUtility;
 
 public class SchemaCrawlerTest extends BaseDatabaseTest {
 
 	@Rule
 	public TestName testName = new TestName();
 
-	public static void main(String[] args) throws SQLException, SchemaCrawlerException, ClassNotFoundException {
+	@Before
+	public void setUp() throws Exception {
+		// Create a database connection
+		super.setUp("jdbc:sqlserver://192.168.0.118:1433;DatabaseName=91118net;integratedSecurity=false");
+	}
 
-		Driver driver = DriverManager.getDriver("jdbc:derby:memory:test;create=true");
-		Connection connection = DriverManager.getConnection("jdbc:derby:memory:test;create=true", new Properties());
-		Statement statement = connection.createStatement();
-		// id INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 0, INCREMENT BY 1)
-		statement.execute(
-				"CREATE TABLE USERS (id INT NOT NULL, name varchar(20), constraint users_pk_id primary key(id))");
-		statement.execute("CREATE TABLE FRIENDS (id1 INT, id2 INT, "
-				+ " constraint fk_users_id1 foreign key(id1) references users(id),"
-				+ " constraint fk_users_id2 foreign key(id2) references users(id)" + ")");
+	@Test
+	public void schemas() throws Exception {
 
-		final SchemaCrawlerOptions options = getOptions().withSchemaInfoLevel(SchemaInfoLevelBuilder.standard()).toOptions();
-
-		final Catalog catalog = SchemaCrawlerUtility.getCatalog(connection, options);
-
+		final InclusionRule schemaInclusionRule = new RegularExpressionInclusionRule("91118net");
+		final Catalog catalog = this.getCatalog("sa", "sa", schemaInclusionRule);
 		for (final Schema schema : catalog.getSchemas()) {
 			System.out.println(schema);
 			for (final Table table : catalog.getTables(schema)) {
@@ -116,11 +107,15 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	public void columns() throws Exception {
 		try (final TestWriter out = new TestWriter("text");) {
 
-			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions().withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
+			final InclusionRule schemaInclusionRule = new RegularExpressionInclusionRule("91118net");
 
-			final Catalog catalog = getCatalog(schemaCrawlerOptions);
+			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
+					.tablecolumns(new IncludeAll(), "TABLE", "VIEW").toOptions();
+
+			// Get the schema definition
+			final Catalog catalog = getCatalog("sa", "sa", options);
 			final Schema[] schemas = catalog.getSchemas().toArray(new Schema[0]);
-			//assertEquals("Schema count does not match", 5, schemas.length);
+			// assertEquals("Schema count does not match", 5, schemas.length);
 			for (final Schema schema : schemas) {
 				final Table[] tables = catalog.getTables(schema).toArray(new Table[0]);
 				Arrays.sort(tables, NamedObjectSort.alphabetical);
@@ -149,10 +144,14 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	public void counts() throws Exception {
 		try (final TestWriter out = new TestWriter("text");) {
 
-			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions().withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
+			final InclusionRule schemaInclusionRule = new RegularExpressionInclusionRule("91118net");
 
+			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
+					.tablecolumns(new IncludeAll(), "TABLE", "VIEW")
+					.withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
 
-			final Catalog catalog = getCatalog(schemaCrawlerOptions);
+			// Get the schema definition
+			final Catalog catalog = getCatalog("sa", "sa", options);
 			final Schema[] schemas = catalog.getSchemas().toArray(new Schema[0]);
 			assertEquals("Schema count does not match", 5, schemas.length);
 			for (final Schema schema : schemas) {
@@ -177,12 +176,16 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 
 	@Test
 	public void relatedTables() throws Exception {
-		try (
-				
-			final TestWriter out = new TestWriter("text");) {
-			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions().withSchemaInfoLevel(SchemaInfoLevelBuilder.standard()).toOptions();
+		try (final TestWriter out = new TestWriter("text");) {
+			final InclusionRule schemaInclusionRule = new RegularExpressionInclusionRule("91118net");
 
-			final Catalog catalog = getCatalog(schemaCrawlerOptions);
+			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
+					.tablecolumns(new IncludeAll(), "TABLE", "VIEW")
+					.withSchemaInfoLevel(SchemaInfoLevelBuilder.standard()).toOptions();
+
+			// Get the schema definition
+			final Catalog catalog = getCatalog("sa", "sa", options);
+
 			final Table[] tables = catalog.getTables().toArray(new Table[0]);
 			assertEquals("Table count does not match", 13, tables.length);
 			Arrays.sort(tables, NamedObjectSort.alphabetical);
@@ -200,10 +203,14 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	@Test
 	public void relatedTablesWithTableRestriction() throws Exception {
 		try (final TestWriter out = new TestWriter("text");) {
-			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions().withSchemaInfoLevel(SchemaInfoLevelBuilder.standard()).toOptions();
+			final InclusionRule schemaInclusionRule = new RegularExpressionInclusionRule("91118net");
 
+			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
+					.tablecolumns(new IncludeAll(), "TABLE", "VIEW")
+					.withSchemaInfoLevel(SchemaInfoLevelBuilder.standard()).toOptions();
 
-			final Catalog catalog = getCatalog(schemaCrawlerOptions);
+			// Get the schema definition
+			final Catalog catalog = getCatalog("sa", "sa", options);
 			final Table[] tables = catalog.getTables().toArray(new Table[0]);
 			assertEquals("Table count does not match", 1, tables.length);
 			Arrays.sort(tables, NamedObjectSort.alphabetical);
@@ -221,13 +228,14 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	@Test
 	public void routineDefinitions() throws Exception {
 
-		final SchemaCrawlerOptions schemaCrawlerOptions = getOptions()
-				.withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum())
-				.includeRoutines(new IncludeAll())
-				.includeRoutineColumns(new IncludeAll())
-				.toOptions();
+		final InclusionRule schemaInclusionRule = new RegularExpressionInclusionRule("91118net");
 
-		final Catalog catalog = getCatalog(schemaCrawlerOptions);
+		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.tablecolumns(new IncludeAll(), "TABLE", "VIEW")
+				.withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
+
+		// Get the schema definition
+		final Catalog catalog = getCatalog("sa", "sa", options);
+
 		final Schema schema = new SchemaReference("PUBLIC", "BOOKS");
 		final Routine[] routines = catalog.getRoutines(schema).toArray(new Routine[0]);
 		assertEquals("Wrong number of routines", 4, routines.length);
@@ -239,13 +247,14 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	@Test
 	public void schemaEquals() throws Exception {
 
-		final SchemaCrawlerOptions schemaCrawlerOptions = getOptions()
-				.withSchemaInfoLevel(SchemaInfoLevelBuilder.detailed())
-				.includeRoutines(new IncludeAll())
-				.includeRoutineColumns(new IncludeAll())
-				.toOptions();
+		final InclusionRule schemaInclusionRule = new RegularExpressionInclusionRule("91118net");
 
-		final Catalog catalog = getCatalog(schemaCrawlerOptions);
+		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.tablecolumns(new IncludeAll(), "TABLE", "VIEW")
+				.withSchemaInfoLevel(SchemaInfoLevelBuilder.detailed()).toOptions();
+
+		// Get the schema definition
+		final Catalog catalog = getCatalog("sa", "sa", options);
+
 		final Schema schema1 = new SchemaReference("PUBLIC", "BOOKS");
 		assertTrue("Could not find any tables", catalog.getTables(schema1).size() > 0);
 		assertEquals("Wrong number of routines", 4, catalog.getRoutines(schema1).size());
@@ -267,15 +276,14 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	public void sequences() throws Exception {
 		try (final TestWriter out = new TestWriter("text");) {
 
-
-			final SchemaInfoLevel minimum = SchemaInfoLevelBuilder.minimum().setRetrieveSequenceInformation(true).toOptions();
-
-			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions()
-					.withSchemaInfoLevel(minimum)
-					.includeSequences(new IncludeAll())
+			final SchemaInfoLevel minimum = SchemaInfoLevelBuilder.minimum().setRetrieveSequenceInformation(true)
 					.toOptions();
 
-			final Catalog catalog = getCatalog(schemaCrawlerOptions);
+			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
+					.tablecolumns(new IncludeAll(), "TABLE", "VIEW").withSchemaInfoLevel(minimum).toOptions();
+
+			// Get the schema definition
+			final Catalog catalog = getCatalog("sa", "sa", options);
 			final Schema schema = catalog.lookupSchema("PUBLIC.BOOKS").get();
 			assertNotNull("BOOKS Schema not found", schema);
 			final Sequence[] sequences = catalog.getSequences(schema).toArray(new Sequence[0]);
@@ -297,14 +305,14 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	public void synonyms() throws Exception {
 		try (final TestWriter out = new TestWriter("text");) {
 
-
-			final SchemaInfoLevel minimum = SchemaInfoLevelBuilder.minimum().setRetrieveSynonymInformation(true).toOptions();
-
-			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions().withSchemaInfoLevel(minimum)
-					.includeSynonyms(new IncludeAll())
+			final SchemaInfoLevel minimum = SchemaInfoLevelBuilder.minimum().setRetrieveSynonymInformation(true)
 					.toOptions();
 
-			final Catalog catalog = getCatalog(schemaCrawlerOptions);
+			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
+					.tablecolumns(new IncludeAll(), "TABLE", "VIEW").withSchemaInfoLevel(minimum).toOptions();
+
+			// Get the schema definition
+			final Catalog catalog = getCatalog("sa", "sa", options);
 			final Schema schema = catalog.lookupSchema("PUBLIC.BOOKS").get();
 			assertNotNull("BOOKS Schema not found", schema);
 			final Synonym[] synonyms = catalog.getSynonyms(schema).toArray(new Synonym[0]);
@@ -323,9 +331,13 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	public void tableConstraints() throws Exception {
 		try (final TestWriter out = new TestWriter("text");) {
 
-			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions().withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
+			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
+					.tablecolumns(new IncludeAll(), "TABLE", "VIEW")
+					.withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
 
-			final Catalog catalog = getCatalog(schemaCrawlerOptions);
+			// Get the schema definition
+			final Catalog catalog = getCatalog("sa", "sa", options);
+
 			final Schema[] schemas = catalog.getSchemas().toArray(new Schema[0]);
 			assertEquals("Schema count does not match", 6, schemas.length);
 			for (final Schema schema : schemas) {
@@ -356,12 +368,14 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	public void tables() throws Exception {
 		try (final TestWriter out = new TestWriter("text");) {
 
-			final SchemaCrawlerOptions schemaCrawlerOptions = getOptions()
+			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
+					.tablecolumns(new IncludeAll(), "TABLE", "VIEW")
 					.withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum())
-					.includeSchemas(new RegularExpressionExclusionRule(".*\\.FOR_LINT"))
-					.toOptions();
+					.includeSchemas(new RegularExpressionExclusionRule(".*\\.FOR_LINT")).toOptions();
 
-			final Catalog catalog = getCatalog(schemaCrawlerOptions);
+			// Get the schema definition
+			final Catalog catalog = getCatalog("sa", "sa", options);
+
 			final Schema[] schemas = catalog.getSchemas().toArray(new Schema[0]);
 			assertEquals("Schema count does not match", 5, schemas.length);
 			for (final Schema schema : schemas) {
@@ -387,9 +401,11 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 				"PUBLISHERS", "BOOKAUTHORS", "ΒΙΒΛΊΑ", "AUTHORSLIST" };
 		final Random rnd = new Random();
 
-		final SchemaCrawlerOptions schemaCrawlerOptions = getOptions().toOptions();
+		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.tablecolumns(new IncludeAll(), "TABLE", "VIEW")
+				.withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
 
-		final Catalog catalog = getCatalog(schemaCrawlerOptions);
+		// Get the schema definition
+		final Catalog catalog = getCatalog("sa", "sa", options);
 		final Schema[] schemas = catalog.getSchemas().toArray(new Schema[0]);
 		assertEquals("Schema count does not match", 5, schemas.length);
 		final Schema schema = schemas[0];
@@ -427,9 +443,11 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	@Test
 	public void triggers() throws Exception {
 
-		final SchemaCrawlerOptions schemaCrawlerOptions = getOptions().withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
+		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.tablecolumns(new IncludeAll(), "TABLE", "VIEW")
+				.withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
 
-		final Catalog catalog = getCatalog(schemaCrawlerOptions);
+		// Get the schema definition
+		final Catalog catalog = getCatalog("sa", "sa", options);
 		final Schema schema = new SchemaReference("PUBLIC", "BOOKS");
 		final Table[] tables = catalog.getTables(schema).toArray(new Table[0]);
 		boolean foundTrigger = false;
@@ -449,10 +467,11 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	public void viewDefinitions() throws Exception {
 
 		final SchemaCrawlerOptionsBuilder schemaCrawlerOptionsBuilder = SchemaCrawlerOptionsBuilder.builder()
-				.tableTypes("VIEW")
-				.withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum());
+				.tableTypes("VIEW").withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum());
 
-		final Catalog catalog = getCatalog(schemaCrawlerOptionsBuilder.toOptions());
+		// Get the schema definition
+		final Catalog catalog = getCatalog("sa", "sa", schemaCrawlerOptionsBuilder.toOptions());
+
 		final Schema schema = new SchemaReference("PUBLIC", "BOOKS");
 		final View view = (View) catalog.lookupTable(schema, "AUTHORSLIST").get();
 		assertNotNull("View not found", view);

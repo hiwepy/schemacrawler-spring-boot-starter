@@ -51,7 +51,7 @@ import sf.util.SchemaCrawlerLogger;
 public class ExcludeTest extends BaseDatabaseTest {
 
 	private static final SchemaCrawlerLogger LOGGER = SchemaCrawlerLogger.getLogger(ExcludeTest.class.getName());
-
+// https://blog.csdn.net/qq_34337272/article/details/78815547
 	@Rule
 	public TestName testName = new TestName();
 
@@ -63,7 +63,7 @@ public class ExcludeTest extends BaseDatabaseTest {
 					.includeColumns(new RegularExpressionExclusionRule(".*\\..*\\.ID"))
 					.toOptions();
 
-			final Catalog catalog = getCatalog(schemaCrawlerOptions);
+			final Catalog catalog = getCatalog("sa", "sa", schemaCrawlerOptions);
 			final Schema[] schemas = catalog.getSchemas().toArray(new Schema[0]);
 			assertEquals("Schema count does not match", 5, schemas.length);
 			for (final Schema schema : schemas) {
@@ -77,8 +77,8 @@ public class ExcludeTest extends BaseDatabaseTest {
 					for (final Column column : columns) {
 						LOGGER.log(Level.FINE, column.toString());
 						out.println("    column: " + column.getFullName());
-						out.println("      database type: " + column.getColumnDataType().getDatabaseSpecificTypeName());
-						out.println("      type: " + column.getColumnDataType().getJavaSqlType().getName());
+						out.println("    database type: " + column.getColumnDataType().getDatabaseSpecificTypeName());
+						out.println("    type: " + column.getColumnDataType().getJavaSqlType().getName());
 					}
 				}
 			}

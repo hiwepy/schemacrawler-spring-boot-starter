@@ -35,6 +35,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.logging.Level;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -52,6 +53,12 @@ public class ResultColumnsTest extends BaseDatabaseTest {
 	@Rule
 	public TestName testName = new TestName();
  
+	@Before 
+	public void setUp() throws Exception { 
+		// Create a database connection
+		super.setUp("jdbc:sqlserver://192.168.0.118:1433;DatabaseName=91118net;integratedSecurity=false");
+	}
+	
 	@Test
 	public void columns() throws Exception {
 
@@ -67,7 +74,7 @@ public class ResultColumnsTest extends BaseDatabaseTest {
 					+ " INNER JOIN PUBLIC.BOOKS.AUTHORS                                          "
 					+ "   ON PUBLIC.BOOKS.AUTHORS.ID = PUBLIC.BOOKS.BOOKAUTHORS.AUTHORID         ";
 
-			try (final Connection connection = getConnection();
+			try (final Connection connection =  super.getConnection("sa", "sa");
 					final Statement statement = connection.createStatement();
 					final ResultSet resultSet = statement.executeQuery(sql);) {
 				
