@@ -3,14 +3,14 @@ package schemacrawler.spring.boot.ext;
 import java.util.HashMap;
 import java.util.Map;
 
-import schemacrawler.schemacrawler.ConnectionOptions;
-import schemacrawler.schemacrawler.DatabaseConnectionOptions;
 import schemacrawler.schemacrawler.IncludeAll;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
-import schemacrawler.schemacrawler.SingleUseUserCredentials;
-import schemacrawler.schemacrawler.UserCredentials;
 import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
+import schemacrawler.tools.databaseconnector.ConnectionOptions;
+import schemacrawler.tools.databaseconnector.DatabaseConnectionOptions;
+import schemacrawler.tools.databaseconnector.SingleUseUserCredentials;
+import schemacrawler.tools.databaseconnector.UserCredentials;
 
 public class DatabaseSchemaCrawlerOptions {
 

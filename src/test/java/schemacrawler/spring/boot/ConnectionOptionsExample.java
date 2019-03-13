@@ -11,7 +11,6 @@ import schemacrawler.schema.Column;
 import schemacrawler.schema.Schema;
 import schemacrawler.schema.Table;
 import schemacrawler.schema.View;
-import schemacrawler.schemacrawler.DatabaseConnectionOptions;
 import schemacrawler.schemacrawler.ExcludeAll;
 import schemacrawler.schemacrawler.IncludeAll;
 import schemacrawler.schemacrawler.RegularExpressionInclusionRule;
@@ -19,6 +18,7 @@ import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaInfoLevel;
 import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
+import schemacrawler.tools.databaseconnector.DatabaseConnectionOptions;
 import schemacrawler.utility.SchemaCrawlerUtility;
 
 public final class ConnectionOptionsExample {
@@ -32,9 +32,7 @@ public final class ConnectionOptionsExample {
 		// Set what details are required in the schema - this affects the
 		// time taken to crawl the schema
 
-		SchemaInfoLevel schemaInfoLevel = SchemaInfoLevelBuilder.detailed()
-			.setRetrieveAdditionalColumnAttributes(true)
-			.setRetrieveAdditionalTableAttributes(true).toOptions();
+		SchemaInfoLevel schemaInfoLevel = SchemaInfoLevelBuilder.detailed();
 
 		// Create the options
 		final SchemaCrawlerOptions options = SchemaCrawlerOptionsBuilder.builder()

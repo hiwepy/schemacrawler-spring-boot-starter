@@ -5,10 +5,10 @@ import java.util.List;
 
 import schemacrawler.schemacrawler.IncludeAll;
 import schemacrawler.schemacrawler.InclusionRule;
+import schemacrawler.schemacrawler.InfoLevel;
 import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaInfoLevel;
 import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
-import schemacrawler.tools.options.InfoLevel;
 /**
  * SchemaCrawler utility methods.
  * @author vindell
@@ -22,25 +22,25 @@ public final class SchemaCrawlerOptionBuilder {
 
 	public static SchemaCrawlerOptionsBuilder detailed() {
 		// Set what details are required in the schema - this affects the time taken to crawl the schema
-		SchemaInfoLevel schemaInfoLevel = InfoLevel.detailed.buildSchemaInfoLevel();
+		SchemaInfoLevel schemaInfoLevel = InfoLevel.detailed.toSchemaInfoLevel();
 		return SchemaCrawlerOptionsBuilder.builder().withSchemaInfoLevel(schemaInfoLevel);
 	}
 
 	public static SchemaCrawlerOptionsBuilder maximum() {
 		// Set what details are required in the schema - this affects the time taken to crawl the schema
-		SchemaInfoLevel schemaInfoLevel = InfoLevel.maximum.buildSchemaInfoLevel();
+		SchemaInfoLevel schemaInfoLevel = InfoLevel.maximum.toSchemaInfoLevel();
 		return SchemaCrawlerOptionsBuilder.builder().withSchemaInfoLevel(schemaInfoLevel);
 	}
 
 	public static SchemaCrawlerOptionsBuilder minimum() {
 		// Set what details are required in the schema - this affects the time taken to crawl the schema
-		SchemaInfoLevel schemaInfoLevel = InfoLevel.minimum.buildSchemaInfoLevel();
+		SchemaInfoLevel schemaInfoLevel = InfoLevel.minimum.toSchemaInfoLevel();
 		return SchemaCrawlerOptionsBuilder.builder().withSchemaInfoLevel(schemaInfoLevel);
 	}
 	
 	public static SchemaCrawlerOptionsBuilder standard() {
 		// Set what details are required in the schema - this affects the time taken to crawl the schema
-		SchemaInfoLevel schemaInfoLevel = InfoLevel.standard.buildSchemaInfoLevel();
+		SchemaInfoLevel schemaInfoLevel = InfoLevel.standard.toSchemaInfoLevel();
 		return SchemaCrawlerOptionsBuilder.builder().withSchemaInfoLevel(schemaInfoLevel);
 	}
 	
@@ -54,9 +54,8 @@ public final class SchemaCrawlerOptionBuilder {
 	 */
 	public static SchemaCrawlerOptionsBuilder tablecolumns(InclusionRule schemaInclusionRule, String ... tableTypes ) {
 		
-		
 		// Set what details are required in the schema - this affects the time taken to crawl the schema
-		SchemaInfoLevelBuilder schemaInfoLevelBuilder = SchemaInfoLevelBuilder.minimum()
+		SchemaInfoLevelBuilder schemaInfoLevelBuilder = SchemaInfoLevelBuilder.builder()
 				.setRetrieveAdditionalColumnAttributes(true)
 				.setRetrieveAdditionalTableAttributes(true)
 				.setRetrieveColumnDataTypes(true)

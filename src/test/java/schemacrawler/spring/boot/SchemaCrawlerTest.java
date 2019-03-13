@@ -276,8 +276,7 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	public void sequences() throws Exception {
 		try (final TestWriter out = new TestWriter("text");) {
 
-			final SchemaInfoLevel minimum = SchemaInfoLevelBuilder.minimum().setRetrieveSequenceInformation(true)
-					.toOptions();
+			final SchemaInfoLevel minimum = SchemaInfoLevelBuilder.minimum();
 
 			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
 					.tablecolumns(new IncludeAll(), "TABLE", "VIEW").withSchemaInfoLevel(minimum).toOptions();
@@ -305,8 +304,7 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	public void synonyms() throws Exception {
 		try (final TestWriter out = new TestWriter("text");) {
 
-			final SchemaInfoLevel minimum = SchemaInfoLevelBuilder.minimum().setRetrieveSynonymInformation(true)
-					.toOptions();
+			final SchemaInfoLevel minimum = SchemaInfoLevelBuilder.minimum();
 
 			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
 					.tablecolumns(new IncludeAll(), "TABLE", "VIEW").withSchemaInfoLevel(minimum).toOptions();

@@ -6,12 +6,12 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import schemacrawler.schema.Catalog;
-import schemacrawler.schemacrawler.DatabaseConnectionOptions;
 import schemacrawler.schemacrawler.IncludeAll;
 import schemacrawler.schemacrawler.InclusionRule;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
+import schemacrawler.tools.databaseconnector.DatabaseConnectionOptions;
 import schemacrawler.utility.SchemaCrawlerUtility;
 
 public abstract class BaseDatabaseTest {
