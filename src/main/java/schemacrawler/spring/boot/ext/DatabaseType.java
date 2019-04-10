@@ -77,6 +77,17 @@ public enum DatabaseType {
 	HIVE("hive", "Apache Hive", "org.apache.hive.jdbc.HiveDriver", 
 			"jdbc:hive2://[host-name]:[port]/[database-name]", "jdbc:hive2://%s:%d/%s", 10000, true),
 	/**
+	 * Apache Impala # jdbc:hive2://[host-name]:[port]/[database-name]
+	 */
+	IMPALA("impala", "Apache Impala", "org.apache.hive.jdbc.HiveDriver", 
+			"jdbc:hive2://[host-name]:[port]/[database-name]", "jdbc:hive2://%s:%d/%s", 10000, true),
+	/**
+	 * http://kylin.apache.org/docs/howto/howto_jdbc.html
+	 * Apache Kylin # jdbc:kylin://[host-name]:[port]/[database-name]
+	 */
+	KYLIN("kylin", "Apache Kylin", "org.apache.kylin.jdbc.Driver", 
+			"jdbc:kylin://[host-name]:[port]/[database-name]", "jdbc:kylin://%s:%d/%s", 10000, true),
+	/**
 	 * Mariadb # jdbc:mariadb://[host-name]:[port]/[database-name]
 	 */
 	MARIADB("mariadb", "Mariadb", "org.mariadb.jdbc.Driver", 
@@ -130,6 +141,17 @@ public enum DatabaseType {
 	 */
 	REDSHIFT("redshift", "Amazon Redshift", "com.amazon.redshift.jdbc41.Driver",
 			"jdbc:redshift://[host-name]:[port]/[database-name]", "jdbc:redshift://%s:%d/%s", 5439, true),
+	/**
+	 * https://github.com/xerial/sqlite-jdbc
+	 * SQLite Memory ： jdbc:redshift://[host-name]:[port]/[database-name]
+	 */
+	SQLITE_MEMORY("sqlite-memory", "SQLite Memory", "org.sqlite.JDBC", "jdbc:sqlite::memory:", "jdbc:sqlite::memory:", 0, true),
+	/**
+	 * https://github.com/xerial/sqlite-jdbc
+	 * SQLite Embedded ： jdbc:sqlite:[database-name]
+	 */
+	SQLITE_EMBEDDED("sqlite-embedded", "SQLite Embedded", "org.sqlite.JDBC", "jdbc:sqlite:[database-name]", "jdbc:sqlite:%s", 0, true),
+	
 	/**
 	 * Teradata # jdbc:teradata://[host-name]/DBS_PORT=[port],DATABASE=[database-name]
 	 */

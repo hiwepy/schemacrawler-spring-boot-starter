@@ -382,7 +382,7 @@
 		<schemacrawler-distrib.version>${schemacrawler.version}</schemacrawler-distrib.version>
 		<schemacrawler-lint.version>${schemacrawler.version}</schemacrawler-lint.version>
 		<schemacrawler-h2.version>14.09.03</schemacrawler-h2.version>
-		<schemacrawler-hive.version>1.0.0.RELEASE</schemacrawler-hive.version>
+		<schemacrawler-hive.version>1.0.0-SNAPSHOT</schemacrawler-hive.version>
 		<schemacrawler-hsqldb.version>${schemacrawler.version}</schemacrawler-hsqldb.version>
 		<schemacrawler-integrations.version>${schemacrawler.version}</schemacrawler-integrations.version> 
 		<schemacrawler-mysql.version>${schemacrawler.version}</schemacrawler-mysql.version>
@@ -497,6 +497,13 @@
 		    <groupId>us.fatehi</groupId>
 		    <artifactId>schemacrawler-hsqldb</artifactId>
 		    <version>${schemacrawler-hsqldb.version}</version>
+		    <optional>true</optional>
+		</dependency>
+		<!-- https://github.com/vindell/schemacrawler-hive -->
+		<dependency>
+		    <groupId>com.github.vindell</groupId>
+		    <artifactId>schemacrawler-hive</artifactId>
+		    <version>${schemacrawler-hive.version}</version>
 		    <optional>true</optional>
 		</dependency>
 		<!-- SchemaCrawler Integrations ： https://mvnrepository.com/artifact/us.fatehi/schemacrawler-integrations -->

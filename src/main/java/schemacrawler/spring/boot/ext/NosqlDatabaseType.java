@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
  */
 public enum NosqlDatabaseType {
 
-		/**
+	/**
 	 * Oracle Timesten Client # jdbc:timesten:client:DSN=[dsn-name];[dsn-attributes]
 	 */
 	ORACLE_TIMESTEN_CLIENT("oracle-timesten", "Oracle Timesten Client", "com.timesten.jdbc.TimesTenClientDriver",
