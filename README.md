@@ -1,4 +1,4 @@
-# spring-boot-starter-schemacrawler
+# schemacrawler-spring-boot-starter
 
 ### 说明
 
@@ -13,7 +13,7 @@
 ``` xml
 <dependency>
 	<groupId>com.github.vindell</groupId>
-	<artifactId>spring-boot-starter-schemacrawler</artifactId>
+	<artifactId>schemacrawler-spring-boot-starter</artifactId>
 	<version>${project.version}</version>
 </dependency>
 ```
