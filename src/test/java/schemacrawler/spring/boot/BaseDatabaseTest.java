@@ -3,29 +3,30 @@ package schemacrawler.spring.boot;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import javax.sql.DataSource;
-
 import schemacrawler.schema.Catalog;
 import schemacrawler.schemacrawler.IncludeAll;
 import schemacrawler.schemacrawler.InclusionRule;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
-import schemacrawler.tools.commandline.command.DatabaseUrlConnectionOptions;
+import schemacrawler.tools.databaseconnector.DatabaseConnectionSource;
+import schemacrawler.tools.databaseconnector.SingleUseUserCredentials;
 import schemacrawler.utility.SchemaCrawlerUtility;
 
 public abstract class BaseDatabaseTest {
 
-	protected DataSource dataSource;
+	protected DatabaseConnectionSource dataSource;
 
 	protected void setUp(String connectionUrl) throws Exception {
 		// Create a DataSource
-		dataSource = new DatabaseUrlConnectionOptions(connectionUrl);
+		dataSource = new DatabaseConnectionSource(connectionUrl);
 	}
 
 	protected Connection getConnection(String username, String password) throws SchemaCrawlerException, SQLException {
 		// Create a database connection
-		final Connection connection = dataSource.getConnection(username, password);
+		dataSource.setUserCredentials(new SingleUseUserCredentials(username, password));
+
+		final Connection connection = dataSource.get();
 		return connection;
 	}
 

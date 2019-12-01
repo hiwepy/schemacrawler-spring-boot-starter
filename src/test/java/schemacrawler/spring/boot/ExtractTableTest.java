@@ -52,7 +52,7 @@ public class ExtractTableTest extends BaseDatabaseTest {
 	@Test
 	public void extractTables() throws SchemaCrawlerException, SQLException {
 
-		final Connection connection = dataSource.getConnection("sa", "sa");
+		final Connection connection = dataSource.get();
 
 		System.out.println("my catalog =" + connection.getCatalog());
 		final String schemaName = "91118net";

@@ -3,8 +3,6 @@ package schemacrawler.spring.boot;
 import java.sql.Connection;
 import java.util.Arrays;
 
-import javax.sql.DataSource;
-
 import oracle.jdbc.OracleConnection;
 import schemacrawler.schema.Catalog;
 import schemacrawler.schema.Column;
@@ -18,7 +16,8 @@ import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaInfoLevel;
 import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
-import schemacrawler.tools.databaseconnector.DatabaseConnectionOptions;
+import schemacrawler.tools.databaseconnector.DatabaseConnectionSource;
+import schemacrawler.tools.databaseconnector.SingleUseUserCredentials;
 import schemacrawler.utility.SchemaCrawlerUtility;
 
 public final class ConnectionOptionsExample {
@@ -26,8 +25,12 @@ public final class ConnectionOptionsExample {
 	public static void main(final String[] args) throws Exception {
 
 		// Create a database connection
-		final DataSource dataSource = new DatabaseConnectionOptions("jdbc:oracle:thin:@127.0.0.1:1521:orcl");
-		final Connection connection = dataSource.getConnection("username", "password");
+		final String connectionUrl = "jdbc:oracle:thin:@127.0.0.1:1521:orcl";
+	    final DatabaseConnectionSource dataSource = new DatabaseConnectionSource(
+	      connectionUrl);
+	    dataSource.setUserCredentials(new SingleUseUserCredentials("username", "password"));
+		
+		final Connection connection =  dataSource.get();
 
 		// Set what details are required in the schema - this affects the
 		// time taken to crawl the schema

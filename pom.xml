@@ -596,13 +596,7 @@
 		    <groupId>us.fatehi</groupId>
 		    <artifactId>schemacrawler-timesten</artifactId>
 		    <version>${schemacrawler-timesten.version}</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/us.fatehi/schemacrawler-examplecode -->
-		<dependency>
-		    <groupId>us.fatehi</groupId>
-		    <artifactId>schemacrawler-examplecode</artifactId>
-		    <version>16.2.6</version>
-		     <scope>test</scope>
+		    <optional>true</optional>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 		<dependency>
