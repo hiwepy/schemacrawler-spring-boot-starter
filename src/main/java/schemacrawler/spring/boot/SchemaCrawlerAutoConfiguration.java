@@ -63,7 +63,7 @@ public class SchemaCrawlerAutoConfiguration implements ApplicationContextAware {
 						/*
 						 * InclusionRule routineInclusionRule; InclusionRule routineColumnInclusionRule;
 						 */
-						.includeRoutineColumns(rules.getRoutineColumnInclusionRule().inclusionRule())
+						//.includeRoutineColumns(rules.getRoutineColumnInclusionRule().inclusionRule())
 						.includeRoutines(rules.getRoutineInclusionRule().inclusionRule())
 						/*
 						 * InclusionRule grepColumnInclusionRule; InclusionRule
@@ -71,7 +71,8 @@ public class SchemaCrawlerAutoConfiguration implements ApplicationContextAware {
 						 */
 						.includeGreppedColumns(rules.getGrepColumnInclusionRule().inclusionRule())
 						.includeGreppedDefinitions(rules.getGrepDefinitionInclusionRule().inclusionRule())
-						.includeGreppedRoutineColumns(rules.getGrepRoutineColumnInclusionRule().inclusionRule());
+						//.includeGreppedRoutineColumns(rules.getGrepRoutineColumnInclusionRule().inclusionRule())
+						;
 
 				// reset options
 				crawlerOptions.setOptions(optionsBuilder.toOptions());

@@ -60,7 +60,7 @@ public final class SchemaCrawlerOptionBuilder {
 				.setRetrieveAdditionalTableAttributes(true)
 				.setRetrieveColumnDataTypes(true)
 				.setRetrieveIndexes(false)
-				.setRetrieveRoutineColumns(true)
+				.setRetrieveRoutines(true)
 				.setRetrieveTableColumns(true)
 				.setRetrieveUserDefinedColumnDataTypes(true)
 				.setRetrieveViewInformation(true);

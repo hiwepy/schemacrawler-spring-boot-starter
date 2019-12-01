@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.4.RELEASE</version>
+		<version>2.2.1.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
@@ -375,13 +375,11 @@
 		<oracle-10g-driver.version>10.2.0.5</oracle-10g-driver.version>
 		<oracle-11g-driver.version>11.2.0.4</oracle-11g-driver.version>
 		<oracle-12c-driver.version>12.1.0.2</oracle-12c-driver.version>
-		<schemacrawler.version>15.06.01</schemacrawler.version>
+		<schemacrawler.version>16.2.6</schemacrawler.version>
 		<schemacrawler-commandline.version>${schemacrawler.version}</schemacrawler-commandline.version>
 		<schemacrawler-db2.version>${schemacrawler.version}</schemacrawler-db2.version>
-		<schemacrawler-derby.version>14.03.03</schemacrawler-derby.version>
 		<schemacrawler-distrib.version>${schemacrawler.version}</schemacrawler-distrib.version>
 		<schemacrawler-lint.version>${schemacrawler.version}</schemacrawler-lint.version>
-		<schemacrawler-h2.version>14.09.03</schemacrawler-h2.version>
 		<schemacrawler-hive.version>1.0.0-SNAPSHOT</schemacrawler-hive.version>
 		<schemacrawler-hsqldb.version>${schemacrawler.version}</schemacrawler-hsqldb.version>
 		<schemacrawler-integrations.version>${schemacrawler.version}</schemacrawler-integrations.version> 
@@ -389,10 +387,8 @@
 		<schemacrawler-offline.version>${schemacrawler.version}</schemacrawler-offline.version>
 		<schemacrawler-oracle.version>${schemacrawler.version}</schemacrawler-oracle.version>  <!-- Note: 14.17.05 For Oracle 10g/11g -->
 		<schemacrawler-postgresql.version>${schemacrawler.version}</schemacrawler-postgresql.version>
-		<schemacrawler-sapiq.version>15.05.01</schemacrawler-sapiq.version>
 		<schemacrawler-sqlserver.version>${schemacrawler.version}</schemacrawler-sqlserver.version>
 		<schemacrawler-sqlite.version>${schemacrawler.version}</schemacrawler-sqlite.version>
-		<schemacrawler-timesten.version>15.05.01</schemacrawler-timesten.version>
 	</properties>
 
 	<dependencies>
@@ -485,13 +481,6 @@
 		    <version>${schemacrawler-mysql.version}</version>
 		    <optional>true</optional>
 		</dependency>
-		<!-- SchemaCrawler For H2 Database Engine : https://mvnrepository.com/artifact/us.fatehi/schemacrawler-h2 -->
-		<dependency>
-		    <groupId>us.fatehi</groupId>
-		    <artifactId>schemacrawler-h2</artifactId>
-		    <version>${schemacrawler-h2.version}</version>
-		    <optional>true</optional>
-		</dependency>
 		<!-- SchemaCrawler For HyperSQL ：https://mvnrepository.com/artifact/us.fatehi/schemacrawler-hsqldb -->
 		<dependency>
 		    <groupId>us.fatehi</groupId>
@@ -571,13 +560,6 @@
 		    <version>${schemacrawler-postgresql.version}</version>
 		    <optional>true</optional>
 		</dependency>
-		<!-- SchemaCrawler For SAP IQ ：https://mvnrepository.com/artifact/us.fatehi/schemacrawler-sapiq -->
-		<dependency>
-		    <groupId>us.fatehi</groupId>
-		    <artifactId>schemacrawler-sapiq</artifactId>
-		    <version>${schemacrawler-sapiq.version}</version>
-		    <optional>true</optional>
-		</dependency>
 		<!-- SchemaCrawler For Microsoft SQL Server ：https://mvnrepository.com/artifact/us.fatehi/schemacrawler-sqlserver -->
 		<dependency>
 		    <groupId>us.fatehi</groupId>
@@ -598,13 +580,6 @@
 		    <artifactId>schemacrawler-testdb</artifactId>
 		    <version>${schemacrawler.version}</version>
 		    <scope>test</scope>
-		</dependency>
-		<!-- SchemaCrawler For Oracle TimesTen ：https://mvnrepository.com/artifact/us.fatehi/schemacrawler-timesten -->
-		<dependency>
-		    <groupId>us.fatehi</groupId>
-		    <artifactId>schemacrawler-timesten</artifactId>
-		    <version>${schemacrawler-timesten.version}</version>
-		    <optional>true</optional>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 		<dependency>
