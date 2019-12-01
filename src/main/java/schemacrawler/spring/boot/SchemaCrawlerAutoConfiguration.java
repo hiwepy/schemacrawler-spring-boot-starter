@@ -79,7 +79,7 @@ public class SchemaCrawlerAutoConfiguration implements ApplicationContextAware {
 			}
 		}
 	   
-		return new DatabaseConnectorRegistry();
+		return DatabaseConnectorRegistry.getDatabaseConnectorRegistry();
 	}
 
 	@Bean
