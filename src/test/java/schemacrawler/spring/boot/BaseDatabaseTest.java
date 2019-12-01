@@ -11,7 +11,7 @@ import schemacrawler.schemacrawler.InclusionRule;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
-import schemacrawler.tools.databaseconnector.DatabaseConnectionOptions;
+import schemacrawler.tools.commandline.command.DatabaseUrlConnectionOptions;
 import schemacrawler.utility.SchemaCrawlerUtility;
 
 public abstract class BaseDatabaseTest {
@@ -20,7 +20,7 @@ public abstract class BaseDatabaseTest {
 
 	protected void setUp(String connectionUrl) throws Exception {
 		// Create a DataSource
-		dataSource = new DatabaseConnectionOptions(connectionUrl);
+		dataSource = new DatabaseUrlConnectionOptions(connectionUrl);
 	}
 
 	protected Connection getConnection(String username, String password) throws SchemaCrawlerException, SQLException {

@@ -379,6 +379,7 @@
 		<schemacrawler-commandline.version>${schemacrawler.version}</schemacrawler-commandline.version>
 		<schemacrawler-db2.version>${schemacrawler.version}</schemacrawler-db2.version>
 		<schemacrawler-distrib.version>${schemacrawler.version}</schemacrawler-distrib.version>
+		<schemacrawler-diff.version>${schemacrawler.version}</schemacrawler-diff.version>
 		<schemacrawler-lint.version>${schemacrawler.version}</schemacrawler-lint.version>
 		<schemacrawler-hive.version>1.0.0-SNAPSHOT</schemacrawler-hive.version>
 		<schemacrawler-hsqldb.version>${schemacrawler.version}</schemacrawler-hsqldb.version>
@@ -389,6 +390,8 @@
 		<schemacrawler-postgresql.version>${schemacrawler.version}</schemacrawler-postgresql.version>
 		<schemacrawler-sqlserver.version>${schemacrawler.version}</schemacrawler-sqlserver.version>
 		<schemacrawler-sqlite.version>${schemacrawler.version}</schemacrawler-sqlite.version>
+		<schemacrawler-sapiq.version>${schemacrawler.version}</schemacrawler-sapiq.version>
+		<schemacrawler-timesten.version>${schemacrawler.version}</schemacrawler-timesten.version>
 	</properties>
 
 	<dependencies>
@@ -465,6 +468,13 @@
 		    <groupId>us.fatehi</groupId>
 		    <artifactId>schemacrawler-distrib</artifactId>
 		    <version>${schemacrawler-distrib.version}</version>
+		    <optional>true</optional>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/us.fatehi/schemacrawler-diff -->
+		<dependency>
+		    <groupId>us.fatehi</groupId>
+		    <artifactId>schemacrawler-diff</artifactId>
+		    <version>${schemacrawler-diff.version}</version>
 		    <optional>true</optional>
 		</dependency>
 		<!-- SchemaCrawler Lint: https://mvnrepository.com/artifact/us.fatehi/schemacrawler-lint -->
@@ -574,12 +584,25 @@
 		    <version>${schemacrawler-sqlite.version}</version>
 		    <optional>true</optional>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/us.fatehi/schemacrawler-testdb -->
+		<!-- SchemaCrawler For Sapiq ：https://mvnrepository.com/artifact/us.fatehi/schemacrawler-sapiq -->
 		<dependency>
 		    <groupId>us.fatehi</groupId>
-		    <artifactId>schemacrawler-testdb</artifactId>
-		    <version>${schemacrawler.version}</version>
-		    <scope>test</scope>
+		    <artifactId>schemacrawler-sapiq</artifactId>
+		    <version>${schemacrawler-sapiq.version}</version>
+		    <optional>true</optional>
+		</dependency>
+		<!-- SchemaCrawler For Oracle TimesTen ：https://mvnrepository.com/artifact/us.fatehi/schemacrawler-timesten -->
+		<dependency>
+		    <groupId>us.fatehi</groupId>
+		    <artifactId>schemacrawler-timesten</artifactId>
+		    <version>${schemacrawler-timesten.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/us.fatehi/schemacrawler-examplecode -->
+		<dependency>
+		    <groupId>us.fatehi</groupId>
+		    <artifactId>schemacrawler-examplecode</artifactId>
+		    <version>16.2.6</version>
+		     <scope>test</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 		<dependency>

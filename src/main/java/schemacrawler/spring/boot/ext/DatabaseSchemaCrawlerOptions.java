@@ -8,8 +8,6 @@ import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
 import schemacrawler.tools.commandline.command.DatabaseConnectionOptions;
-import schemacrawler.tools.databaseconnector.SingleUseUserCredentials;
-import schemacrawler.tools.databaseconnector.UserCredentials;
 
 public class DatabaseSchemaCrawlerOptions {
 
@@ -83,10 +81,10 @@ public class DatabaseSchemaCrawlerOptions {
 	}
 
 	public DatabaseConnectionOptions toConnectionOptions() throws SchemaCrawlerException {
-		final UserCredentials userCredentials = new SingleUseUserCredentials(getUsername(), getPassword());
 		final Map<String, String> map = new HashMap<String, String>();
 		map.put(URL, getUrl());
-		final DatabaseConnectionOptions connectionOptions = new DatabaseConnectionOptions(userCredentials, map);
+		
+		final DatabaseConnectionOptions connectionOptions = new DatabaseConnectionOptions();
 		return connectionOptions;
 	}
 }
