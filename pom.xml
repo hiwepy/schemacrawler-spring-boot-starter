@@ -11,7 +11,7 @@
 	</parent>
 
 	<groupId>com.github.vindell</groupId>
-	<artifactId>spring-boot-starter-schemacrawler</artifactId>
+	<artifactId>schemacrawler-spring-boot-starter</artifactId>
 	<description>Spring Boot Starter For Schemacrawler</description>
 	<version>1.0.5-SNAPSHOT</version>
 	<name>${project.groupId}:${project.artifactId}</name>
