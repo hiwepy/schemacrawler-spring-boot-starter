@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.2.1.RELEASE</version>
+		<version>2.2.4.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
@@ -375,13 +375,12 @@
 		<oracle-10g-driver.version>10.2.0.5</oracle-10g-driver.version>
 		<oracle-11g-driver.version>11.2.0.4</oracle-11g-driver.version>
 		<oracle-12c-driver.version>12.1.0.2</oracle-12c-driver.version>
-		<schemacrawler.version>16.2.6</schemacrawler.version>
+		<schemacrawler.version>16.3.2</schemacrawler.version>
 		<schemacrawler-commandline.version>${schemacrawler.version}</schemacrawler-commandline.version>
 		<schemacrawler-db2.version>${schemacrawler.version}</schemacrawler-db2.version>
 		<schemacrawler-distrib.version>${schemacrawler.version}</schemacrawler-distrib.version>
 		<schemacrawler-diff.version>${schemacrawler.version}</schemacrawler-diff.version>
 		<schemacrawler-lint.version>${schemacrawler.version}</schemacrawler-lint.version>
-		<schemacrawler-hive.version>1.0.0-SNAPSHOT</schemacrawler-hive.version>
 		<schemacrawler-hsqldb.version>${schemacrawler.version}</schemacrawler-hsqldb.version>
 		<schemacrawler-integrations.version>${schemacrawler.version}</schemacrawler-integrations.version> 
 		<schemacrawler-mysql.version>${schemacrawler.version}</schemacrawler-mysql.version>
@@ -496,13 +495,6 @@
 		    <groupId>us.fatehi</groupId>
 		    <artifactId>schemacrawler-hsqldb</artifactId>
 		    <version>${schemacrawler-hsqldb.version}</version>
-		    <optional>true</optional>
-		</dependency>
-		<!-- https://github.com/hiwepy/schemacrawler-hive -->
-		<dependency>
-		    <groupId>com.github.hiwepy</groupId>
-		    <artifactId>schemacrawler-hive</artifactId>
-		    <version>${schemacrawler-hive.version}</version>
 		    <optional>true</optional>
 		</dependency>
 		<!-- SchemaCrawler Integrations ： https://mvnrepository.com/artifact/us.fatehi/schemacrawler-integrations -->
