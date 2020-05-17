@@ -372,10 +372,7 @@
         <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
         <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
 		<maven-nexus-staging-plugin.version>1.6.8</maven-nexus-staging-plugin.version>
-		<oracle-10g-driver.version>10.2.0.5</oracle-10g-driver.version>
-		<oracle-11g-driver.version>11.2.0.4</oracle-11g-driver.version>
-		<oracle-12c-driver.version>12.1.0.2</oracle-12c-driver.version>
-		<schemacrawler.version>16.5.3</schemacrawler.version>
+		<schemacrawler.version>16.7.2</schemacrawler.version>
 		<schemacrawler-commandline.version>${schemacrawler.version}</schemacrawler-commandline.version>
 		<schemacrawler-db2.version>${schemacrawler.version}</schemacrawler-db2.version>
 		<schemacrawler-distrib.version>${schemacrawler.version}</schemacrawler-distrib.version>
@@ -512,42 +509,16 @@
 		    <optional>true</optional>
 		</dependency>
 		<!-- JDBC Driver For Oracle -->
-		<!-- 
-			Oracle JDBC Driver. 
-			ojdbc14	: Classes for use with JDK 1.4 and 1.5.
-			ojdbc5	: Classes for use with JDK 1.5.
-			ojdbc6	: Classes for use with JDK 1.6.
-			ojdbc7	: Certified with JDK7 and JDK 8; 
-			It contains the JDBC driver classes except classes for NLS support in Oracle Object and Collection types.
-			特别注意：
-			1、因为Oracle数据库版本或JDK版本不同，此处需要根据实际情况调整不同的数据库驱动
-			2、Oracle 12C JDBC 连接要求:
-				(1)、需要jre 1.7 及以上版本
-				(2)、ojdbc jar包需要更换版本为ojdbc7 
-				(3)、连接字符串示例
-				原来写法
-				jdbc:oracle:thin:@127.0.0.1:1521:pdb1
-				需要变更为
-				jdbc:oracle:thin:@127.0.0.1:1521/pdb1
-		-->
-		<!-- <dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc14</artifactId>
-			<version>${oracle-10g-driver.version}</version>
-			<scope>test</scope>
-		</dependency> -->
-		<!-- <dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc6</artifactId>
-			<version>${oracle-11g-driver.version}</version>
-			<scope>test</scope>
-		</dependency> -->
 		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc6</artifactId>
-			<version>${oracle-12c-driver.version}</version>
-			<scope>test</scope>
+		    <groupId>com.oracle.ojdbc</groupId>
+		    <artifactId>ojdbc8</artifactId>
+		    <scope>test</scope>
 		</dependency>
+		<dependency>
+	        <groupId>com.oracle.ojdbc</groupId>
+	        <artifactId>ojdbc8dms</artifactId>
+	        <scope>test</scope>
+	    </dependency>
 		<!-- SchemaCrawler For PostgreSQL ：https://mvnrepository.com/artifact/us.fatehi/schemacrawler-postgresql -->
 		<dependency>
 		    <groupId>us.fatehi</groupId>

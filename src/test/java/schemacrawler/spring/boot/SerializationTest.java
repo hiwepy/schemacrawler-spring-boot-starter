@@ -36,10 +36,10 @@ import org.apache.commons.lang3.SerializationUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import schemacrawler.inclusionrule.InclusionRule;
+import schemacrawler.inclusionrule.RegularExpressionInclusionRule;
 import schemacrawler.schema.Catalog;
 import schemacrawler.schema.Schema;
-import schemacrawler.schemacrawler.InclusionRule;
-import schemacrawler.schemacrawler.RegularExpressionInclusionRule;
 
 public class SerializationTest extends BaseDatabaseTest {
 

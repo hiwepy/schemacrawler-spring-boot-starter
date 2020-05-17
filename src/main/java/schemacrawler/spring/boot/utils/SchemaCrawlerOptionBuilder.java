@@ -3,8 +3,8 @@ package schemacrawler.spring.boot.utils;
 import java.util.Arrays;
 import java.util.List;
 
-import schemacrawler.schemacrawler.IncludeAll;
-import schemacrawler.schemacrawler.InclusionRule;
+import schemacrawler.inclusionrule.IncludeAll;
+import schemacrawler.inclusionrule.InclusionRule;
 import schemacrawler.schemacrawler.InfoLevel;
 import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaInfoLevel;

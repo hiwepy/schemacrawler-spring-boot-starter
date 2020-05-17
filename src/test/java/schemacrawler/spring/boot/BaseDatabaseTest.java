@@ -3,9 +3,9 @@ package schemacrawler.spring.boot;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import schemacrawler.inclusionrule.IncludeAll;
+import schemacrawler.inclusionrule.InclusionRule;
 import schemacrawler.schema.Catalog;
-import schemacrawler.schemacrawler.IncludeAll;
-import schemacrawler.schemacrawler.InclusionRule;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;

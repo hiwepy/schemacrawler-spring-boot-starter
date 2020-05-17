@@ -1,9 +1,9 @@
 package schemacrawler.spring.boot.ext;
 
-import schemacrawler.schemacrawler.ExcludeAll;
-import schemacrawler.schemacrawler.IncludeAll;
-import schemacrawler.schemacrawler.InclusionRule;
-import schemacrawler.schemacrawler.RegularExpressionRule;
+import schemacrawler.inclusionrule.ExcludeAll;
+import schemacrawler.inclusionrule.IncludeAll;
+import schemacrawler.inclusionrule.InclusionRule;
+import schemacrawler.inclusionrule.RegularExpressionRule;
 
 public class SchemaCrawlerInclusionRule {
 

@@ -36,18 +36,16 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import schemacrawler.inclusionrule.IncludeAll;
+import schemacrawler.inclusionrule.InclusionRule;
+import schemacrawler.inclusionrule.RegularExpressionInclusionRule;
 import schemacrawler.schema.Catalog;
 import schemacrawler.schema.Schema;
 import schemacrawler.schema.Table;
-import schemacrawler.schemacrawler.IncludeAll;
-import schemacrawler.schemacrawler.InclusionRule;
-import schemacrawler.schemacrawler.RegularExpressionInclusionRule;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.spring.boot.utility.TestName;
 import schemacrawler.spring.boot.utility.TestWriter;
 import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
-import schemacrawler.tools.analysis.counts.CatalogWithCounts;
-import schemacrawler.tools.analysis.counts.CountsUtility;
 import schemacrawler.utility.NamedObjectSort;
 
 public class TableCountsTest extends BaseDatabaseTest {
@@ -71,19 +69,16 @@ public class TableCountsTest extends BaseDatabaseTest {
 			final Catalog baseCatalog = super.getCatalog("sa", "sa", options);
 
 			final SchemaCrawlerOptions schemaCrawlerOptions = SchemaCrawlerOptionBuilder.maximum().toOptions();
-
-			final CatalogWithCounts catalog = new CatalogWithCounts(baseCatalog, super.getConnection("sa", "sa"),
-					schemaCrawlerOptions);
-			final Schema[] schemas = catalog.getSchemas().toArray(new Schema[0]);
+			final Schema[] schemas = baseCatalog.getSchemas().toArray(new Schema[0]);
 			assertEquals("Schema count does not match", 5, schemas.length);
 			for (final Schema schema : schemas) {
 				out.println("schema: " + schema.getFullName());
-				final Table[] tables = catalog.getTables(schema).toArray(new Table[0]);
+				final Table[] tables = baseCatalog.getTables(schema).toArray(new Table[0]);
 				Arrays.sort(tables, NamedObjectSort.alphabetical);
 				for (final Table table : tables) {
 					out.println("  table: " + table.getFullName());
-					final long count = CountsUtility.getRowCount(table);
-					out.println(String.format("    row count: %d", count));
+					//final long count = SchemaCrawlerUtility.getRowCount(table);
+					//out.println(String.format("    row count: %d", count));
 				}
 			}
 

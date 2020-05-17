@@ -4,14 +4,14 @@ import java.sql.Connection;
 import java.util.Arrays;
 
 import oracle.jdbc.OracleConnection;
+import schemacrawler.inclusionrule.ExcludeAll;
+import schemacrawler.inclusionrule.IncludeAll;
+import schemacrawler.inclusionrule.RegularExpressionInclusionRule;
 import schemacrawler.schema.Catalog;
 import schemacrawler.schema.Column;
 import schemacrawler.schema.Schema;
 import schemacrawler.schema.Table;
 import schemacrawler.schema.View;
-import schemacrawler.schemacrawler.ExcludeAll;
-import schemacrawler.schemacrawler.IncludeAll;
-import schemacrawler.schemacrawler.RegularExpressionInclusionRule;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaInfoLevel;

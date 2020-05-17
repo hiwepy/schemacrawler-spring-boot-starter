@@ -3,7 +3,7 @@ package schemacrawler.spring.boot.ext;
 import java.util.HashMap;
 import java.util.Map;
 
-import schemacrawler.schemacrawler.IncludeAll;
+import schemacrawler.inclusionrule.IncludeAll;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
