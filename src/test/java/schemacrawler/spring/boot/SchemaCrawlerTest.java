@@ -64,8 +64,8 @@ import schemacrawler.schema.TableConstraintColumn;
 import schemacrawler.schema.TableRelationshipType;
 import schemacrawler.schema.Trigger;
 import schemacrawler.schema.View;
+import schemacrawler.schemacrawler.LimitOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
-import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaInfoLevel;
 import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
 import schemacrawler.schemacrawler.SchemaReference;
@@ -146,9 +146,17 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 
 			final InclusionRule schemaInclusionRule = new RegularExpressionInclusionRule("91118net");
 
+			final LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
+					// Set what details are required in the schema - this affects the
+					.includeSchemas(schemaInclusionRule)
+					.includeTables(new IncludeAll())
+					.tableTypes("TABLE", "VIEW");
+
+			// Create the options
 			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
-					.tablecolumns(new IncludeAll(), "TABLE", "VIEW")
-					.withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
+					.maximum()
+					.withLimitOptionsBuilder(limitOptionsBuilder)
+					.toOptions();
 
 			// Get the schema definition
 			final Catalog catalog = getCatalog("sa", "sa", options);
@@ -179,9 +187,17 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 		try (final TestWriter out = new TestWriter("text");) {
 			final InclusionRule schemaInclusionRule = new RegularExpressionInclusionRule("91118net");
 
+			final LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
+					// Set what details are required in the schema - this affects the
+					.includeSchemas(schemaInclusionRule)
+					.includeTables(new IncludeAll())
+					.tableTypes("TABLE", "VIEW");
+
+			// Create the options
 			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
-					.tablecolumns(new IncludeAll(), "TABLE", "VIEW")
-					.withSchemaInfoLevel(SchemaInfoLevelBuilder.standard()).toOptions();
+					.standard()
+					.withLimitOptionsBuilder(limitOptionsBuilder)
+					.toOptions();
 
 			// Get the schema definition
 			final Catalog catalog = getCatalog("sa", "sa", options);
@@ -205,9 +221,17 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 		try (final TestWriter out = new TestWriter("text");) {
 			final InclusionRule schemaInclusionRule = new RegularExpressionInclusionRule("91118net");
 
+			final LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
+					// Set what details are required in the schema - this affects the
+					.includeSchemas(schemaInclusionRule)
+					.includeTables(new IncludeAll())
+					.tableTypes("TABLE", "VIEW");
+
+			// Create the options
 			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
-					.tablecolumns(new IncludeAll(), "TABLE", "VIEW")
-					.withSchemaInfoLevel(SchemaInfoLevelBuilder.standard()).toOptions();
+					.standard()
+					.withLimitOptionsBuilder(limitOptionsBuilder)
+					.toOptions();
 
 			// Get the schema definition
 			final Catalog catalog = getCatalog("sa", "sa", options);
@@ -230,8 +254,17 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 
 		final InclusionRule schemaInclusionRule = new RegularExpressionInclusionRule("91118net");
 
-		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.tablecolumns(new IncludeAll(), "TABLE", "VIEW")
-				.withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
+		final LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
+				// Set what details are required in the schema - this affects the
+				.includeSchemas(schemaInclusionRule)
+				.includeTables(new IncludeAll())
+				.tableTypes("TABLE", "VIEW");
+
+		// Create the options
+		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
+				.maximum()
+				.withLimitOptionsBuilder(limitOptionsBuilder)
+				.toOptions();
 
 		// Get the schema definition
 		final Catalog catalog = getCatalog("sa", "sa", options);
@@ -248,10 +281,19 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	public void schemaEquals() throws Exception {
 
 		final InclusionRule schemaInclusionRule = new RegularExpressionInclusionRule("91118net");
+		
+		final LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
+				// Set what details are required in the schema - this affects the
+				.includeSchemas(schemaInclusionRule)
+				.includeTables(new IncludeAll())
+				.tableTypes("TABLE", "VIEW");
 
-		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.tablecolumns(new IncludeAll(), "TABLE", "VIEW")
-				.withSchemaInfoLevel(SchemaInfoLevelBuilder.detailed()).toOptions();
-
+		// Create the options
+		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
+				.detailed()
+				.withLimitOptionsBuilder(limitOptionsBuilder)
+				.toOptions();
+		
 		// Get the schema definition
 		final Catalog catalog = getCatalog("sa", "sa", options);
 
@@ -278,9 +320,17 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 
 			final SchemaInfoLevel minimum = SchemaInfoLevelBuilder.minimum();
 
-			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
-					.tablecolumns(new IncludeAll(), "TABLE", "VIEW").withSchemaInfoLevel(minimum).toOptions();
+			final LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
+					// Set what details are required in the schema - this affects the
+					.includeTables(new IncludeAll())
+					.tableTypes("TABLE", "VIEW");
 
+			// Create the options
+			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
+					.custom(minimum)
+					.withLimitOptionsBuilder(limitOptionsBuilder)
+					.toOptions();
+			
 			// Get the schema definition
 			final Catalog catalog = getCatalog("sa", "sa", options);
 			final Schema schema = catalog.lookupSchema("PUBLIC.BOOKS").get();
@@ -306,9 +356,17 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 
 			final SchemaInfoLevel minimum = SchemaInfoLevelBuilder.minimum();
 
-			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
-					.tablecolumns(new IncludeAll(), "TABLE", "VIEW").withSchemaInfoLevel(minimum).toOptions();
+			final LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
+					// Set what details are required in the schema - this affects the
+					.includeTables(new IncludeAll())
+					.tableTypes("TABLE", "VIEW");
 
+			// Create the options
+			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
+					.custom(minimum)
+					.withLimitOptionsBuilder(limitOptionsBuilder)
+					.toOptions();
+				
 			// Get the schema definition
 			final Catalog catalog = getCatalog("sa", "sa", options);
 			final Schema schema = catalog.lookupSchema("PUBLIC.BOOKS").get();
@@ -328,10 +386,17 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	@Test
 	public void tableConstraints() throws Exception {
 		try (final TestWriter out = new TestWriter("text");) {
+			
+			final LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
+					// Set what details are required in the schema - this affects the
+					.includeTables(new IncludeAll())
+					.tableTypes("TABLE", "VIEW");
 
+			// Create the options
 			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
-					.tablecolumns(new IncludeAll(), "TABLE", "VIEW")
-					.withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
+					.custom(SchemaInfoLevelBuilder.maximum())
+					.withLimitOptionsBuilder(limitOptionsBuilder)
+					.toOptions();
 
 			// Get the schema definition
 			final Catalog catalog = getCatalog("sa", "sa", options);
@@ -365,12 +430,19 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 	@Test
 	public void tables() throws Exception {
 		try (final TestWriter out = new TestWriter("text");) {
+			
+			final LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
+					// Set what details are required in the schema - this affects the
+					.includeSchemas(new RegularExpressionExclusionRule(".*\\.FOR_LINT"))
+					.includeTables(new IncludeAll())
+					.tableTypes("TABLE", "VIEW");
 
+			// Create the options
 			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
-					.tablecolumns(new IncludeAll(), "TABLE", "VIEW")
-					.withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum())
-					.includeSchemas(new RegularExpressionExclusionRule(".*\\.FOR_LINT")).toOptions();
-
+					.custom(SchemaInfoLevelBuilder.maximum())
+					.withLimitOptionsBuilder(limitOptionsBuilder)
+					.toOptions();
+			
 			// Get the schema definition
 			final Catalog catalog = getCatalog("sa", "sa", options);
 
@@ -399,9 +471,17 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 				"PUBLISHERS", "BOOKAUTHORS", "ΒΙΒΛΊΑ", "AUTHORSLIST" };
 		final Random rnd = new Random();
 
-		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.tablecolumns(new IncludeAll(), "TABLE", "VIEW")
-				.withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
+		final LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
+				// Set what details are required in the schema - this affects the
+				.includeTables(new IncludeAll())
+				.tableTypes("TABLE", "VIEW");
 
+		// Create the options
+		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
+				.custom(SchemaInfoLevelBuilder.maximum())
+				.withLimitOptionsBuilder(limitOptionsBuilder)
+				.toOptions();
+		
 		// Get the schema definition
 		final Catalog catalog = getCatalog("sa", "sa", options);
 		final Schema[] schemas = catalog.getSchemas().toArray(new Schema[0]);
@@ -440,9 +520,17 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 
 	@Test
 	public void triggers() throws Exception {
+		
+		final LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
+				// Set what details are required in the schema - this affects the
+				.includeTables(new IncludeAll())
+				.tableTypes("TABLE", "VIEW");
 
-		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.tablecolumns(new IncludeAll(), "TABLE", "VIEW")
-				.withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
+		// Create the options
+		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
+				.custom(SchemaInfoLevelBuilder.maximum())
+				.withLimitOptionsBuilder(limitOptionsBuilder)
+				.toOptions();
 
 		// Get the schema definition
 		final Catalog catalog = getCatalog("sa", "sa", options);
@@ -463,12 +551,20 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 
 	@Test
 	public void viewDefinitions() throws Exception {
+		
+		final LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
+				// Set what details are required in the schema - this affects the
+				.includeTables(new IncludeAll())
+				.tableTypes("VIEW");
 
-		final SchemaCrawlerOptionsBuilder schemaCrawlerOptionsBuilder = SchemaCrawlerOptionsBuilder.builder()
-				.tableTypes("VIEW").withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum());
+		// Create the options
+		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
+				.custom(SchemaInfoLevelBuilder.maximum())
+				.withLimitOptionsBuilder(limitOptionsBuilder)
+				.toOptions();
 
 		// Get the schema definition
-		final Catalog catalog = getCatalog("sa", "sa", schemaCrawlerOptionsBuilder.toOptions());
+		final Catalog catalog = getCatalog("sa", "sa", options);
 
 		final Schema schema = new SchemaReference("PUBLIC", "BOOKS");
 		final View view = (View) catalog.lookupTable(schema, "AUTHORSLIST").get();

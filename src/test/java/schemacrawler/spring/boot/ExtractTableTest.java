@@ -30,10 +30,10 @@ import schemacrawler.schema.Catalog;
 import schemacrawler.schema.Column;
 import schemacrawler.schema.Schema;
 import schemacrawler.schema.Table;
+import schemacrawler.schemacrawler.LimitOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
-import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
-import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
+import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
 import schemacrawler.utility.SchemaCrawlerUtility;
 
 /**
@@ -59,9 +59,17 @@ public class ExtractTableTest extends BaseDatabaseTest {
 
 		final InclusionRule schemaInclusionRule = new RegularExpressionInclusionRule(schemaName + ".*");
 
-		final SchemaCrawlerOptions options = SchemaCrawlerOptionsBuilder.builder().includeSchemas(schemaInclusionRule)
-				.withSchemaInfoLevel(SchemaInfoLevelBuilder.standard()).toOptions();
+		
+		final LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
+				// Set what details are required in the schema - this affects the
+				.includeSchemas(schemaInclusionRule);
 
+		// Create the options
+		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
+				.standard()
+				.withLimitOptionsBuilder(limitOptionsBuilder)
+				.toOptions();
+		
 		final Catalog catalog = SchemaCrawlerUtility.getCatalog(connection, options);
 		System.out.println("schem ! ");
 

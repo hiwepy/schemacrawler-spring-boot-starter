@@ -12,10 +12,11 @@ import schemacrawler.schema.Column;
 import schemacrawler.schema.Schema;
 import schemacrawler.schema.Table;
 import schemacrawler.schema.View;
+import schemacrawler.schemacrawler.LimitOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
-import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaInfoLevel;
 import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
+import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
 import schemacrawler.tools.databaseconnector.DatabaseConnectionSource;
 import schemacrawler.tools.databaseconnector.SingleUseUserCredentials;
 import schemacrawler.utility.SchemaCrawlerUtility;
@@ -37,15 +38,17 @@ public final class ConnectionOptionsExample {
 
 		SchemaInfoLevel schemaInfoLevel = SchemaInfoLevelBuilder.detailed();
 
+		final LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
+				.includeSchemas(new RegularExpressionInclusionRule("schemaName"))
+				.tableTypes(Arrays.asList("TABLE","VIEW"))
+				.includeRoutines(new ExcludeAll())
+				.includeColumns(new IncludeAll());
+
 		// Create the options
-		final SchemaCrawlerOptions options = SchemaCrawlerOptionsBuilder.builder()
-		// level.setRetrieveTableColumns(false);
-		.includeSchemas(new RegularExpressionInclusionRule("schemaName"))
-		.tableTypes(Arrays.asList("TABLE","VIEW"))
-		.includeRoutines(new ExcludeAll())
-		.includeColumns(new IncludeAll())
-		.withSchemaInfoLevel(schemaInfoLevel)
-		.toOptions();
+		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
+				.custom(schemaInfoLevel)
+				.withLimitOptionsBuilder(limitOptionsBuilder)
+				.toOptions();
 
 		// https://blog.csdn.net/hao7030187/article/details/56480735
 		//设置可以读取REMARKS

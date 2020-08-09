@@ -31,6 +31,7 @@ import schemacrawler.inclusionrule.IncludeAll;
 import schemacrawler.inclusionrule.InclusionRule;
 import schemacrawler.schema.Catalog;
 import schemacrawler.schema.RoutineType;
+import schemacrawler.schemacrawler.LimitOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.schemacrawler.SchemaCrawlerSQLException;
@@ -231,10 +232,14 @@ public class SchemaCrawlerTemplate {
 	 */
 	public Catalog crawl(final Connection connection, final InclusionRule schemaRule, final InclusionRule tableRule) throws SchemaCrawlerException {
 	    
-		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.standard()
+		final LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
+				// Set what details are required in the schema - this affects the
 				.routineTypes(Arrays.asList(RoutineType.procedure, RoutineType.unknown)) // RoutineType.function not supported by h2
 				.includeSchemas(schemaRule == null ? new IncludeAll() : schemaRule)
-				.includeTables(tableRule == null ? new IncludeAll() : tableRule)
+				.includeTables(tableRule == null ? new IncludeAll() : tableRule);
+		
+		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.standard()
+				.withLimitOptionsBuilder(limitOptionsBuilder)
 				.toOptions();
 
 	    try {
@@ -244,7 +249,6 @@ public class SchemaCrawlerTemplate {
 	        throw e;
 	    }
 	}
-	
 
 	/**
 	 *
@@ -280,10 +284,14 @@ public class SchemaCrawlerTemplate {
 	 */
 	public Catalog crawl(final ConnectionProvider connectionProvider, final InclusionRule schemaRule, final InclusionRule tableRule) throws SchemaCrawlerException, SQLException {
 		
-		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.standard()
+		final LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
+				// Set what details are required in the schema - this affects the
 				.routineTypes(Arrays.asList(RoutineType.procedure, RoutineType.unknown)) // RoutineType.function not supported by h2
 				.includeSchemas(schemaRule == null ? new IncludeAll() : schemaRule)
-				.includeTables(tableRule == null ? new IncludeAll() : tableRule)
+				.includeTables(tableRule == null ? new IncludeAll() : tableRule);
+		
+		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.standard()
+				.withLimitOptionsBuilder(limitOptionsBuilder)
 				.toOptions();
 
 	    try {

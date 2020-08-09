@@ -23,9 +23,10 @@ import schemacrawler.schema.Column;
 import schemacrawler.schema.Schema;
 import schemacrawler.schema.Table;
 import schemacrawler.schema.View;
+import schemacrawler.schemacrawler.LimitOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
-import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
+import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
 import schemacrawler.tools.databaseconnector.DatabaseConnectionSource;
 import schemacrawler.tools.databaseconnector.SingleUseUserCredentials;
 import schemacrawler.utility.SchemaCrawlerUtility;
@@ -38,14 +39,15 @@ public final class ApiExample
   {
 
     // Create the options
-    final SchemaCrawlerOptionsBuilder optionsBuilder = SchemaCrawlerOptionsBuilder
-      .builder()
-      // Set what details are required in the schema - this affects the
-      // time taken to crawl the schema
-      .withSchemaInfoLevel(SchemaInfoLevelBuilder.standard())
-      .includeSchemas(new RegularExpressionInclusionRule("PUBLIC.BOOKS"))
-      .includeTables(tableFullName -> !tableFullName.contains("ΒΙΒΛΊΑ"));
-    final SchemaCrawlerOptions options = optionsBuilder.toOptions();
+    
+   final LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
+    		.includeSchemas(new RegularExpressionInclusionRule("PUBLIC.BOOKS"))
+    		.includeTables(tableFullName -> !tableFullName.contains("ΒΙΒΛΊΑ"));
+	
+	final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
+			.custom(SchemaInfoLevelBuilder.standard())
+			.withLimitOptionsBuilder(limitOptionsBuilder)
+			.toOptions();
 
     // Get the schema definition
     final Catalog catalog = SchemaCrawlerUtility

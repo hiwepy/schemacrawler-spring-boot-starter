@@ -22,9 +22,9 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 
 import schemacrawler.inclusionrule.RegularExpressionInclusionRule;
+import schemacrawler.schemacrawler.LimitOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
-import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
-import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
+import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
 import schemacrawler.tools.databaseconnector.DatabaseConnectionSource;
 import schemacrawler.tools.databaseconnector.SingleUseUserCredentials;
 import schemacrawler.tools.executable.SchemaCrawlerExecutable;
@@ -32,59 +32,50 @@ import schemacrawler.tools.options.OutputOptions;
 import schemacrawler.tools.options.OutputOptionsBuilder;
 import schemacrawler.tools.options.TextOutputFormat;
 
-public final class ExecutableExample
-{
+public final class ExecutableExample {
 
-  public static void main(final String[] args)
-    throws Exception
-  {
+	public static void main(final String[] args) throws Exception {
 
-    // Create the options
-    final SchemaCrawlerOptionsBuilder optionsBuilder = SchemaCrawlerOptionsBuilder
-      .builder()
-      // Set what details are required in the schema - this affects the
-      // time taken to crawl the schema
-      .withSchemaInfoLevel(SchemaInfoLevelBuilder.standard())
-      .includeSchemas(new RegularExpressionInclusionRule("PUBLIC.BOOKS"));
-    final SchemaCrawlerOptions options = optionsBuilder.toOptions();
+		
+		final LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
+				// Set what details are required in the schema - this affects the
+				.includeSchemas(new RegularExpressionInclusionRule("PUBLIC.BOOKS"));
 
-    final Path outputFile = getOutputFile(args);
-    final OutputOptions outputOptions = OutputOptionsBuilder
-      .newOutputOptions(TextOutputFormat.html, outputFile);
-    final String command = "schema";
+		// Create the options
+		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
+				.standard()
+				.withLimitOptionsBuilder(limitOptionsBuilder)
+				.toOptions();
 
-    final SchemaCrawlerExecutable executable = new SchemaCrawlerExecutable(
-      command);
-    executable.setSchemaCrawlerOptions(options);
-    executable.setOutputOptions(outputOptions);
-    executable.setConnection(getConnection());
-    executable.execute();
+		final Path outputFile = getOutputFile(args);
+		final OutputOptions outputOptions = OutputOptionsBuilder.newOutputOptions(TextOutputFormat.html, outputFile);
+		final String command = "schema";
 
-    System.out.println("Created output file, " + outputFile);
-  }
+		final SchemaCrawlerExecutable executable = new SchemaCrawlerExecutable(command);
+		executable.setSchemaCrawlerOptions(options);
+		executable.setOutputOptions(outputOptions);
+		executable.setConnection(getConnection());
+		executable.execute();
 
-  private static Connection getConnection()
-  {
-    final String connectionUrl = "jdbc:hsqldb:hsql://localhost:9001/schemacrawler";
-    final DatabaseConnectionSource dataSource = new DatabaseConnectionSource(
-      connectionUrl);
-    dataSource.setUserCredentials(new SingleUseUserCredentials("sa", ""));
-    return dataSource.get();
-  }
+		System.out.println("Created output file, " + outputFile);
+	}
 
-  private static Path getOutputFile(final String[] args)
-  {
-    final String outputfile;
-    if (args != null && args.length > 0 && !isBlank(args[0]))
-    {
-      outputfile = args[0];
-    }
-    else
-    {
-      outputfile = "./schemacrawler_output.html";
-    }
-    final Path outputFile = Paths.get(outputfile).toAbsolutePath().normalize();
-    return outputFile;
-  }
+	private static Connection getConnection() {
+		final String connectionUrl = "jdbc:hsqldb:hsql://localhost:9001/schemacrawler";
+		final DatabaseConnectionSource dataSource = new DatabaseConnectionSource(connectionUrl);
+		dataSource.setUserCredentials(new SingleUseUserCredentials("sa", ""));
+		return dataSource.get();
+	}
+
+	private static Path getOutputFile(final String[] args) {
+		final String outputfile;
+		if (args != null && args.length > 0 && !isBlank(args[0])) {
+			outputfile = args[0];
+		} else {
+			outputfile = "./schemacrawler_output.html";
+		}
+		final Path outputFile = Paths.get(outputfile).toAbsolutePath().normalize();
+		return outputFile;
+	}
 
 }

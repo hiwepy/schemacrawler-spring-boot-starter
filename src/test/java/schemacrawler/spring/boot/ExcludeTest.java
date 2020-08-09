@@ -41,10 +41,11 @@ import schemacrawler.schema.Catalog;
 import schemacrawler.schema.Column;
 import schemacrawler.schema.Schema;
 import schemacrawler.schema.Table;
+import schemacrawler.schemacrawler.LimitOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
-import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
 import schemacrawler.spring.boot.utility.TestName;
 import schemacrawler.spring.boot.utility.TestWriter;
+import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
 import schemacrawler.utility.NamedObjectSort;
 import sf.util.SchemaCrawlerLogger;
 
@@ -58,9 +59,15 @@ public class ExcludeTest extends BaseDatabaseTest {
 	@Test
 	public void excludeColumns() throws Exception {
 		try (final TestWriter out = new TestWriter("text");) {
-			final SchemaCrawlerOptions schemaCrawlerOptions = SchemaCrawlerOptionsBuilder.builder()
+			
+			final LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
 					.includeSchemas(new RegularExpressionExclusionRule(".*\\.FOR_LINT"))
-					.includeColumns(new RegularExpressionExclusionRule(".*\\..*\\.ID"))
+					.includeColumns(new RegularExpressionExclusionRule(".*\\..*\\.ID"));
+
+			// Create the options
+			final SchemaCrawlerOptions schemaCrawlerOptions = SchemaCrawlerOptionBuilder
+					.standard()
+					.withLimitOptionsBuilder(limitOptionsBuilder)
 					.toOptions();
 
 			final Catalog catalog = getCatalog("sa", "sa", schemaCrawlerOptions);

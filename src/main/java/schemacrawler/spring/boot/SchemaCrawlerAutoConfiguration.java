@@ -16,8 +16,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ObjectUtils;
 
 import schemacrawler.crawl.SchemaCrawler;
+import schemacrawler.schemacrawler.GrepOptionsBuilder;
+import schemacrawler.schemacrawler.LimitOptionsBuilder;
+import schemacrawler.schemacrawler.LoadOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
+import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
 import schemacrawler.spring.boot.ext.ConnectionProvider;
 import schemacrawler.spring.boot.ext.DatabaseSchemaCrawlerOptions;
 import schemacrawler.spring.boot.ext.SchemaCrawlerConnectionProvider;
@@ -30,15 +34,16 @@ import schemacrawler.tools.databaseconnector.DatabaseConnectorRegistry;
 @EnableConfigurationProperties({ SchemaCrawlerProperties.class })
 public class SchemaCrawlerAutoConfiguration implements ApplicationContextAware {
 
-	//private static final Logger LOG = LoggerFactory.getLogger(SchemaCrawlerAutoConfiguration.class);
+	// private static final Logger LOG =
+	// LoggerFactory.getLogger(SchemaCrawlerAutoConfiguration.class);
 	private ApplicationContext applicationContext;
 	@Autowired
 	private SchemaCrawlerProperties properties;
 
 	@Bean
 	public DatabaseConnectorRegistry databaseConnectorRegistry() throws SchemaCrawlerException {
-		
-		// 
+
+		//
 		Iterator<DatabaseSchemaCrawlerOptions> ite = properties.getCrawlerOptions().iterator();
 		while (ite.hasNext()) {
 			DatabaseSchemaCrawlerOptions crawlerOptions = ite.next();
@@ -46,11 +51,20 @@ public class SchemaCrawlerAutoConfiguration implements ApplicationContextAware {
 			SchemaCrawlerInclusionRules rules = crawlerOptions.getRules();
 			if (!ObjectUtils.isEmpty(rules)) {
 
-				SchemaCrawlerOptionsBuilder optionsBuilder = SchemaCrawlerOptionsBuilder.builder()
-						.fromOptions(crawlerOptions.getOptions())
+				final GrepOptionsBuilder grepOptionsBuilder = GrepOptionsBuilder.builder()
 						/*
-						 * InclusionRule schemaInclusionRule; InclusionRule synonymInclusionRule;
-						 * InclusionRule sequenceInclusionRule;
+						 * InclusionRule grepColumnInclusionRule; InclusionRule
+						 * grepRoutineColumnInclusionRule; InclusionRule grepDefinitionInclusionRule;
+						 */
+						.includeGreppedColumns(rules.getGrepColumnInclusionRule().inclusionRule())
+						.includeGreppedDefinitions(rules.getGrepDefinitionInclusionRule().inclusionRule())
+				// .includeGreppedRoutineColumns(rules.getGrepRoutineColumnInclusionRule().inclusionRule())
+				;
+
+				final LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
+						// Set what details are required in the schema - this affects the
+						/*
+						 * InclusionRule schemaInclusionRule; InclusionRule synonymInclusionRule; InclusionRule sequenceInclusionRule;
 						 */
 						.includeSchemas(rules.getSchemaInclusionRule().inclusionRule())
 						.includeSequences(rules.getSequenceInclusionRule().inclusionRule())
@@ -63,22 +77,23 @@ public class SchemaCrawlerAutoConfiguration implements ApplicationContextAware {
 						/*
 						 * InclusionRule routineInclusionRule; InclusionRule routineColumnInclusionRule;
 						 */
-						//.includeRoutineColumns(rules.getRoutineColumnInclusionRule().inclusionRule())
-						.includeRoutines(rules.getRoutineInclusionRule().inclusionRule())
-						/*
-						 * InclusionRule grepColumnInclusionRule; InclusionRule
-						 * grepRoutineColumnInclusionRule; InclusionRule grepDefinitionInclusionRule;
-						 */
-						.includeGreppedColumns(rules.getGrepColumnInclusionRule().inclusionRule())
-						.includeGreppedDefinitions(rules.getGrepDefinitionInclusionRule().inclusionRule())
-						//.includeGreppedRoutineColumns(rules.getGrepRoutineColumnInclusionRule().inclusionRule())
-						;
+						// .includeRoutineColumns(rules.getRoutineColumnInclusionRule().inclusionRule())
+						.includeRoutines(rules.getRoutineInclusionRule().inclusionRule());
+
+				final LoadOptionsBuilder loadOptionsBuilder = LoadOptionsBuilder.builder()
+						.withSchemaInfoLevel(SchemaInfoLevelBuilder.standard());
+
+				final SchemaCrawlerOptionsBuilder optionsBuilder = SchemaCrawlerOptionsBuilder.builder()
+						.fromOptions(crawlerOptions.getOptions())
+						// .withFilterOptions(filterOptions)
+						.withGrepOptionsBuilder(grepOptionsBuilder).withLimitOptionsBuilder(limitOptionsBuilder)
+						.withLoadOptionsBuilder(loadOptionsBuilder);
 
 				// reset options
 				crawlerOptions.setOptions(optionsBuilder.toOptions());
 			}
 		}
-	   
+
 		return DatabaseConnectorRegistry.getDatabaseConnectorRegistry();
 	}
 
