@@ -36,6 +36,7 @@ import java.util.logging.Level;
 import org.junit.Rule;
 import org.junit.Test;
 
+import schemacrawler.SchemaCrawlerLogger;
 import schemacrawler.inclusionrule.RegularExpressionExclusionRule;
 import schemacrawler.schema.Catalog;
 import schemacrawler.schema.Column;
@@ -47,7 +48,6 @@ import schemacrawler.spring.boot.utility.TestName;
 import schemacrawler.spring.boot.utility.TestWriter;
 import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
 import schemacrawler.utility.NamedObjectSort;
-import sf.util.SchemaCrawlerLogger;
 
 public class ExcludeTest extends BaseDatabaseTest {
 
@@ -67,8 +67,7 @@ public class ExcludeTest extends BaseDatabaseTest {
 			// Create the options
 			final SchemaCrawlerOptions schemaCrawlerOptions = SchemaCrawlerOptionBuilder
 					.standard()
-					.withLimitOptionsBuilder(limitOptionsBuilder)
-					.toOptions();
+					.withLimitOptions(limitOptionsBuilder.toOptions());
 
 			final Catalog catalog = getCatalog("sa", "sa", schemaCrawlerOptions);
 			final Schema[] schemas = catalog.getSchemas().toArray(new Schema[0]);

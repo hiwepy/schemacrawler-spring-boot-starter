@@ -16,10 +16,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ObjectUtils;
 
 import schemacrawler.crawl.SchemaCrawler;
+import schemacrawler.schemacrawler.FilterOptionsBuilder;
+import schemacrawler.schemacrawler.GrepOptions;
 import schemacrawler.schemacrawler.GrepOptionsBuilder;
+import schemacrawler.schemacrawler.LimitOptions;
 import schemacrawler.schemacrawler.LimitOptionsBuilder;
+import schemacrawler.schemacrawler.LoadOptions;
 import schemacrawler.schemacrawler.LoadOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
+import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
 import schemacrawler.spring.boot.ext.ConnectionProvider;
@@ -51,7 +56,7 @@ public class SchemaCrawlerAutoConfiguration implements ApplicationContextAware {
 			SchemaCrawlerInclusionRules rules = crawlerOptions.getRules();
 			if (!ObjectUtils.isEmpty(rules)) {
 
-				final GrepOptionsBuilder grepOptionsBuilder = GrepOptionsBuilder.builder()
+				final GrepOptions grepOptions = GrepOptionsBuilder.builder()
 						/*
 						 * InclusionRule grepColumnInclusionRule; InclusionRule
 						 * grepRoutineColumnInclusionRule; InclusionRule grepDefinitionInclusionRule;
@@ -59,9 +64,9 @@ public class SchemaCrawlerAutoConfiguration implements ApplicationContextAware {
 						.includeGreppedColumns(rules.getGrepColumnInclusionRule().inclusionRule())
 						.includeGreppedDefinitions(rules.getGrepDefinitionInclusionRule().inclusionRule())
 				// .includeGreppedRoutineColumns(rules.getGrepRoutineColumnInclusionRule().inclusionRule())
-				;
+						.toOptions();
 
-				final LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
+				final LimitOptions limitOptions = LimitOptionsBuilder.builder()
 						// Set what details are required in the schema - this affects the
 						/*
 						 * InclusionRule schemaInclusionRule; InclusionRule synonymInclusionRule; InclusionRule sequenceInclusionRule;
@@ -78,19 +83,21 @@ public class SchemaCrawlerAutoConfiguration implements ApplicationContextAware {
 						 * InclusionRule routineInclusionRule; InclusionRule routineColumnInclusionRule;
 						 */
 						// .includeRoutineColumns(rules.getRoutineColumnInclusionRule().inclusionRule())
-						.includeRoutines(rules.getRoutineInclusionRule().inclusionRule());
-
-				final LoadOptionsBuilder loadOptionsBuilder = LoadOptionsBuilder.builder()
-						.withSchemaInfoLevel(SchemaInfoLevelBuilder.standard());
-
-				final SchemaCrawlerOptionsBuilder optionsBuilder = SchemaCrawlerOptionsBuilder.builder()
-						.fromOptions(crawlerOptions.getOptions())
-						// .withFilterOptions(filterOptions)
-						.withGrepOptionsBuilder(grepOptionsBuilder).withLimitOptionsBuilder(limitOptionsBuilder)
-						.withLoadOptionsBuilder(loadOptionsBuilder);
+						.includeRoutines(rules.getRoutineInclusionRule().inclusionRule())
+						.toOptions();
+				
+				LoadOptions loadOptions = LoadOptionsBuilder.builder()
+						.withSchemaInfoLevel(SchemaInfoLevelBuilder.standard()).toOptions();
+				
+				SchemaCrawlerOptions schemaCrawlerOptions =  SchemaCrawlerOptionsBuilder
+						.newSchemaCrawlerOptions()
+						.withFilterOptions(FilterOptionsBuilder.newFilterOptions())
+						.withGrepOptions(grepOptions) 
+						.withLimitOptions(limitOptions)
+						.withLoadOptions(loadOptions);
 
 				// reset options
-				crawlerOptions.setOptions(optionsBuilder.toOptions());
+				crawlerOptions.setOptions(schemaCrawlerOptions);
 			}
 		}
 

@@ -15,11 +15,11 @@
  */
 package schemacrawler.spring.boot;
 
-import static sf.util.Utility.isBlank;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
+
+import org.springframework.util.StringUtils;
 
 import schemacrawler.inclusionrule.RegularExpressionInclusionRule;
 import schemacrawler.schemacrawler.LimitOptionsBuilder;
@@ -44,8 +44,7 @@ public final class ExecutableExample {
 		// Create the options
 		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
 				.standard()
-				.withLimitOptionsBuilder(limitOptionsBuilder)
-				.toOptions();
+				.withLimitOptions(limitOptionsBuilder.toOptions());
 
 		final Path outputFile = getOutputFile(args);
 		final OutputOptions outputOptions = OutputOptionsBuilder.newOutputOptions(TextOutputFormat.html, outputFile);
@@ -69,7 +68,7 @@ public final class ExecutableExample {
 
 	private static Path getOutputFile(final String[] args) {
 		final String outputfile;
-		if (args != null && args.length > 0 && !isBlank(args[0])) {
+		if (args != null && args.length > 0 && StringUtils.hasText(args[0])) {
 			outputfile = args[0];
 		} else {
 			outputfile = "./schemacrawler_output.html";

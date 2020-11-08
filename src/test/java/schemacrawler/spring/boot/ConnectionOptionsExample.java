@@ -47,8 +47,7 @@ public final class ConnectionOptionsExample {
 		// Create the options
 		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
 				.custom(schemaInfoLevel)
-				.withLimitOptionsBuilder(limitOptionsBuilder)
-				.toOptions();
+				.withLimitOptions(limitOptionsBuilder.toOptions());
 
 		// https://blog.csdn.net/hao7030187/article/details/56480735
 		//设置可以读取REMARKS

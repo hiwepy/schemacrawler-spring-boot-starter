@@ -32,8 +32,7 @@ public abstract class BaseDatabaseTest {
 
 	protected Catalog getCatalog(String username, String password, InclusionRule schemaInclusionRule) throws Exception {
 
-		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.tablecolumns(new IncludeAll(), "TABLE", "VIEW")
-				.toOptions();
+		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.tablecolumns(new IncludeAll(), "TABLE", "VIEW");
 
 		// Get the schema definition
 		final Catalog catalog = SchemaCrawlerUtility.getCatalog(getConnection(username, password), options);

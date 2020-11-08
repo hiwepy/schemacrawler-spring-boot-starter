@@ -46,8 +46,7 @@ public final class ApiExample
 	
 	final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
 			.custom(SchemaInfoLevelBuilder.standard())
-			.withLimitOptionsBuilder(limitOptionsBuilder)
-			.toOptions();
+			.withLimitOptions(limitOptionsBuilder.toOptions());
 
     // Get the schema definition
     final Catalog catalog = SchemaCrawlerUtility

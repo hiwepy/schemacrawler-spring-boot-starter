@@ -34,7 +34,6 @@ import schemacrawler.schema.RoutineType;
 import schemacrawler.schemacrawler.LimitOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
-import schemacrawler.schemacrawler.SchemaCrawlerSQLException;
 import schemacrawler.schemacrawler.SchemaInfoLevel;
 import schemacrawler.schemacrawler.SchemaRetrievalOptions;
 import schemacrawler.schemacrawler.SchemaRetrievalOptionsBuilder;
@@ -43,8 +42,8 @@ import schemacrawler.spring.boot.ext.DatabaseSchemaCrawlerOptions;
 import schemacrawler.spring.boot.ext.DatabaseType;
 import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
 import schemacrawler.utility.SchemaCrawlerUtility;
-import sf.util.DatabaseUtility;
-import sf.util.ObjectToString;
+import us.fatehi.utility.DatabaseUtility;
+import us.fatehi.utility.ObjectToString;
 
 public class SchemaCrawlerTemplate {
 	
@@ -65,7 +64,7 @@ public class SchemaCrawlerTemplate {
 				return crawlerOptions.getOptions();
 			}
 		}
-		return SchemaCrawlerOptionBuilder.standard().toOptions();
+		return SchemaCrawlerOptionBuilder.standard();
 	}
 
 	/**
@@ -165,11 +164,11 @@ public class SchemaCrawlerTemplate {
      * @param schemaCrawlerOptions SchemaCrawler options
 	 * @return The populated {@link Catalog} object containing the metadata for the extractor
 	 * @throws SchemaCrawlerException Gets thrown when the database could not be crawled successfully
-	 * @throws SchemaCrawlerSQLException Gets thrown when the database could not be crawled successfully
+	 * @throws SQLException Gets thrown when the database could not be crawled successfully
 	 */
 	public Catalog crawl(final Connection connection,
             final SchemaRetrievalOptions schemaRetrievalOptions,
-            final SchemaCrawlerOptions schemaCrawlerOptions) throws SchemaCrawlerException, SchemaCrawlerSQLException {
+            final SchemaCrawlerOptions schemaCrawlerOptions) throws SchemaCrawlerException, SQLException {
 		try {
 			
 			DatabaseUtility.checkConnection(connection);
@@ -194,9 +193,9 @@ public class SchemaCrawlerTemplate {
 	 * @param schemaCrawlerOptions The {@link SchemaCrawlerOptions} Options.
 	 * @return The populated {@link Catalog} object containing the metadata for the extractor
 	 * @throws SchemaCrawlerException Gets thrown when the database could not be crawled successfully
-	 * @throws SchemaCrawlerSQLException Gets thrown when the database could not be crawled successfully
+	 * @throws SQLException Gets thrown when the database could not be crawled successfully
 	 */
-	public Catalog crawl(final Connection connection, final SchemaCrawlerOptions schemaCrawlerOptions) throws SchemaCrawlerException, SchemaCrawlerSQLException {
+	public Catalog crawl(final Connection connection, final SchemaCrawlerOptions schemaCrawlerOptions) throws SchemaCrawlerException, SQLException {
 		return crawl(connection, SchemaRetrievalOptionsBuilder.newSchemaRetrievalOptions(), schemaCrawlerOptions);
 	}
 	
@@ -211,7 +210,7 @@ public class SchemaCrawlerTemplate {
 	 */
 	public Catalog crawl(final Connection connection, final SchemaInfoLevel schemaInfoLevel) throws SchemaCrawlerException {
 	    try {
-	    	final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.custom(schemaInfoLevel).toOptions();
+	    	final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.custom(schemaInfoLevel);
 	        return SchemaCrawlerUtility.getCatalog(connection, options);
 	    } catch (SchemaCrawlerException e) {
 	        LOGGER.error("Schema crawling failed with exception", e);
@@ -239,8 +238,7 @@ public class SchemaCrawlerTemplate {
 				.includeTables(tableRule == null ? new IncludeAll() : tableRule);
 		
 		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.standard()
-				.withLimitOptionsBuilder(limitOptionsBuilder)
-				.toOptions();
+				.withLimitOptions( limitOptionsBuilder.toOptions());
 
 	    try {
 	        return SchemaCrawlerUtility.getCatalog(connection, options);
@@ -262,7 +260,7 @@ public class SchemaCrawlerTemplate {
 	 */
 	public Catalog crawl(final ConnectionProvider connectionProvider, final SchemaInfoLevel schemaInfoLevel) throws SchemaCrawlerException, SQLException {
 	    try {
-	    	final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.custom(schemaInfoLevel).toOptions();
+	    	final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.custom(schemaInfoLevel);
 	        return SchemaCrawlerUtility.getCatalog(connectionProvider.getConnection(), options);
 	    } catch (SchemaCrawlerException e) {
 	        LOGGER.error("Schema crawling failed with exception", e);
@@ -291,8 +289,7 @@ public class SchemaCrawlerTemplate {
 				.includeTables(tableRule == null ? new IncludeAll() : tableRule);
 		
 		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.standard()
-				.withLimitOptionsBuilder(limitOptionsBuilder)
-				.toOptions();
+				.withLimitOptions( limitOptionsBuilder.toOptions());
 
 	    try {
 	        return SchemaCrawlerUtility.getCatalog(connectionProvider.getConnection(), options);

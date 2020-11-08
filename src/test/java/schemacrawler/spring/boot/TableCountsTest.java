@@ -65,10 +65,10 @@ public class TableCountsTest extends BaseDatabaseTest {
 
 			final InclusionRule schemaInclusionRule = new RegularExpressionInclusionRule("91118net");
 			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
-					.tablecolumns(new IncludeAll(), "TABLE", "VIEW").toOptions();
+					.tablecolumns(new IncludeAll(), "TABLE", "VIEW");
 			final Catalog baseCatalog = super.getCatalog("sa", "sa", options);
 
-			final SchemaCrawlerOptions schemaCrawlerOptions = SchemaCrawlerOptionBuilder.maximum().toOptions();
+			final SchemaCrawlerOptions schemaCrawlerOptions = SchemaCrawlerOptionBuilder.maximum();
 			final Schema[] schemas = baseCatalog.getSchemas().toArray(new Schema[0]);
 			assertEquals("Schema count does not match", 5, schemas.length);
 			for (final Schema schema : schemas) {

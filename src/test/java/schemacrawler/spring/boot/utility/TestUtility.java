@@ -43,7 +43,6 @@ import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 import static java.nio.file.StandardOpenOption.WRITE;
 import static java.util.Objects.requireNonNull;
 import static org.junit.Assert.assertTrue;
-import static sf.util.IOUtility.isFileReadable;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -83,7 +82,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 
-import sf.util.IOUtility;
+import us.fatehi.utility.IOUtility;
 
 public final class TestUtility {
 
@@ -125,7 +124,7 @@ public final class TestUtility {
 		requireNonNull(testOutputTempFile, "Output file is not defined");
 		requireNonNull(outputFormat, "Output format is not defined");
 
-		if (!isFileReadable(testOutputTempFile)) {
+		if (!IOUtility.isFileReadable(testOutputTempFile)) {
 			return Collections.singletonList("Output file not created - " + testOutputTempFile);
 		}
 

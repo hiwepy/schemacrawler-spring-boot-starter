@@ -28,8 +28,6 @@ http://www.gnu.org/licenses/
 package schemacrawler.spring.boot.ext.command;
 
 import static java.util.Objects.requireNonNull;
-import static sf.util.Utility.containsWhitespace;
-import static sf.util.Utility.isBlank;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -46,7 +44,9 @@ import java.util.concurrent.FutureTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import sf.util.StringFormat;
+import org.springframework.util.StringUtils;
+
+import us.fatehi.utility.string.StringFormat;
 
 public class ProcessExecutor implements Callable<Integer> {
 
@@ -136,9 +136,9 @@ public class ProcessExecutor implements Callable<Integer> {
 
 		command = new ArrayList<String>();
 		for (final String arg : args) {
-			if (isBlank(arg)) {
+			if (StringUtils.hasText(arg)) {
 				continue;
-			} else if (containsWhitespace(arg)) {
+			} else if (StringUtils.containsWhitespace(arg)) {
 				command.add(String.format("\"%s\"", arg));
 			} else {
 				command.add(arg);

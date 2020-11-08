@@ -25,8 +25,7 @@ public class CatalogTest {
 			
 		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
 				.custom(SchemaInfoLevelBuilder.standard())
-				.withLimitOptionsBuilder(limitOptionsBuilder)
-				.toOptions();
+				.withLimitOptions(limitOptionsBuilder.toOptions());
 			
 		final Catalog catalog = SchemaCrawlerUtility.getCatalog(connection, options);
 

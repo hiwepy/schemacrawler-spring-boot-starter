@@ -39,7 +39,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import sf.util.TemplatingUtility;
+import us.fatehi.utility.TemplatingUtility;
 
 public class TemplatingTest {
 

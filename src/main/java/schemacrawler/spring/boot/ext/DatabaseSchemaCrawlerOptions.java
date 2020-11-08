@@ -1,18 +1,14 @@
 package schemacrawler.spring.boot.ext;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import schemacrawler.inclusionrule.IncludeAll;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
-import schemacrawler.tools.commandline.command.DatabaseConnectionOptions;
+import schemacrawler.tools.databaseconnector.DatabaseConnectionOptions;
+import schemacrawler.tools.databaseconnector.DatabaseUrlConnectionOptions;
 
 public class DatabaseSchemaCrawlerOptions {
 
-	private static final String URL = "url";
-	 
 	/** 数据库类型 */
 	private DatabaseType type;
 	/**
@@ -28,7 +24,7 @@ public class DatabaseSchemaCrawlerOptions {
 	 */
 	private String password;
 	/** 数据库Schema获取操作配置 */
-	private SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.tablecolumns(new IncludeAll()).toOptions();
+	private SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.tablecolumns(new IncludeAll());
 	/** 数据库Schema获取操作配置，扩展InclusionRule不方便设置问题 */
 	private SchemaCrawlerInclusionRules rules = new SchemaCrawlerInclusionRules();
 
@@ -81,10 +77,7 @@ public class DatabaseSchemaCrawlerOptions {
 	}
 
 	public DatabaseConnectionOptions toConnectionOptions() throws SchemaCrawlerException {
-		final Map<String, String> map = new HashMap<String, String>();
-		map.put(URL, getUrl());
-		
-		final DatabaseConnectionOptions connectionOptions = new DatabaseConnectionOptions();
+		final DatabaseConnectionOptions connectionOptions = new DatabaseUrlConnectionOptions(getUrl());
 		return connectionOptions;
 	}
 }

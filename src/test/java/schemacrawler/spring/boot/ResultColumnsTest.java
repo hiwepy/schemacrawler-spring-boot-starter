@@ -39,12 +39,12 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import schemacrawler.SchemaCrawlerLogger;
 import schemacrawler.schema.ResultsColumn;
 import schemacrawler.schema.ResultsColumns;
 import schemacrawler.spring.boot.utility.TestName;
 import schemacrawler.spring.boot.utility.TestWriter;
 import schemacrawler.utility.SchemaCrawlerUtility;
-import sf.util.SchemaCrawlerLogger;
 
 public class ResultColumnsTest extends BaseDatabaseTest {
 

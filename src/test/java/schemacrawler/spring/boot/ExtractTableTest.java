@@ -67,8 +67,7 @@ public class ExtractTableTest extends BaseDatabaseTest {
 		// Create the options
 		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
 				.standard()
-				.withLimitOptionsBuilder(limitOptionsBuilder)
-				.toOptions();
+				.withLimitOptions(limitOptionsBuilder.toOptions());
 		
 		final Catalog catalog = SchemaCrawlerUtility.getCatalog(connection, options);
 		System.out.println("schem ! ");

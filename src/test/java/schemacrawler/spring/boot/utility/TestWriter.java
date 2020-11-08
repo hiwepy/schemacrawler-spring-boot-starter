@@ -52,7 +52,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.zip.GZIPOutputStream;
 
-import sf.util.IOUtility;
+import us.fatehi.utility.IOUtility;
 
 public class TestWriter
   extends Writer

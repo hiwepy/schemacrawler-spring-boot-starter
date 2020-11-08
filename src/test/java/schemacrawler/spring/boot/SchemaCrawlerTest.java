@@ -32,7 +32,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static sf.util.Utility.isBlank;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +43,7 @@ import java.util.TreeMap;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.springframework.util.StringUtils;
 
 import schemacrawler.inclusionrule.IncludeAll;
 import schemacrawler.inclusionrule.InclusionRule;
@@ -110,7 +110,7 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 			final InclusionRule schemaInclusionRule = new RegularExpressionInclusionRule("91118net");
 
 			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
-					.tablecolumns(new IncludeAll(), "TABLE", "VIEW").toOptions();
+					.tablecolumns(new IncludeAll(), "TABLE", "VIEW");
 
 			// Get the schema definition
 			final Catalog catalog = getCatalog("sa", "sa", options);
@@ -155,8 +155,7 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 			// Create the options
 			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
 					.maximum()
-					.withLimitOptionsBuilder(limitOptionsBuilder)
-					.toOptions();
+					.withLimitOptions(limitOptionsBuilder.toOptions());
 
 			// Get the schema definition
 			final Catalog catalog = getCatalog("sa", "sa", options);
@@ -196,8 +195,7 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 			// Create the options
 			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
 					.standard()
-					.withLimitOptionsBuilder(limitOptionsBuilder)
-					.toOptions();
+					.withLimitOptions(limitOptionsBuilder.toOptions());
 
 			// Get the schema definition
 			final Catalog catalog = getCatalog("sa", "sa", options);
@@ -230,8 +228,7 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 			// Create the options
 			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
 					.standard()
-					.withLimitOptionsBuilder(limitOptionsBuilder)
-					.toOptions();
+					.withLimitOptions(limitOptionsBuilder.toOptions());
 
 			// Get the schema definition
 			final Catalog catalog = getCatalog("sa", "sa", options);
@@ -263,8 +260,7 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 		// Create the options
 		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
 				.maximum()
-				.withLimitOptionsBuilder(limitOptionsBuilder)
-				.toOptions();
+				.withLimitOptions(limitOptionsBuilder.toOptions());
 
 		// Get the schema definition
 		final Catalog catalog = getCatalog("sa", "sa", options);
@@ -273,7 +269,7 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 		final Routine[] routines = catalog.getRoutines(schema).toArray(new Routine[0]);
 		assertEquals("Wrong number of routines", 4, routines.length);
 		for (final Routine routine : routines) {
-			assertFalse("Routine definition not found, for " + routine, isBlank(routine.getDefinition()));
+			assertFalse("Routine definition not found, for " + routine, !StringUtils.hasText(routine.getDefinition()));
 		}
 	}
 
@@ -291,8 +287,7 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 		// Create the options
 		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
 				.detailed()
-				.withLimitOptionsBuilder(limitOptionsBuilder)
-				.toOptions();
+				.withLimitOptions(limitOptionsBuilder.toOptions());
 		
 		// Get the schema definition
 		final Catalog catalog = getCatalog("sa", "sa", options);
@@ -328,8 +323,7 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 			// Create the options
 			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
 					.custom(minimum)
-					.withLimitOptionsBuilder(limitOptionsBuilder)
-					.toOptions();
+					.withLimitOptions(limitOptionsBuilder.toOptions());
 			
 			// Get the schema definition
 			final Catalog catalog = getCatalog("sa", "sa", options);
@@ -364,8 +358,7 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 			// Create the options
 			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
 					.custom(minimum)
-					.withLimitOptionsBuilder(limitOptionsBuilder)
-					.toOptions();
+					.withLimitOptions(limitOptionsBuilder.toOptions());
 				
 			// Get the schema definition
 			final Catalog catalog = getCatalog("sa", "sa", options);
@@ -395,8 +388,7 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 			// Create the options
 			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
 					.custom(SchemaInfoLevelBuilder.maximum())
-					.withLimitOptionsBuilder(limitOptionsBuilder)
-					.toOptions();
+					.withLimitOptions(limitOptionsBuilder.toOptions());
 
 			// Get the schema definition
 			final Catalog catalog = getCatalog("sa", "sa", options);
@@ -440,8 +432,7 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 			// Create the options
 			final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
 					.custom(SchemaInfoLevelBuilder.maximum())
-					.withLimitOptionsBuilder(limitOptionsBuilder)
-					.toOptions();
+					.withLimitOptions(limitOptionsBuilder.toOptions());
 			
 			// Get the schema definition
 			final Catalog catalog = getCatalog("sa", "sa", options);
@@ -479,8 +470,7 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 		// Create the options
 		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
 				.custom(SchemaInfoLevelBuilder.maximum())
-				.withLimitOptionsBuilder(limitOptionsBuilder)
-				.toOptions();
+				.withLimitOptions(limitOptionsBuilder.toOptions());
 		
 		// Get the schema definition
 		final Catalog catalog = getCatalog("sa", "sa", options);
@@ -529,9 +519,8 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 		// Create the options
 		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
 				.custom(SchemaInfoLevelBuilder.maximum())
-				.withLimitOptionsBuilder(limitOptionsBuilder)
-				.toOptions();
-
+				.withLimitOptions(limitOptionsBuilder.toOptions());
+		
 		// Get the schema definition
 		final Catalog catalog = getCatalog("sa", "sa", options);
 		final Schema schema = new SchemaReference("PUBLIC", "BOOKS");
@@ -560,8 +549,7 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 		// Create the options
 		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder
 				.custom(SchemaInfoLevelBuilder.maximum())
-				.withLimitOptionsBuilder(limitOptionsBuilder)
-				.toOptions();
+				.withLimitOptions(limitOptionsBuilder.toOptions());
 
 		// Get the schema definition
 		final Catalog catalog = getCatalog("sa", "sa", options);
@@ -583,14 +571,14 @@ public class SchemaCrawlerTest extends BaseDatabaseTest {
 		final String autoIncrementable = (columnDataType.isAutoIncrementable() ? "" : "not ") + "auto-incrementable";
 
 		final String createParameters = columnDataType.getCreateParameters();
-		final String definedWith = "defined with " + (isBlank(createParameters) ? "no parameters" : createParameters);
+		final String definedWith = "defined with " + (!StringUtils.hasText(createParameters) ? "no parameters" : createParameters);
 
 		final String literalPrefix = columnDataType.getLiteralPrefix();
-		final String literalPrefixText = (isBlank(literalPrefix) ? "no literal prefix"
+		final String literalPrefixText = (!StringUtils.hasText(literalPrefix) ? "no literal prefix"
 				: "literal prefix " + literalPrefix);
 
 		final String literalSuffix = columnDataType.getLiteralSuffix();
-		final String literalSuffixText = (isBlank(literalSuffix) ? "no literal suffix"
+		final String literalSuffixText = (!StringUtils.hasText(literalSuffix) ? "no literal suffix"
 				: "literal suffix " + literalSuffix);
 
 		final String javaSqlType = "java.sql.Types: " + columnDataType.getJavaSqlType().getName();

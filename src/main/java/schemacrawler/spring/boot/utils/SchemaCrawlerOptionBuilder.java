@@ -5,8 +5,12 @@ import java.util.List;
 
 import schemacrawler.inclusionrule.IncludeAll;
 import schemacrawler.inclusionrule.InclusionRule;
+import schemacrawler.schemacrawler.FilterOptionsBuilder;
+import schemacrawler.schemacrawler.GrepOptionsBuilder;
 import schemacrawler.schemacrawler.LimitOptionsBuilder;
+import schemacrawler.schemacrawler.LoadOptions;
 import schemacrawler.schemacrawler.LoadOptionsBuilder;
+import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaInfoLevel;
 import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
@@ -16,54 +20,59 @@ import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
  */
 public final class SchemaCrawlerOptionBuilder {
 
-	public static SchemaCrawlerOptionsBuilder custom(SchemaInfoLevel schemaInfoLevel) {
+	public static SchemaCrawlerOptions custom(SchemaInfoLevel schemaInfoLevel) {
 		// Set what details are required in the schema - this affects the time taken to crawl the schema
-		LoadOptionsBuilder loadOptionsBuilder = LoadOptionsBuilder.builder().withSchemaInfoLevel(schemaInfoLevel);
-		return SchemaCrawlerOptionsBuilder.builder()
-				//.withFilterOptions(filterOptions)
-				//.withGrepOptions(grepOptions) 
-				//.withLimitOptionsBuilder(limitOptionsBuilder)
-				.withLoadOptionsBuilder(loadOptionsBuilder);
+		LoadOptions loadOptions = LoadOptionsBuilder.builder().withSchemaInfoLevel(schemaInfoLevel).toOptions();
+		return SchemaCrawlerOptionsBuilder
+				.newSchemaCrawlerOptions()
+				.withFilterOptions(FilterOptionsBuilder.newFilterOptions())
+				.withGrepOptions(GrepOptionsBuilder.newGrepOptions()) 
+				.withLimitOptions( LimitOptionsBuilder.newLimitOptions())
+				.withLoadOptions(loadOptions);
 	}
 
-	public static SchemaCrawlerOptionsBuilder detailed() {
+	public static SchemaCrawlerOptions detailed() {
 		// Set what details are required in the schema - this affects the time taken to crawl the schema
-		LoadOptionsBuilder loadOptionsBuilder = LoadOptionsBuilder.builder().withSchemaInfoLevel(SchemaInfoLevelBuilder.detailed());
-		return SchemaCrawlerOptionsBuilder.builder()
-				//.withFilterOptions(filterOptions)
-				//.withGrepOptions(grepOptions) 
-				//.withLimitOptionsBuilder(limitOptionsBuilder)
-				.withLoadOptionsBuilder(loadOptionsBuilder);
+		LoadOptions loadOptions = LoadOptionsBuilder.builder().withSchemaInfoLevel(SchemaInfoLevelBuilder.detailed()).toOptions();
+		return SchemaCrawlerOptionsBuilder
+				.newSchemaCrawlerOptions()
+				.withFilterOptions(FilterOptionsBuilder.newFilterOptions())
+				.withGrepOptions(GrepOptionsBuilder.newGrepOptions()) 
+				.withLimitOptions( LimitOptionsBuilder.newLimitOptions())
+				.withLoadOptions(loadOptions);
 	}
 
-	public static SchemaCrawlerOptionsBuilder maximum() {
+	public static SchemaCrawlerOptions maximum() {
 		// Set what details are required in the schema - this affects the time taken to crawl the schema
-		LoadOptionsBuilder loadOptionsBuilder = LoadOptionsBuilder.builder().withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum());
-		return SchemaCrawlerOptionsBuilder.builder()
-				//.withFilterOptions(filterOptions)
-				//.withGrepOptions(grepOptions) 
-				//.withLimitOptionsBuilder(limitOptionsBuilder)
-				.withLoadOptionsBuilder(loadOptionsBuilder);
+		LoadOptions loadOptions = LoadOptionsBuilder.builder().withSchemaInfoLevel(SchemaInfoLevelBuilder.maximum()).toOptions();
+		return SchemaCrawlerOptionsBuilder
+				.newSchemaCrawlerOptions()
+				.withFilterOptions(FilterOptionsBuilder.newFilterOptions())
+				.withGrepOptions(GrepOptionsBuilder.newGrepOptions()) 
+				.withLimitOptions( LimitOptionsBuilder.newLimitOptions())
+				.withLoadOptions(loadOptions);
 	}
 
-	public static SchemaCrawlerOptionsBuilder minimum() {
+	public static SchemaCrawlerOptions minimum() {
 		// Set what details are required in the schema - this affects the time taken to crawl the schema
-		LoadOptionsBuilder loadOptionsBuilder = LoadOptionsBuilder.builder().withSchemaInfoLevel(SchemaInfoLevelBuilder.minimum());
-		return SchemaCrawlerOptionsBuilder.builder()
-				//.withFilterOptions(filterOptions)
-				//.withGrepOptions(grepOptions) 
-				//.withLimitOptionsBuilder(limitOptionsBuilder)
-				.withLoadOptionsBuilder(loadOptionsBuilder);
+		LoadOptions loadOptions = LoadOptionsBuilder.builder().withSchemaInfoLevel(SchemaInfoLevelBuilder.minimum()).toOptions();
+		return SchemaCrawlerOptionsBuilder
+				.newSchemaCrawlerOptions()
+				.withFilterOptions(FilterOptionsBuilder.newFilterOptions())
+				.withGrepOptions(GrepOptionsBuilder.newGrepOptions()) 
+				.withLimitOptions( LimitOptionsBuilder.newLimitOptions())
+				.withLoadOptions(loadOptions);
 	}
 	
-	public static SchemaCrawlerOptionsBuilder standard() {
+	public static SchemaCrawlerOptions standard() {
 		// Set what details are required in the schema - this affects the time taken to crawl the schema
-		LoadOptionsBuilder loadOptionsBuilder = LoadOptionsBuilder.builder().withSchemaInfoLevel(SchemaInfoLevelBuilder.standard());
-		return SchemaCrawlerOptionsBuilder.builder()
-				//.withFilterOptions(filterOptions)
-				//.withGrepOptions(grepOptions) 
-				//.withLimitOptionsBuilder(limitOptionsBuilder)
-				.withLoadOptionsBuilder(loadOptionsBuilder);
+		LoadOptions loadOptions = LoadOptionsBuilder.builder().withSchemaInfoLevel(SchemaInfoLevelBuilder.standard()).toOptions();
+		return SchemaCrawlerOptionsBuilder
+				.newSchemaCrawlerOptions()
+				.withFilterOptions(FilterOptionsBuilder.newFilterOptions())
+				.withGrepOptions(GrepOptionsBuilder.newGrepOptions()) 
+				.withLimitOptions( LimitOptionsBuilder.newLimitOptions())
+				.withLoadOptions(loadOptions);
 	}
 	
 	/**
@@ -74,7 +83,7 @@ public final class SchemaCrawlerOptionBuilder {
 	 * @param tableTypes Collection of table types. Can be null if all supported table types are requested.
 	 * @return {@link SchemaCrawlerOptionsBuilder} instance
 	 */
-	public static SchemaCrawlerOptionsBuilder tablecolumns(InclusionRule schemaInclusionRule, String ... tableTypes ) {
+	public static SchemaCrawlerOptions tablecolumns(InclusionRule schemaInclusionRule, String ... tableTypes ) {
 		
 		// Set what details are required in the schema - this affects the time taken to crawl the schema
 		SchemaInfoLevelBuilder schemaInfoLevelBuilder = SchemaInfoLevelBuilder.builder()
@@ -97,13 +106,14 @@ public final class SchemaCrawlerOptionBuilder {
 				.includeColumns(new IncludeAll())
 				.includeSchemas(schemaInclusionRule);
 
-		LoadOptionsBuilder loadOptionsBuilder = LoadOptionsBuilder.builder().withSchemaInfoLevelBuilder(schemaInfoLevelBuilder);
+		LoadOptions loadOptions = LoadOptionsBuilder.builder().withSchemaInfoLevelBuilder(schemaInfoLevelBuilder).toOptions();
 		
-		return SchemaCrawlerOptionsBuilder.builder()
-				//.withFilterOptions(filterOptions)
-				//.withGrepOptions(grepOptions) 
-				.withLimitOptionsBuilder(limitOptionsBuilder)
-				.withLoadOptionsBuilder(loadOptionsBuilder);
+		return SchemaCrawlerOptionsBuilder
+				.newSchemaCrawlerOptions()
+				.withFilterOptions(FilterOptionsBuilder.newFilterOptions())
+				.withGrepOptions(GrepOptionsBuilder.newGrepOptions()) 
+				.withLimitOptions( limitOptionsBuilder.toOptions())
+				.withLoadOptions(loadOptions);
 		
 	}
 
