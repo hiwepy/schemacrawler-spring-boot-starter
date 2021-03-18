@@ -17,17 +17,35 @@ import org.apache.commons.lang3.StringUtils;
 public enum DatabaseType {
 
 	/**
-	 * Microsoft Azure Cloud #
-	 * jdbc:sqlserver://[host-name]:[port];databaseName=[database-name]
+	 * Apache Hive # jdbc:hive2://[host-name]:[port]/[database-name]
 	 */
-	AZURE("azure", "Microsoft Azure Cloud", "com.microsoft.sqlserver.jdbc.SQLServerDriver",
-			"jdbc:sqlserver://[host-name]:[port];databaseName=[database-name]",
-			"jdbc:sqlserver://%s:%d;databaseName=%s", 1433, true),
+	APACHE_HIVE("hive", "Apache Hive", "org.apache.hive.jdbc.HiveDriver", 
+			"jdbc:hive2://[host-name]:[port]/[database-name]", "jdbc:hive2://%s:%d/%s", 10000, true),
 	/**
-	 * DB2 # jdbc:db2://[host-name]:[port]/[database-name]
+	 * Apache Impala 2.x # jdbc:impala://[host-name]:[port]/[database-name]
 	 */
-	DB2("db2", "IBM DB2", "com.ibm.db2.jcc.DB2Driver", 
-			"jdbc:db2://[host-name]:[port]/[database-name]", "jdbc:db2://%s:%d/%s", 50000, true),
+	APACHE_IMPALA2("impala", "Apache Impala", "com.cloudera.impala.jdbc41.Driver", 
+			"jdbc:impala://[host-name]:[port]/[database-name]", "jdbc:impala://%s:%d/%s", 21050, true),
+	/**
+	 * Apache Impala 3.x # jdbc:impala://[host-name]:[port]/[database-name]
+	 */
+	APACHE_IMPALA3("impala", "Apache Impala", "com.cloudera.impala.jdbc41.Driver", 
+			"jdbc:impala://[host-name]:[port]/[database-name];UseSasl=0;AuthMech=3;UID=impala;PWD= ", "jdbc:impala://%s:%d/%s;UseSasl=0;AuthMech=3;UID=impala;PWD= ", 21050, true),
+	/**
+	 * Apache Hive # jdbc:kylin://[host-name]:[port]/[database-name]
+	 */
+	APACHE_KYLIN("kylin", "Apache Kylin", "org.apache.kylin.jdbc.Driver", 
+			"jdbc:kylin://[host-name]:[port]/[database-name]", "jdbc:kylin://%s:%d/%s", 7070, true),
+	/**
+	 * Apache Phoenix # jdbc:phoenix:[host-name]:[port]/[database-name]
+	 */
+	APACHE_PHOENIX("phoenix", "Apache Phoenix", "org.apache.phoenix.jdbc.PhoenixDriver", 
+			"jdbc:phoenix:[host-name]:[port]/[database-name]", "jdbc:phoenix:%s:%d/%s", 7070, true),
+	/**
+	 * ClickHouse # jdbc:clickhouse://[database-name]:[port]
+	 */
+	CLICKHOUSE("clickHouse", "ClickHouse", "ru.yandex.clickhouse.ClickHouseDriver",
+			"jdbc:clickhouse://[database-name]:[port]", "jdbc:clickhouse:%s:%d", 8123, false),
 	/**
 	 * Derby Embedded # jdbc:derby:[database-name];create=true
 	 */
@@ -72,40 +90,58 @@ public enum DatabaseType {
 			"jdbc:hsqldb:file:[file-path]/[database-name];ifexists=true", "jdbc:hsqldb:file:%s/%s;ifexists=true", 
 			9101, false),
 	/**
-	 * Apache Hive # jdbc:hive2://[host-name]:[port]/[database-name]
+	 * IBM DB2 # jdbc:db2://[host-name]:[port]/[database-name]
 	 */
-	HIVE("hive", "Apache Hive", "org.apache.hive.jdbc.HiveDriver", 
-			"jdbc:hive2://[host-name]:[port]/[database-name]", "jdbc:hive2://%s:%d/%s", 10000, true),
+	IBM_DB2("db2", "IBM DB2", "com.ibm.db2.jcc.DB2Driver", 
+			"jdbc:db2://[host-name]:[port]/[database-name]", "jdbc:db2://%s:%d/%s", 50000, true),
 	/**
-	 * Apache Impala # jdbc:hive2://[host-name]:[port]/[database-name]
+	 * IBM Informix # jdbc:informix-sqli://[host-name]:[port]/[database-name]:INFORMIXSERVER=server
 	 */
-	IMPALA("impala", "Apache Impala", "org.apache.hive.jdbc.HiveDriver", 
-			"jdbc:hive2://[host-name]:[port]/[database-name]", "jdbc:hive2://%s:%d/%s", 10000, true),
+	IBM_INFORMIX("db2", "IBM Informix", "com.informix.jdbc.IfxDriver", 
+			"jdbc:informix-sqli://[host-name]:[port]/[database-name]:INFORMIXSERVER=server",
+			"jdbc:informix-sqli://%s:%d/%s:INFORMIXSERVER=server", 9088, true),
 	/**
-	 * http://kylin.apache.org/docs/howto/howto_jdbc.html
-	 * Apache Kylin # jdbc:kylin://[host-name]:[port]/[database-name]
+	 * IBM Netezza # jdbc:netezza://[host-name]:[port]:[database-name]
 	 */
-	KYLIN("kylin", "Apache Kylin", "org.apache.kylin.jdbc.Driver", 
-			"jdbc:kylin://[host-name]:[port]/[database-name]", "jdbc:kylin://%s:%d/%s", 10000, true),
+	IBM_NETEZZA("netezza", "IBM Netezza", "org.netezza.Driver", 
+			"jdbc:netezza://[host-name]:[port]:[database-name]", "jdbc:netezza://%s:%d:%s", 5480, true),
+	/**
+	 * Kingbase # jdbc:kingbase://[host-name]:[port]/[database-name]
+	 * https://help.fanruan.com/finebi/doc-view-304.html
+	 */
+	KINGBASE("kingbase", "Kingbase", "com.kingbase.Driver", 
+			"jdbc:kingbase://[host-name]:[port]/[database-name]", "jdbc:kingbase://%s:%d/%s", 54321, true),
+	/**
+	 * Presto # jdbc:kingbase://[host-name]:[port]/[database-name]
+	 * https://help.fanruan.com/finebi/doc-view-305.html
+	 */
+	PRESTO("presto", "Presto", "com.facebook.presto.jdbc.PrestoDriver", 
+			"jdbc:presto://[host-name]:[port]/[database-name]", "jdbc:presto://%s:%d/%s", 8080, true),
 	/**
 	 * Mariadb # jdbc:mariadb://[host-name]:[port]/[database-name]
 	 */
 	MARIADB("mariadb", "Mariadb", "org.mariadb.jdbc.Driver", 
 			"jdbc:mariadb://[host-name]:[port]/[database-name]", "jdbc:mariadb://%s:%d/%s", 3306, true),
 	/**
+	 * Microsoft Azure Cloud #
+	 * jdbc:sqlserver://[host-name]:[port];databaseName=[database-name]
+	 */
+	MS_AZURE("azure", "Microsoft Azure Cloud", "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+			"jdbc:sqlserver://[host-name]:[port];databaseName=[database-name]",
+			"jdbc:sqlserver://%s:%d;databaseName=%s", 1433, true),
+	/**
 	 * Microsoft SQL Server 2000 #
 	 * jdbc:microsoft:sqlserver://[host-name]:[port];DatabaseName=[database-name]
 	 * https://docs.microsoft.com/zh-cn/sql/connect/jdbc/microsoft-jdbc-driver-for-sql-server-support-matrix?view=sql-server-2017
-	 * 
 	 */
-	MSSQL_2000("sqlserver2000", "Microsoft SQL Server 2000", "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+	MS_SQL_2000("sqlserver2000", "Microsoft SQL Server 2000", "com.microsoft.sqlserver.jdbc.SQLServerDriver",
 			"jdbc:microsoft:sqlserver://[host-name]:[port];DatabaseName=[database-name]",
 			"jdbc:microsoft:sqlserver://%s:%d;DatabaseName=%s;integratedSecurity=false;", 1433, true),
 	/**
 	 * Microsoft SQL Server 2005 + #
 	 * jdbc:sqlserver://[host-name]:[port];DatabaseName=[database-name]
 	 */
-	MSSQL("sqlserver", "Microsoft SQL Server 2005及以上版本", "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+	MS_SQL("sqlserver", "Microsoft SQL Server 2005及以上版本", "com.microsoft.sqlserver.jdbc.SQLServerDriver",
 			"jdbc:sqlserver://[host-name]:[port];DatabaseName=[database-name]",
 			"jdbc:sqlserver://%s:%d;DatabaseName=%s;integratedSecurity=false;", 1433, true),
 	/**
@@ -118,19 +154,18 @@ public enum DatabaseType {
 	/**
 	 * Oracle 10g、11g # jdbc:oracle:thin:@[host-name]:[port]:[database-name]
 	 */
-	ORACLE("oracle", "Oracle 10g、11g", "oracle.jdbc.OracleDriver",
+	ORACLE("oracle", "Oracle 10g、11g", "oracle.jdbc.driver.OracleDriver",
 			"jdbc:oracle:thin:@[host-name]:[port]:[database-name]", "jdbc:oracle:thin:@%s:%d:%s", 1521, true),
 	/**
-	 * Oracle 12c # jdbc:oracle:thin:@//[host-name]:[port]/[database-name]
+	 * Oracle 12c # jdbc:oracle:thin:@[host-name]:[port]/[database-name]
 	 */
-	ORACLE_12C("oracle-12c", "Oracle 12c", "oracle.jdbc.OracleDriver",
-			"jdbc:oracle:thin:@//[host-name]:[port]/[database-name]", "jdbc:oracle:thin:@//%s:%d/%s", 1521, true),
+	ORACLE_12C("oracle-12c", "Oracle 12c", "oracle.jdbc.driver.OracleDriver",
+			"jdbc:oracle:thin:@[host-name]:[port]/[database-name]", "jdbc:oracle:thin:@%s:%d/%s", 1521, true),
 	/**
 	 * Oracle 18c # jdbc:oracle:thin:@//[host-name]:[port]/[database-name]
 	 */
-	ORACLE_18C("oracle-18c", "Oracle 12c", "oracle.jdbc.OracleDriver",
-			"jdbc:oracle:thin:@//[host-name]:[port]/[database-name]", "jdbc:oracle:thin:@//%s:%d/%s", 1521, true),
-	
+	ORACLE_18C("oracle-18c", "Oracle 18c", "oracle.jdbc.driver.OracleDriver",
+			"jdbc:oracle:thin:@[host-name]:[port]/[database-name]", "jdbc:oracle:thin:@%s:%d/%s", 1521, true),
 	/**
 	 * PostgreSQL # jdbc:postgresql://[host-name]:[port]/[database-name]
 	 */
@@ -138,31 +173,30 @@ public enum DatabaseType {
 			"jdbc:postgresql://[host-name]:[port]/[database-name]", "jdbc:postgresql://%s:%d/%s", 5432, true),
 	/**
 	 * Amazon Redshift ： jdbc:redshift://[host-name]:[port]/[database-name]
+	 * https://help.fanruan.com/finebi/doc-view-292.html
 	 */
-	REDSHIFT("redshift", "Amazon Redshift", "com.amazon.redshift.jdbc41.Driver",
+	AMAZON_REDSHIFT("redshift", "Amazon Redshift", "com.amazon.redshift.jdbc41.Driver",
 			"jdbc:redshift://[host-name]:[port]/[database-name]", "jdbc:redshift://%s:%d/%s", 5439, true),
 	/**
-	 * https://github.com/xerial/sqlite-jdbc
-	 * SQLite Memory ： jdbc:redshift://[host-name]:[port]/[database-name]
+	 * Gbase 8A ： jdbc:redshift://[host-name]:[port]/[database-name]
+	 * https://help.fanruan.com/finebi/doc-view-295.html
 	 */
-	SQLITE_MEMORY("sqlite-memory", "SQLite Memory", "org.sqlite.JDBC", "jdbc:sqlite::memory:", "jdbc:sqlite::memory:", 0, true),
+	GBASE_8A("gbase-8A", "Gbase 8A", "com.gbase.jdbc.Driver",
+			"jdbc:gbase://[host-name]:[port]/[database-name]", "jdbc:gbase://%s:%d/%s", 5258, true),
 	/**
-	 * https://github.com/xerial/sqlite-jdbc
-	 * SQLite Embedded ： jdbc:sqlite:[database-name]
+	 * Gbase 8S ： jdbc:redshift://[host-name]:[port]/[database-name]
+	 * https://help.fanruan.com/finebi/doc-view-296.html
 	 */
-	SQLITE_EMBEDDED("sqlite-embedded", "SQLite Embedded", "org.sqlite.JDBC", "jdbc:sqlite:[database-name]", "jdbc:sqlite:%s", 0, true),
-	
+	GBASE_8S("gbase-8S", "Gbase 8S", "com.gbasedbt.jdbc.IfxDriver",
+			"jdbc:gbasedbt-sqli://[host-name]:[port]/[database-name]", "jdbc:gbasedbt-sqli://%s:%d/%s", 9088, true),
 	/**
 	 * Teradata # jdbc:teradata://[host-name]/DBS_PORT=[port],DATABASE=[database-name]
+	 * https://help.fanruan.com/finebi/doc-view-310.html
 	 */
 	TERADATA("teradata", "Teradata", "com.teradata.jdbc.TeraDriver",
 			"jdbc:teradata://[host-name]/DBS_PORT=[port],DATABASE=[database-name]",
 			"jdbc:teradata://%s/DBS_PORT=%d,DATABASE=%s", 8002, true),
-	/**
-	 * IBM Netezza # jdbc:netezza://[host-name]:[port]:[database-name]
-	 */
-	NETEZZA("netezza", "IBM Netezza", "org.netezza.Driver", 
-			"jdbc:netezza://[host-name]:[port]:[database-name]", "jdbc:netezza://%s:%d:%s", 5480, true),
+	
 	/**
 	 * HPE Vertica # jdbc:vertica://[host-name]:[port]/[database-name]
 	 */
@@ -262,13 +296,13 @@ public enum DatabaseType {
 	
 	public static List<Map<String, String>> driverList(boolean standloneOnly) {
 		List<Map<String, String>> driverList = new LinkedList<Map<String, String>>();
-		for (DatabaseType dbType : DatabaseType.values()) {
+		for (DatabaseType driverEnum : DatabaseType.values()) {
 			if(standloneOnly) {
-				if (dbType.isStandlone()) {
-					driverList.add(dbType.toMap());
+				if (driverEnum.isStandlone()) {
+					driverList.add(driverEnum.toMap());
 				}
 			} else {
-				driverList.add(dbType.toMap());
+				driverList.add(driverEnum.toMap());
 			}
 		}
 		return driverList;
