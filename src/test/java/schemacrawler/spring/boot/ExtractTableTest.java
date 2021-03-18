@@ -34,7 +34,7 @@ import schemacrawler.schemacrawler.LimitOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
-import schemacrawler.utility.SchemaCrawlerUtility;
+import schemacrawler.tools.utility.SchemaCrawlerUtility;
 
 /**
  * TODO

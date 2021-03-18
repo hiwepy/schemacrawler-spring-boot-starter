@@ -11,7 +11,7 @@ import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
 import schemacrawler.tools.databaseconnector.DatabaseConnectionSource;
 import schemacrawler.tools.databaseconnector.SingleUseUserCredentials;
-import schemacrawler.utility.SchemaCrawlerUtility;
+import schemacrawler.tools.utility.SchemaCrawlerUtility;
 
 public abstract class BaseDatabaseTest {
 

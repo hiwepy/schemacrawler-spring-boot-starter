@@ -39,9 +39,8 @@ import schemacrawler.schemacrawler.SchemaRetrievalOptions;
 import schemacrawler.schemacrawler.SchemaRetrievalOptionsBuilder;
 import schemacrawler.spring.boot.ext.ConnectionProvider;
 import schemacrawler.spring.boot.ext.DatabaseSchemaCrawlerOptions;
-import schemacrawler.spring.boot.ext.DatabaseType;
 import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
-import schemacrawler.utility.SchemaCrawlerUtility;
+import schemacrawler.tools.utility.SchemaCrawlerUtility;
 import us.fatehi.utility.DatabaseUtility;
 import us.fatehi.utility.ObjectToString;
 
@@ -53,10 +52,10 @@ public class SchemaCrawlerTemplate {
 	private SchemaCrawlerProperties properties;
 	
 	/**
-	 * @param dbType The {@link DatabaseType} Database type.
+	 * @param dbType The Database type.
 	 * @return The SchemaCrawlerOptions {@link SchemaCrawlerOptions} Object
 	 */
-	public SchemaCrawlerOptions getCrawlerOptions(DatabaseType dbType) {
+	public SchemaCrawlerOptions getCrawlerOptions(String dbType) {
 		Iterator<DatabaseSchemaCrawlerOptions> ite = properties.getCrawlerOptions().iterator();
 		while (ite.hasNext()) {
 			DatabaseSchemaCrawlerOptions crawlerOptions = ite.next();
@@ -72,12 +71,12 @@ public class SchemaCrawlerTemplate {
 	 * Starts the schema crawler and lets it crawl the given DataSource.
 	 *
 	 * @param dataSource The DataSource
-	 * @param dbType The {@link DatabaseType} Database type.
+	 * @param dbType The Database type.
 	 * @return The populated {@link Catalog} object containing the metadata for the extractor
 	 * @throws SchemaCrawlerException Gets thrown when the database could not be crawled successfully
 	 * @throws SQLException Gets thrown when the database access error occurs
 	 */
-	public Catalog crawl(final DataSource dataSource, DatabaseType dbType) throws SchemaCrawlerException, SQLException {
+	public Catalog crawl(final DataSource dataSource, String dbType) throws SchemaCrawlerException, SQLException {
 		Connection connection = null;
 		try {
 			connection = dataSource.getConnection();
@@ -141,11 +140,11 @@ public class SchemaCrawlerTemplate {
 	 * Starts the schema crawler and lets it crawl the given JDBC connection.
 	 *
 	 * @param connection The JDBC connection
-	 * @param dbType The {@link DatabaseType} Database type.
+	 * @param dbType The Database type.
 	 * @return The populated {@link Catalog} object containing the metadata for the extractor
 	 * @throws SchemaCrawlerException Gets thrown when the database could not be crawled successfully
 	 */
-	public Catalog crawl(final Connection connection, DatabaseType dbType) throws SchemaCrawlerException {
+	public Catalog crawl(final Connection connection, String dbType) throws SchemaCrawlerException {
 		try {
 	    	final SchemaCrawlerOptions options = getCrawlerOptions(dbType);
 	        return SchemaCrawlerUtility.getCatalog(connection, options);

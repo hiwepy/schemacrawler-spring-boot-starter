@@ -44,7 +44,7 @@ import schemacrawler.schema.ResultsColumn;
 import schemacrawler.schema.ResultsColumns;
 import schemacrawler.spring.boot.utility.TestName;
 import schemacrawler.spring.boot.utility.TestWriter;
-import schemacrawler.utility.SchemaCrawlerUtility;
+import schemacrawler.tools.utility.SchemaCrawlerUtility;
 
 public class ResultColumnsTest extends BaseDatabaseTest {
 

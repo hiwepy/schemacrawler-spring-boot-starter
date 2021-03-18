@@ -19,7 +19,7 @@ import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
 import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
 import schemacrawler.tools.databaseconnector.DatabaseConnectionSource;
 import schemacrawler.tools.databaseconnector.SingleUseUserCredentials;
-import schemacrawler.utility.SchemaCrawlerUtility;
+import schemacrawler.tools.utility.SchemaCrawlerUtility;
 
 public final class ConnectionOptionsExample {
 
