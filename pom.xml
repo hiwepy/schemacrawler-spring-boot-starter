@@ -380,8 +380,8 @@
 		<schemacrawler-postgresql.version>${schemacrawler.version}</schemacrawler-postgresql.version>
 		<schemacrawler-sqlserver.version>${schemacrawler.version}</schemacrawler-sqlserver.version>
 		<schemacrawler-sqlite.version>${schemacrawler.version}</schemacrawler-sqlite.version>
-		<schemacrawler-sapiq.version>${schemacrawler.version}</schemacrawler-sapiq.version>
-		<schemacrawler-timesten.version>${schemacrawler.version}</schemacrawler-timesten.version>
+		<schemacrawler-sapiq.version>16.16.17</schemacrawler-sapiq.version>
+		<schemacrawler-timesten.version>16.16.17</schemacrawler-timesten.version>
 	</properties>
 
 	<dependencies>
