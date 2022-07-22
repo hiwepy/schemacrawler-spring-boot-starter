@@ -23,10 +23,10 @@ import schemacrawler.schemacrawler.LimitOptions;
 import schemacrawler.schemacrawler.LimitOptionsBuilder;
 import schemacrawler.schemacrawler.LoadOptions;
 import schemacrawler.schemacrawler.LoadOptionsBuilder;
-import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
 import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
+import schemacrawler.schemacrawler.exceptions.SchemaCrawlerException;
 import schemacrawler.spring.boot.ext.ConnectionProvider;
 import schemacrawler.spring.boot.ext.DatabaseSchemaCrawlerOptions;
 import schemacrawler.spring.boot.ext.SchemaCrawlerConnectionProvider;
@@ -85,14 +85,14 @@ public class SchemaCrawlerAutoConfiguration implements ApplicationContextAware {
 						// .includeRoutineColumns(rules.getRoutineColumnInclusionRule().inclusionRule())
 						.includeRoutines(rules.getRoutineInclusionRule().inclusionRule())
 						.toOptions();
-				
+
 				LoadOptions loadOptions = LoadOptionsBuilder.builder()
 						.withSchemaInfoLevel(SchemaInfoLevelBuilder.standard()).toOptions();
-				
+
 				SchemaCrawlerOptions schemaCrawlerOptions =  SchemaCrawlerOptionsBuilder
 						.newSchemaCrawlerOptions()
 						.withFilterOptions(FilterOptionsBuilder.newFilterOptions())
-						.withGrepOptions(grepOptions) 
+						.withGrepOptions(grepOptions)
 						.withLimitOptions(limitOptions)
 						.withLoadOptions(loadOptions);
 

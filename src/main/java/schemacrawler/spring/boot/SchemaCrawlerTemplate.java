@@ -32,25 +32,25 @@ import schemacrawler.inclusionrule.InclusionRule;
 import schemacrawler.schema.Catalog;
 import schemacrawler.schema.RoutineType;
 import schemacrawler.schemacrawler.LimitOptionsBuilder;
-import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.schemacrawler.SchemaInfoLevel;
 import schemacrawler.schemacrawler.SchemaRetrievalOptions;
 import schemacrawler.schemacrawler.SchemaRetrievalOptionsBuilder;
+import schemacrawler.schemacrawler.exceptions.SchemaCrawlerException;
 import schemacrawler.spring.boot.ext.ConnectionProvider;
 import schemacrawler.spring.boot.ext.DatabaseSchemaCrawlerOptions;
 import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
 import schemacrawler.tools.utility.SchemaCrawlerUtility;
-import us.fatehi.utility.DatabaseUtility;
 import us.fatehi.utility.ObjectToString;
+import us.fatehi.utility.database.DatabaseUtility;
 
 public class SchemaCrawlerTemplate {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(SchemaCrawlerTemplate.class);
-	
-	@Autowired	
+
+	@Autowired
 	private SchemaCrawlerProperties properties;
-	
+
 	/**
 	 * @param dbType The Database type.
 	 * @return The SchemaCrawlerOptions {@link SchemaCrawlerOptions} Object
@@ -87,7 +87,7 @@ public class SchemaCrawlerTemplate {
 			}
 		}
 	}
-	
+
 	/**
 	 *
 	 * Starts the schema crawler and lets it crawl the given DataSource.
@@ -99,7 +99,7 @@ public class SchemaCrawlerTemplate {
 	 * @throws SQLException Gets thrown when the database access error occurs
 	 */
 	public Catalog crawl(final DataSource dataSource, final SchemaInfoLevel schemaInfoLevel) throws SchemaCrawlerException, SQLException {
-	    
+
 		Connection connection = null;
 		try {
 			connection = dataSource.getConnection();
@@ -110,7 +110,7 @@ public class SchemaCrawlerTemplate {
 			}
 		}
 	}
-	
+
 	/**
 	 *
 	 * Starts the schema crawler and lets it crawl the given DataSource.
@@ -153,7 +153,7 @@ public class SchemaCrawlerTemplate {
 	        throw e;
 	    }
 	}
-	
+
 	/**
 	 *
 	 * Starts the schema crawler and lets it crawl the given JDBC connection.
@@ -169,12 +169,12 @@ public class SchemaCrawlerTemplate {
             final SchemaRetrievalOptions schemaRetrievalOptions,
             final SchemaCrawlerOptions schemaCrawlerOptions) throws SchemaCrawlerException, SQLException {
 		try {
-			
+
 			DatabaseUtility.checkConnection(connection);
 		    if (LOGGER.isDebugEnabled()) {
 		    	LOGGER.debug(ObjectToString.toString(schemaCrawlerOptions));
 		    }
-		    
+
 			final SchemaCrawler schemaCrawler = new SchemaCrawler(connection, schemaRetrievalOptions, schemaCrawlerOptions);
 			final Catalog catalog = schemaCrawler.crawl();
 			return catalog;
@@ -183,7 +183,7 @@ public class SchemaCrawlerTemplate {
 	        throw e;
 	    }
 	}
-	
+
 	/**
 	 *
 	 * Starts the schema crawler and lets it crawl the given JDBC connection.
@@ -197,7 +197,7 @@ public class SchemaCrawlerTemplate {
 	public Catalog crawl(final Connection connection, final SchemaCrawlerOptions schemaCrawlerOptions) throws SchemaCrawlerException, SQLException {
 		return crawl(connection, SchemaRetrievalOptionsBuilder.newSchemaRetrievalOptions(), schemaCrawlerOptions);
 	}
-	
+
 	/**
 	 *
 	 * Starts the schema crawler and lets it crawl the given JDBC connection.
@@ -216,7 +216,7 @@ public class SchemaCrawlerTemplate {
 	        throw e;
 	    }
 	}
-	
+
 	/**
 	 *
 	 * Starts the schema crawler and lets it crawl the given JDBC connection.
@@ -229,13 +229,13 @@ public class SchemaCrawlerTemplate {
 	 * @throws SchemaCrawlerException Gets thrown when the database could not be crawled successfully
 	 */
 	public Catalog crawl(final Connection connection, final InclusionRule schemaRule, final InclusionRule tableRule) throws SchemaCrawlerException {
-	    
+
 		final LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
 				// Set what details are required in the schema - this affects the
 				.routineTypes(Arrays.asList(RoutineType.procedure, RoutineType.unknown)) // RoutineType.function not supported by h2
 				.includeSchemas(schemaRule == null ? new IncludeAll() : schemaRule)
 				.includeTables(tableRule == null ? new IncludeAll() : tableRule);
-		
+
 		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.standard()
 				.withLimitOptions( limitOptionsBuilder.toOptions());
 
@@ -266,7 +266,7 @@ public class SchemaCrawlerTemplate {
 	        throw e;
 	    }
 	}
-	
+
 	/**
 	 *
 	 * Starts the schema crawler and lets it crawl the given JDBC connection.
@@ -280,13 +280,13 @@ public class SchemaCrawlerTemplate {
 	 * @throws SQLException Gets thrown when the database access error occurs
 	 */
 	public Catalog crawl(final ConnectionProvider connectionProvider, final InclusionRule schemaRule, final InclusionRule tableRule) throws SchemaCrawlerException, SQLException {
-		
+
 		final LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
 				// Set what details are required in the schema - this affects the
 				.routineTypes(Arrays.asList(RoutineType.procedure, RoutineType.unknown)) // RoutineType.function not supported by h2
 				.includeSchemas(schemaRule == null ? new IncludeAll() : schemaRule)
 				.includeTables(tableRule == null ? new IncludeAll() : tableRule);
-		
+
 		final SchemaCrawlerOptions options = SchemaCrawlerOptionBuilder.standard()
 				.withLimitOptions( limitOptionsBuilder.toOptions());
 
@@ -297,5 +297,5 @@ public class SchemaCrawlerTemplate {
 	        throw e;
 	    }
 	}
-	
+
 }

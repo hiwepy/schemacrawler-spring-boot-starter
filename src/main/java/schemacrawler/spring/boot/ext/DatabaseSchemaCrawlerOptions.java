@@ -2,8 +2,8 @@ package schemacrawler.spring.boot.ext;
 
 import lombok.Data;
 import schemacrawler.inclusionrule.IncludeAll;
-import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
+import schemacrawler.schemacrawler.exceptions.SchemaCrawlerException;
 import schemacrawler.spring.boot.utils.SchemaCrawlerOptionBuilder;
 import schemacrawler.tools.databaseconnector.DatabaseConnectionOptions;
 import schemacrawler.tools.databaseconnector.DatabaseUrlConnectionOptions;
