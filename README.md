@@ -14,6 +14,6 @@
 <dependency>
 	<groupId>com.github.hiwepy</groupId>
 	<artifactId>schemacrawler-spring-boot-starter</artifactId>
-	<version>${project.version}</version>
+	<version>1.0.8.RELEASE</version>
 </dependency>
 ```
