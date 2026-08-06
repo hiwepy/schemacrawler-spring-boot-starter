@@ -78,7 +78,7 @@ public final class SchemaCrawlerOptionBuilder {
 	/**
 	 * Sets the schema inclusion rule.
 	 * Sets table types requested for output from a collection of table types. For example: TABLE,VIEW,SYSTEM_TABLE,GLOBAL TEMPORARY,ALIAS,SYNONYM
-	 * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
+	 * @author 		： <a href="https://github.com/easy-4-java">hiwepy</a>
 	 * @param schemaInclusionRule Schema inclusion rule
 	 * @param tableTypes Collection of table types. Can be null if all supported table types are requested.
 	 * @return {@link SchemaCrawlerOptionsBuilder} instance
