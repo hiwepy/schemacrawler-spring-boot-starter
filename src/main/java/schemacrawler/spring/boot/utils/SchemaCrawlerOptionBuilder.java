@@ -16,7 +16,7 @@ import schemacrawler.schemacrawler.SchemaInfoLevel;
 import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
 /**
  * SchemaCrawler utility methods.
- * @author hiwepy
+ * @author [@Loong Wan](https://github.com/loong10k)
  */
 public final class SchemaCrawlerOptionBuilder {
 
@@ -78,7 +78,7 @@ public final class SchemaCrawlerOptionBuilder {
 	/**
 	 * Sets the schema inclusion rule.
 	 * Sets table types requested for output from a collection of table types. For example: TABLE,VIEW,SYSTEM_TABLE,GLOBAL TEMPORARY,ALIAS,SYNONYM
-	 * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
+	 * @author [@Loong Wan](https://github.com/loong10k)
 	 * @param schemaInclusionRule Schema inclusion rule
 	 * @param tableTypes Collection of table types. Can be null if all supported table types are requested.
 	 * @return {@link SchemaCrawlerOptionsBuilder} instance
