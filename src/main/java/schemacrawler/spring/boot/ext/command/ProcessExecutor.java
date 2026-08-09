@@ -48,6 +48,12 @@ import org.springframework.util.StringUtils;
 
 import us.fatehi.utility.string.StringFormat;
 
+/**
+ * Executes external commands as a {@link Callable} and captures stdout/stderr.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
+ */
 public class ProcessExecutor implements Callable<Integer> {
 
 	final class StreamReader implements Callable<String> {

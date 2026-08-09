@@ -8,6 +8,12 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Connection provider backed by a Spring DataSource.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
+ */
 public class SchemaCrawlerConnectionProvider implements ConnectionProvider {
 
 	private static Logger LOG = LoggerFactory.getLogger(SchemaCrawlerConnectionProvider.class);
