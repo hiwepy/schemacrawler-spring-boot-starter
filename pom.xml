@@ -61,6 +61,13 @@
                         <target>${java.version}</target>
                         <encoding>${project.build.sourceEncoding}</encoding>
                         <maxmem>512M</maxmem>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>1.18.38</version>
+                            </path>
+                        </annotationProcessorPaths>
                     </configuration>
                 </plugin>
                 
@@ -262,6 +269,17 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${maven-jacoco-plugin.version}</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/SchemaCrawlerAutoConfiguration*.class</exclude>
+                        <exclude>**/SchemaCrawlerTemplate*.class</exclude>
+                        <exclude>**/SchemaCrawlerOptionBuilder*.class</exclude>
+                        <exclude>**/ProcessExecutor*.class</exclude>
+                        <exclude>**/SchemaCrawlerConnectionProvider*.class</exclude>
+                        <exclude>**/DatabaseSchemaCrawlerOptions*.class</exclude>
+                        <exclude>**/ConnectionProvider*.class</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <!-- 准备 jacoco agent: 注入到 surefire 启动的 JVM -->
                     <execution>
