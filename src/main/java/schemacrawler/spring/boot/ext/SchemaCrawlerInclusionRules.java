@@ -8,7 +8,7 @@ import schemacrawler.schema.RoutineType;
  * Configuration container for SchemaCrawler inclusion/exclusion rules.
  * <p>Defines rules for schemas, tables, columns, routines, synonyms, sequences and grep patterns.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 public class SchemaCrawlerInclusionRules {

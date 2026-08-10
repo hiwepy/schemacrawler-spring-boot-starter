@@ -37,7 +37,7 @@ import schemacrawler.tools.databaseconnector.DatabaseConnectorRegistry;
  * Auto-configuration for SchemaCrawler database schema analysis.
  * <p>Registers SchemaCrawler template, connection provider and database connector registry.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 @Configuration

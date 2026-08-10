@@ -13,7 +13,7 @@ import schemacrawler.spring.boot.ext.SchemaCrawlerInclusionRule;
 /**
  * Tests for {@link SchemaCrawlerInclusionRule}.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  */
 class SchemaCrawlerInclusionRuleTest {
 

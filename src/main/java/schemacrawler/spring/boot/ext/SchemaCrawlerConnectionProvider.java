@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Connection provider backed by a Spring DataSource.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 public class SchemaCrawlerConnectionProvider implements ConnectionProvider {
