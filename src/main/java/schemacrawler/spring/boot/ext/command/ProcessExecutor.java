@@ -68,6 +68,10 @@ public class ProcessExecutor implements Callable<Integer> {
 		}
 
 		@Override
+    /**
+     * <p>Call.</p>
+     * @return the call
+     */
 		public String call() throws Exception {
 			final Reader reader = new BufferedReader(new InputStreamReader(in));
 			return reader.toString();
@@ -83,6 +87,10 @@ public class ProcessExecutor implements Callable<Integer> {
 	private int exitCode;
 
 	@Override
+    /**
+     * <p>Call.</p>
+     * @return the call
+     */
 	public Integer call() throws IOException {
 		requireNonNull(command, "No command provided");
 		if (command.isEmpty()) {
@@ -118,22 +126,42 @@ public class ProcessExecutor implements Callable<Integer> {
 		}
 	}
 
+    /**
+     * <p>Returns the command.</p>
+     * @return the get command
+     */
 	public List<String> getCommand() {
 		return command;
 	}
 
+    /**
+     * <p>Returns the exit code.</p>
+     * @return the get exit code
+     */
 	public int getExitCode() {
 		return exitCode;
 	}
 
+    /**
+     * <p>Returns the process error.</p>
+     * @return the get process error
+     */
 	public String getProcessError() {
 		return processError;
 	}
 
+    /**
+     * <p>Returns the process output.</p>
+     * @return the get process output
+     */
 	public String getProcessOutput() {
 		return processOutput;
 	}
 
+    /**
+     * <p>Sets the command line.</p>
+     * @param args
+     */
 	public void setCommandLine(final List<String> args) {
 		requireNonNull(args, "No command provided");
 		if (args.isEmpty()) {

@@ -24,6 +24,10 @@ public class SchemaCrawlerConnectionProvider implements ConnectionProvider {
 	}
 	
 	@Override
+    /**
+     * <p>Returns the connection.</p>
+     * @return the get connection
+     */
 	public Connection getConnection() throws SQLException {
 		LOG.debug("Get ");
 		return dataSource.getConnection();

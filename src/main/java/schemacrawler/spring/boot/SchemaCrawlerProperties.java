@@ -25,18 +25,34 @@ public class SchemaCrawlerProperties {
      */
     private List<DatabaseSchemaCrawlerOptions> crawlerOptions = new ArrayList<DatabaseSchemaCrawlerOptions>();
     
+    /**
+     * <p>Checks if enabled.</p>
+     * @return the is enabled
+     */
 	public boolean isEnabled() {
 		return enabled;
 	}
 
+    /**
+     * <p>Sets the enabled.</p>
+     * @param enabled
+     */
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
 
+    /**
+     * <p>Returns the crawler options.</p>
+     * @return the get crawler options
+     */
 	public List<DatabaseSchemaCrawlerOptions> getCrawlerOptions() {
 		return crawlerOptions;
 	}
 
+    /**
+     * <p>Sets the crawler options.</p>
+     * @param crawlerOptions
+     */
 	public void setCrawlerOptions(List<DatabaseSchemaCrawlerOptions> crawlerOptions) {
 		this.crawlerOptions = crawlerOptions;
 	}

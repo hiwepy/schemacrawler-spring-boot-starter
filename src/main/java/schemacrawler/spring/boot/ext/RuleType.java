@@ -10,6 +10,11 @@ public enum RuleType {
 
 	DEFAULT, INCLUDE_ALL, EXCLUDE_ALL, REGULAR_EXPRESSION;
 	
+    /**
+     * <p>Equals.</p>
+     * @param RuleType
+     * @return the equals
+     */
 	public boolean equals(RuleType RuleType) {
 		return this.compareTo(RuleType) == 0;
 	}

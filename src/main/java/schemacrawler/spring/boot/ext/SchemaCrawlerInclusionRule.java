@@ -23,30 +23,58 @@ public class SchemaCrawlerInclusionRule {
 	/** Exclusion pattern. If null, excludes nothing. default '' */
 	private String patternExclude = NONE;
 	
+    /**
+     * <p>Returns the type.</p>
+     * @return the get type
+     */
 	public RuleType getType() {
 		return type;
 	}
 
+    /**
+     * <p>Sets the type.</p>
+     * @param type
+     */
 	public void setType(RuleType type) {
 		this.type = type;
 	}
 
+    /**
+     * <p>Returns the pattern include.</p>
+     * @return the get pattern include
+     */
 	public String getPatternInclude() {
 		return patternInclude;
 	}
 
+    /**
+     * <p>Sets the pattern include.</p>
+     * @param patternInclude
+     */
 	public void setPatternInclude(String patternInclude) {
 		this.patternInclude = patternInclude;
 	}
 
+    /**
+     * <p>Returns the pattern exclude.</p>
+     * @return the get pattern exclude
+     */
 	public String getPatternExclude() {
 		return patternExclude;
 	}
 
+    /**
+     * <p>Sets the pattern exclude.</p>
+     * @param patternExclude
+     */
 	public void setPatternExclude(String patternExclude) {
 		this.patternExclude = patternExclude;
 	}
 
+    /**
+     * <p>Inclusion rule.</p>
+     * @return the inclusion rule
+     */
 	public InclusionRule inclusionRule() {
 		if(RuleType.INCLUDE_ALL.equals(getType())) {
 			return new IncludeAll();

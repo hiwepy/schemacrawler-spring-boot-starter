@@ -53,6 +53,10 @@ public class SchemaCrawlerAutoConfiguration implements ApplicationContextAware {
 	private SchemaCrawlerProperties properties;
 
 	@Bean
+    /**
+     * <p>Database connector registry.</p>
+     * @return the database connector registry
+     */
 	public DatabaseConnectorRegistry databaseConnectorRegistry() throws SchemaCrawlerException {
 
 		//
@@ -112,20 +116,37 @@ public class SchemaCrawlerAutoConfiguration implements ApplicationContextAware {
 	}
 
 	@Bean
+    /**
+     * <p>Connection provider.</p>
+     * @param datasource
+     * @return the connection provider
+     */
 	public ConnectionProvider connectionProvider(DataSource datasource) {
 		return new SchemaCrawlerConnectionProvider(datasource);
 	}
 
 	@Bean
+    /**
+     * <p>Disruptor template.</p>
+     * @return the disruptor template
+     */
 	public SchemaCrawlerTemplate disruptorTemplate() {
 		return new SchemaCrawlerTemplate();
 	}
 
 	@Override
+    /**
+     * <p>Sets the application context.</p>
+     * @param applicationContext
+     */
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
 	}
 
+    /**
+     * <p>Returns the application context.</p>
+     * @return the get application context
+     */
 	public ApplicationContext getApplicationContext() {
 		return applicationContext;
 	}

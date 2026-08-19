@@ -36,6 +36,10 @@ public class DatabaseSchemaCrawlerOptions {
 	/** 数据库Schema获取操作配置，扩展InclusionRule不方便设置问题 */
 	private SchemaCrawlerInclusionRules rules = new SchemaCrawlerInclusionRules();
 
+    /**
+     * <p>To connection options.</p>
+     * @return the to connection options
+     */
 	public DatabaseConnectionOptions toConnectionOptions() throws SchemaCrawlerException {
 		final DatabaseConnectionOptions connectionOptions = new DatabaseUrlConnectionOptions(getUrl());
 		return connectionOptions;
