@@ -8,6 +8,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import schemacrawler.spring.boot.ext.DatabaseSchemaCrawlerOptions;
 
 @ConfigurationProperties(SchemaCrawlerProperties.PREFIX)
+/**
+ * <p>Configuration properties for SchemaCrawler.</p>
+ *
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
+ * @since 1.0.0
+ */
 public class SchemaCrawlerProperties {
 
 	public static final String PREFIX = "spring.schemacrawler";

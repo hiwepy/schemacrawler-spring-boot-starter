@@ -18,6 +18,12 @@ import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
  * SchemaCrawler utility methods.
  * @author <a href="https://github.com/loong10k">Loong Wan</a>
  */
+/**
+ * <p>SchemaCrawlerOptionBuilder implementation.</p>
+ *
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
+ * @since 1.0.0
+ */
 public final class SchemaCrawlerOptionBuilder {
 
 	public static SchemaCrawlerOptions custom(SchemaInfoLevel schemaInfoLevel) {

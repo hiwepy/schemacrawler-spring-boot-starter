@@ -44,6 +44,12 @@ import schemacrawler.tools.utility.SchemaCrawlerUtility;
 import us.fatehi.utility.ObjectToString;
 import us.fatehi.utility.database.DatabaseUtility;
 
+/**
+ * <p>SchemaCrawlerTemplate implementation.</p>
+ *
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
+ * @since 1.0.0
+ */
 public class SchemaCrawlerTemplate {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SchemaCrawlerTemplate.class);

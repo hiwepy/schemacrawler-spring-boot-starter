@@ -5,6 +5,12 @@ import schemacrawler.inclusionrule.IncludeAll;
 import schemacrawler.inclusionrule.InclusionRule;
 import schemacrawler.inclusionrule.RegularExpressionRule;
 
+/**
+ * <p>SchemaCrawlerInclusionRule implementation.</p>
+ *
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
+ * @since 1.0.0
+ */
 public class SchemaCrawlerInclusionRule {
 
 	private final static String ALL = ".*";
